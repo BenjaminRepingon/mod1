@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 16:43:50 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 17:33:41 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/21 18:04:56 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ Matrix4f &			Matrix4f::operator=( Matrix4f const & rhs )
 		for ( int i = 0; i < 4; i++ )
 		{
 			for ( int j = 0; j < 4; j++ )
-				this->_m[i][j] = rhs.get( i, j );
+				this->_m[i][j] = rhs[i][j];
 		}
 	}
 	return ( *this );
@@ -120,9 +120,9 @@ Matrix4f &			Matrix4f::initPerspective( float fov, float aspect, float zNear, fl
 	return ( *this );
 }
 
-float				Matrix4f::get( int x, int y ) const
+float const *		Matrix4f::operator[]( int index ) const
 {
-	return ( this->_m[x][y] );
+	return ( &( this->_m[index][0] ) );
 }
 
 void				Matrix4f::set( int x, int y, float value )
@@ -139,10 +139,10 @@ Matrix4f			Matrix4f::operator*( Matrix4f const & r )
 	{
 		for ( int j = 0; j < 4; j++ )
 		{
-			res.set( i, j,	this->_m[i][0] * r.get( 0, j ) +
-							this->_m[i][1] * r.get( 1, j ) +
-							this->_m[i][2] * r.get( 2, j ) +
-							this->_m[i][3] * r.get( 3, j ) );
+			res.set( i, j,	this->_m[i][0] * r[0][j] +
+							this->_m[i][1] * r[1][j] +
+							this->_m[i][2] * r[2][j] +
+							this->_m[i][3] * r[3][j] );
 		}
 	}
 	return ( res );

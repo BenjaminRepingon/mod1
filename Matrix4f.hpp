@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 16:43:50 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 17:33:11 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/21 18:04:12 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ public:
 	Matrix4f &			operator=( Matrix4f const & rhs );
 
 	// GETTER
-	float				get( int x, int y ) const;
+	float const *		operator[]( int index ) const;
 
 	// SETTER
 	void				set( int x, int y, float value );
