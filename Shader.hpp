@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/20 18:42:23 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/21 16:25:56 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ public:
 
 	// FUNCTIONS
 	void				bind( void ) const;
+	void				updateUniforms();
 
 private:
 	Shader( void );

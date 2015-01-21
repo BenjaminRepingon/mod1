@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Shader.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 13:55:30 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/21 16:25:32 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ Shader &	Shader::operator=( Shader const & rhs )
 void		Shader::bind() const
 {
 	glUseProgram( this->_program );
+}
+
+void		Shader::updateUniforms()
+{
+	return ;
 }
 
 std::string	Shader::loadShader( std::string const & fileName )

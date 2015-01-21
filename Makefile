@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+         #
+#    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/20 11:29:00 by rbenjami          #+#    #+#              #
-#    Updated: 2015/01/21 13:37:29 by dsousa           ###   ########.fr        #
+#    Updated: 2015/01/21 17:42:38 by rbenjami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,11 @@ SRCS			=	$(NAME).cpp		\
 					Utils.cpp		\
 					Error.cpp		\
 					Triangle.cpp	\
-					Core.cpp
+					Core.cpp		\
+					Vector3f.cpp	\
+					Matrix4f.cpp	\
+					Quaternion.cpp	\
+					Transform.cpp
 
 OBJS			=	$(SRCS:.cpp=.o)
 
@@ -32,17 +36,24 @@ LIBS			=	-F ~/Library/Frameworks -framework SDL2 -framework OpenGL
 
 all:			$(NAME)
 
-$(NAME):		$(OBJS)
-	$(CC) -o $(NAME) $(OBJS) $(LIBS)
+$(NAME):		generate $(OBJS)
+	@printf "Compiling objects"
+	@$(CC) -o $(NAME) $(OBJS) $(LIBS)
+
+generate:
+	@printf "Generate objects: \n"
 
 %.o:			%.cpp
-	$(CC) $(CFLAGS) -o $@ -c $< -I $(INCLUDES) $(LIBS)
+	@$(CC) $(CFLAGS) -o $@ -c $< $(LIBS)
+	@echo $@
 
 clean:
-	rm -rf $(OBJS)
+	@printf "Remove objects\n"
+	@rm -rf $(OBJS)
 
 fclean:			clean
-	rm -rf $(NAME)
+	@printf "Remove binary\n"
+	@rm -rf $(NAME)
 
 re:				fclean all
 

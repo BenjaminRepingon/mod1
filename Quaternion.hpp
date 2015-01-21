@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   IObject.hpp                                        :+:      :+:    :+:   */
+/*   Quaternion.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/01/21 11:41:39 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/21 17:32:23 by rbenjami         ###   ########.fr       */
+/*   Created: 2015/01/21 17:40:45 by rbenjami          #+#    #+#             */
+/*   Updated: 2015/01/21 17:40:59 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef IOBJECT_HPP
-# define IOBJECT_HPP
+#ifndef QUATERNION
+# define QUATERNION
+# include <string>
 
-#include <iostream>
-
-class IObject
+class Quaternion
 {
-	public:
-		virtual void		update( void ) = 0;
-		virtual void		render( void ) const = 0;
+public:
+	Quaternion( void );
+	Quaternion( Quaternion const & src );
+	~Quaternion( void );
 
-	protected:
-		float		_test;
+	Quaternion &			operator=( Quaternion const & rhs );
+
+	// GETTER
+
+	// SETTER
+
+private:
 
 };
 
 #endif
+
