@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
+#    By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/20 11:29:00 by rbenjami          #+#    #+#              #
-#    Updated: 2015/01/20 18:17:50 by rbenjami         ###   ########.fr        #
+#    Updated: 2015/01/21 13:37:29 by dsousa           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,10 @@ NAME			=	mod1
 SRCS			=	$(NAME).cpp		\
 					Window.cpp		\
 					Shader.cpp		\
-					Utils.cpp
+					Utils.cpp		\
+					Error.cpp		\
+					Triangle.cpp	\
+					Core.cpp
 
 OBJS			=	$(SRCS:.cpp=.o)
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mod1.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 11:25:53 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/20 18:52:24 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/21 13:44:27 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # include <vector>
 # include "Window.hpp"
 # include "Shader.hpp"
+# include "Core.hpp"
+# include "Triangle.hpp"
 
 GLuint positionBufferObject;
 
@@ -57,36 +59,42 @@ void	reshape( int w, int h )
 
 int		main( void )
 {
-	Window		win( "Test", 850, 550 );
-	bool		quit = false;
-	SDL_Event	e;
+	// Window		win( "Test", 850, 550 );
+	// bool		quit = false;
+	// SDL_Event	e;
 
-	win.init();
+	// win.init();
 
-	Shader		shader( "Basic" );
-	initializeVertexBuffer();
+	// Shader		shader( "Basic" );
+	// initializeVertexBuffer();
 
-	reshape( 850, 550 );
+	// reshape( 850, 550 );
 
-	while( ! quit )
-	{
-		while ( SDL_PollEvent( &e ) != 0 )
-		{
-			//User requests quit
-			if ( e.type == SDL_QUIT )
-				quit = true;
-			//Handle keypress with current mouse position
-			// else if( e.type == SDL_TEXTINPUT )
-			// {
-			// 	int x = 0, y = 0;
-			// 	SDL_GetMouseState( &x, &y );
-			// 	handleKeys( e.text.text[ 0 ], x, y );
-			// }
-		}
-		render( shader );
-		SDL_GL_SwapWindow( win.getSDLWindow() );
-		SDL_Delay( 10 );
-	}
+	// while( ! quit )
+	// {
+	// 	while ( SDL_PollEvent( &e ) != 0 )
+	// 	{
+	// 		//User requests quit
+	// 		if ( e.type == SDL_QUIT )
+	// 			quit = true;
+	// 		//Handle keypress with current mouse position
+	// 		// else if( e.type == SDL_TEXTINPUT )
+	// 		// {
+	// 		// 	int x = 0, y = 0;
+	// 		// 	SDL_GetMouseState( &x, &y );
+	// 		// 	handleKeys( e.text.text[ 0 ], x, y );
+	// 		// }
+	// 	}
+	// 	render( shader );
+	// 	SDL_GL_SwapWindow( win.getSDLWindow() );
+	// 	SDL_Delay( 10 );
+	// }
+
+	Core test = Core();
+
+	test.createWindow( "coucou" , 850, 550 );
+	test.addObject( new Triangle() );
+	test.start( );
 
 	return ( 0 );
 }
