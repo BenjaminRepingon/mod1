@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:21:07 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 16:35:24 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 19:15:10 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ class Map : public AObject
 
 	private:
 		void					loadMap( void );
+		void					saveVertex( std::string file );
+
 		std::string				_fileMap;
 		std::vector<Vertex>		_vertex;
 		// GLuint				_positionBuff;

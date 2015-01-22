@@ -6,7 +6,7 @@
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:38:30 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 13:26:12 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/22 18:56:00 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ Vertex::Vertex( void )
 }
 
 Vertex::Vertex( Vector3f const & pos, Vector3f const & color, Vector3f const & normal ) : _pos( pos ), _color( color ), _normal( normal )
+{
+	return ;
+}
+
+Vertex::Vertex( float x, float y, float z ) : _pos( Vector3f(x, y, z) ), _color( ), _normal( )
 {
 	return ;
 }
