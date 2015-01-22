@@ -1,39 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Triangle.hpp                                       :+:      :+:    :+:   */
+/*   Camera.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/01/21 12:12:13 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 17:50:26 by rbenjami         ###   ########.fr       */
+/*   Created: 2015/01/22 13:56:30 by rbenjami          #+#    #+#             */
+/*   Updated: 2015/01/22 17:51:18 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TRIANGLE_HPP
-# define TRIANGLE_HPP
-# include <OpenGL/gl.h>
+#ifndef CAMERA
+# define CAMERA
+# include <string>
 # include "AObject.hpp"
-# include "Shader.hpp"
-# include "Core.hpp"
+# include "Matrix4f.hpp"
 
-class Triangle : public AObject
+class Camera : public AObject
 {
-	public:
-		Triangle( void );
-		Triangle( Triangle const & src );
-		~Triangle( void );
+public:
+	Camera( Matrix4f const & projection );
+	Camera( Camera const & src );
+	~Camera( void );
 
-		Triangle &			operator=( Triangle const & rhs );
+	Camera &			operator=( Camera const & rhs );
 
-		// GETTER
+	// GETTER
 
-		virtual void		update( void );
-		virtual void		render( Core const & core );
+	// SETTER
 
-	private:
-		GLuint				_positionBuff;
-		Shader *			_shader;
+	// METHODES
+	virtual void		update( void );
+	virtual void		render( Core const & core );
+	Matrix4f			getViewProjection();
+
+private:
+	Camera( void );
+	Matrix4f			_projection;
+
 };
 
 #endif
+

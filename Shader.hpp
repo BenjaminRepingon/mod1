@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 16:25:56 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 14:46:10 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <iostream>
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
+# include "Matrix4f.hpp"
 
 class Shader
 {
@@ -28,12 +29,13 @@ public:
 	Shader &			operator=( Shader const & rhs );
 
 	// GETTER
+	GLuint				getProgramID( void ) const;
 
 	// SETTER
 
 	// FUNCTIONS
 	void				bind( void ) const;
-	void				updateUniforms();
+	void				updateUniform( std::string name, Matrix4f const & m );
 
 private:
 	Shader( void );

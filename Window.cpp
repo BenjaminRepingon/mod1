@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/20 16:44:48 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 14:14:37 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,10 +140,22 @@ bool		Window::initGL()
 		success = false;
 	}
 
+	glFrontFace( GL_CW );
+	glCullFace( GL_BACK );
+	glEnable( GL_CULL_FACE );
+	glEnable( GL_DEPTH_TEST );
+
+	glEnable( GL_DEPTH_CLAMP );
+
 	return success;
 }
 
 // GETTER
+float				Window::getAspect() const
+{
+	return ( (float)this->_width / (float)this->_height );
+}
+
 std::string			Window::getTitle() const
 {
 	return ( this->_title );

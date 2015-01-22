@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 16:43:50 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 13:27:29 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 17:11:23 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ private:
 	float				_m[4][4];
 
 };
+
+std::ostream &			operator<<( std::ostream & lhs, Matrix4f const & v );
 
 #endif
 

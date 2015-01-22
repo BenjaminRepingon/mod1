@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 15:24:49 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 10:16:16 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 17:14:21 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ bool				Vector3f::operator!=( Vector3f const & v ) const
 
 std::ostream &		operator<<( std::ostream & lhs, Vector3f const & v )
 {
-	return ( lhs << "Vector3f( x: " << v.getX() << ", y: " << v.getY() << ", z: " << v.getZ() << ")" << std::endl );
+	return ( lhs << "Vector3f( x: " << v.getX() << ", y: " << v.getY() << ", z: " << v.getZ() << " )" << std::endl );
 }
 
 // GETTER

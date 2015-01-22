@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 17:34:49 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 13:33:20 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 17:41:09 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ Transform::Transform() :
 	_pos( 0, 0, 0 ),
 	_rot( 0, 0, 0, 1 ),
 	_scale( 1, 1, 1 ),
+	_parent( 0 ),
 	_parentMatrix( Matrix4f().initIdentity() ),
 	_isInitialized( false )
 {
@@ -26,13 +27,14 @@ Transform::Transform( Vector3f const & pos, Quaternion4f const & rot, Vector3f c
 	_pos( pos ),
 	_rot( rot ),
 	_scale( scale ),
+	_parent( 0 ),
 	_parentMatrix( Matrix4f().initIdentity() ),
 	_isInitialized( false )
 {
 	return ;
 }
 
-Transform::Transform( Transform & src )
+Transform::Transform( Transform const & src )
 {
 	*this = src;
 }
@@ -42,12 +44,12 @@ Transform::~Transform( void )
 	return ;
 }
 
-Transform &	Transform::operator=( Transform & rhs )
+Transform &	Transform::operator=( Transform const & rhs )
 {
 	if ( this != &rhs )
 	{
 		this->_parent = & rhs.getParent();
-		this->_parentMatrix = rhs.getParentMatrix();
+		this->_parentMatrix = rhs._parentMatrix;
 		this->_pos = rhs.getPos();
 		this->_rot = rhs.getRot();
 		this->_scale = rhs.getScale();
@@ -73,6 +75,8 @@ void					Transform::update()
 		this->_oldScale = Vector3f( this->_scale ) + Vector3f( 1, 1, 1 );
 		this->_isInitialized = true;
 	}
+	if ( this->_parent != 0 && this->_parent->hasChanged() )
+		this->_parentMatrix = this->_parent->getTransformation();
 }
 
 bool					Transform::hasChanged() const
@@ -107,7 +111,7 @@ Quaternion4f			Transform::getLookAtRotation( Vector3f const & point, Vector3f co
 	return ( Quaternion4f( Matrix4f().initRotation( ( point - this->_pos ).normalized(), up ) ) );
 }
 
-Matrix4f				Transform::getTransformation()
+Matrix4f				Transform::getTransformation() const
 {
 	Matrix4f	translationMatrix;
 	Matrix4f	scaleMatrix;
@@ -117,16 +121,28 @@ Matrix4f				Transform::getTransformation()
 	return ( this->getParentMatrix() * translationMatrix * this->_rot.toRotationMatrix() * scaleMatrix );
 }
 
+Vector3f				Transform::getTransformedPos() const
+{
+	return ( Vector3f( this->getParentMatrix().transform( this->_pos ) ) );
+}
+
+Quaternion4f			Transform::getTransformedRot() const
+{
+	Quaternion4f	parentRot;
+
+	if ( this->_parent != 0 )
+		parentRot = this->_parent->getTransformedRot();
+	return ( parentRot * this->_rot );
+}
+
 // GETTER
 Transform &				Transform::getParent() const
 {
 	return ( * this->_parent );
 }
 
-Matrix4f				Transform::getParentMatrix()
+Matrix4f				Transform::getParentMatrix() const
 {
-	if ( this->_parent != 0 && this->_parent->hasChanged() )
-		this->_parentMatrix = this->_parent->getTransformation();
 	return ( this->_parentMatrix );
 }
 

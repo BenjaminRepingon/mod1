@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 16:43:50 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 13:27:15 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 17:12:08 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,9 @@ Matrix4f &			Matrix4f::initRotation( float x, float y, float z )
 	Matrix4f ry;
 	Matrix4f rz;
 
-	x = (float) x / 180.0 * M_PI;
-	y = (float) y / 180.0 * M_PI;
-	z = (float) z / 180.0 * M_PI;
+	x = ( (float)( x * M_PI / 180.0f ) );
+	y = ( (float)( y * M_PI / 180.0f ) );
+	z = ( (float)( z * M_PI / 180.0f ) );
 
 	rz.set( 0, 0, (float) cos( z ) );
 	rz.set( 0, 1, -(float) sin( z ) );
@@ -147,17 +147,6 @@ Matrix4f &			Matrix4f::initPerspective( float fov, float aspect, float zNear, fl
 	return ( *this );
 }
 
-float const *		Matrix4f::operator[]( int index ) const
-{
-	return ( &( this->_m[index][0] ) );
-}
-
-void				Matrix4f::set( int x, int y, float value )
-{
-	this->_m[x][y] = value;
-	return ;
-}
-
 Matrix4f			Matrix4f::operator*( Matrix4f const & r )
 {
 	Matrix4f res;
@@ -181,4 +170,28 @@ Vector3f			Matrix4f::transform( Vector3f const & r )
 					this->_m[1][0] * r.getX() + this->_m[1][1] * r.getY() + this->_m[1][2] * r.getZ() + this->_m[1][3],
 					this->_m[2][0] * r.getX() + this->_m[2][1] * r.getY() + this->_m[2][2] * r.getZ() + this->_m[2][3] );
 	return ( res );
+}
+
+std::ostream &		operator<<( std::ostream & lhs, Matrix4f const & m )
+{
+	for ( int i = 0; i < 4; i++ )
+	{
+		for ( int j = 0; j < 4; j++ )
+			lhs << m[i][j] << " ";
+		lhs << std::endl;
+	}
+	return ( lhs );
+}
+
+// GETTER
+float const *		Matrix4f::operator[]( int index ) const
+{
+	return ( &( this->_m[index][0] ) );
+}
+
+// SETTER
+void				Matrix4f::set( int x, int y, float value )
+{
+	this->_m[x][y] = value;
+	return ;
 }

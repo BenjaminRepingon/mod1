@@ -6,7 +6,7 @@
 #    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/20 11:29:00 by rbenjami          #+#    #+#              #
-#    Updated: 2015/01/22 10:30:30 by rbenjami         ###   ########.fr        #
+#    Updated: 2015/01/22 18:52:47 by rbenjami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,10 +23,15 @@ SRCS			=	$(NAME).cpp			\
 					Error.cpp			\
 					Triangle.cpp		\
 					Core.cpp			\
+					AObject.cpp			\
 					Vector3f.cpp		\
 					Matrix4f.cpp		\
 					Quaternion4f.cpp	\
-					Transform.cpp
+					Vertex.cpp			\
+					Map.cpp				\
+					Transform.cpp		\
+					Input.cpp			\
+					Camera.cpp
 
 OBJS			=	$(SRCS:.cpp=.o)
 

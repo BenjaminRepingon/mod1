@@ -3,20 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   Core.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 10:24:27 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/21 13:22:03 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/22 19:13:33 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Core.hpp"
+# include <typeinfo>
+# include "Core.hpp"
 
 /*
 ** CONSTRUCT & DESTRUCT
 */
 
-Core::Core( void ) : _win( NULL ), _started ( false )
+Core::Core( void ) :
+	_win( NULL ),
+	_started( false ),
+	_camera( 0 )
 {
 	return ;
 }
@@ -64,32 +68,51 @@ void			Core::start( void )
 	while ( this->_started )
 	{
 		glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-		glClear( GL_COLOR_BUFFER_BIT );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+		this->catchEvent();
+
+		if ( Input::getKeyDown( SDL_SCANCODE_ESCAPE ) )
+			this->_started = false;
+
 		this->updateAll();
-		this->_started = this->catchEvent();
 
 		this->renderAll();
+
 		SDL_GL_SwapWindow( this->_win->getSDLWindow() );
 		SDL_Delay( 10 );
 	}
 
 }
 
-bool			Core::catchEvent( void ) const
+bool			Core::catchEvent( void )
 {
 	SDL_Event	event;
-	bool		continue_event = true;
 
 	while ( SDL_PollEvent( &event ) != 0 )
 	{
-		if ( event.type == SDL_QUIT )
-			continue_event = false;
-	}
+		switch( event.type )
+		{
+			case SDL_QUIT:
+			this->_started = false;
+			break;
 
-	return ( continue_event );
+			case SDL_KEYDOWN:
+			Input::setKeyDown( event.key.keysym.scancode );
+			break;
+
+			case SDL_KEYUP:
+			Input::setKeyUp( event.key.keysym.scancode );
+			break;
+
+			default:
+			break;
+		}
+	}
+	return ( true );
 }
 
-void			Core::addObject( IObject * obj )
+void			Core::addObject( AObject * obj )
 {
 	this->_obj.push_back( obj );
 
@@ -98,7 +121,10 @@ void			Core::addObject( IObject * obj )
 
 void			Core::updateAll( void )
 {
-	for (std::vector<IObject *>::const_iterator it = this->_obj.begin(); it != this->_obj.end(); ++it )
+	if ( this->_camera != 0 )
+		this->_camera->update();
+
+	for ( std::vector<AObject *>::const_iterator it = this->_obj.begin(); it != this->_obj.end(); ++it )
 	{
 		((*it)->update());
 	}
@@ -108,9 +134,9 @@ void			Core::updateAll( void )
 
 void			Core::renderAll( void ) const
 {
-	for (std::vector<IObject *>::const_iterator it = this->_obj.begin(); it != this->_obj.end(); ++it )
+	for ( std::vector<AObject *>::const_iterator it = this->_obj.begin(); it != this->_obj.end(); ++it )
 	{
-		((*it)->render());
+		( (*it)->render( *this ) );
 	}
 
 	return ;
@@ -122,7 +148,7 @@ void			Core::renderAll( void ) const
 
 Core &			Core::operator=( Core const & rhs )
 {
-	this->_win = rhs.getWindow();
+	this->_win = & rhs.getWindow();
 
 	return ( *this );
 }
@@ -131,8 +157,18 @@ Core &			Core::operator=( Core const & rhs )
 ** GET & SET
 */
 
-Window *		Core::getWindow( void ) const
+Window &		Core::getWindow( void ) const
 {
-	return ( this->_win );
+	return ( * this->_win );
+}
+
+void			Core::setCamera( Camera * camera )
+{
+	this->_camera = camera;
+}
+
+Camera &		Core::getCamera( void ) const
+{
+	return ( * this->_camera );
 }
 

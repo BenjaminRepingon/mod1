@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/20 16:43:52 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 14:14:50 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ public:
 	Window &			operator=( Window const & rhs );
 
 	// GETTER
+	float				getAspect() const;
 	std::string			getTitle( void ) const;
 	size_t				getWidth( void ) const;
 	size_t				getHeight( void ) const;

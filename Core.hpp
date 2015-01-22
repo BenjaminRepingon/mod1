@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Core.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 10:17:54 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/21 11:55:55 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/22 18:52:36 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@
 # include <vector>
 # include "Window.hpp"
 # include "Error.hpp"
-# include "IObject.hpp"
+# include "AObject.hpp"
+# include "Matrix4f.hpp"
+# include "Camera.hpp"
+# include "Input.hpp"
 
 class Core
 {
@@ -30,17 +33,22 @@ class Core
 
 		Core &					operator=( Core const & rhs );
 
-		Window *				getWindow( void ) const;
+		Window &				getWindow( void ) const;
+		Camera &				getCamera( void ) const;
+
+		void					setCamera( Camera * camera );
+
 		void					createWindow( std::string title, size_t width, size_t height );
 		void					start( void );
-		void					addObject( IObject * obj );
+		void					addObject( AObject * obj );
 
 	private:
 		Window *				_win;
 		bool					_started;
-		std::vector<IObject *>	_obj;
+		std::vector<AObject *>	_obj;
+		Camera *				_camera;
 
-		bool					catchEvent( void ) const;
+		bool					catchEvent( void );
 		void					updateAll( void );
 		void					renderAll( void ) const;
 };
