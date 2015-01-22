@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 11:41:39 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/21 17:32:23 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 13:35:08 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ class IObject
 		virtual void		render( void ) const = 0;
 
 	protected:
-		float		_test;
+		Transform		_transform;
 
 };
 

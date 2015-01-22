@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 16:43:50 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 18:04:56 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 13:27:15 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,11 @@ Matrix4f &			Matrix4f::initScale( float x, float y, float z )
 	return ( *this );
 }
 
+Matrix4f &			Matrix4f::initScale( Vector3f const & v )
+{
+	return ( this->initScale( v.getX(), v.getY(), v.getZ() ) );
+}
+
 Matrix4f &			Matrix4f::initIdentity()
 {
 	return ( this->initScale( 1, 1, 1 ) );
@@ -106,6 +111,28 @@ Matrix4f &			Matrix4f::initRotation( float x, float y, float z )
 	ry.set( 2, 2, (float) cos( y ) );
 
 	return ( *this = rz * ry * rx );
+}
+
+Matrix4f &			Matrix4f::initRotation( Vector3f const & forward, Vector3f const & up )
+{
+	Vector3f	f = forward.normalized();
+	Vector3f	r = up.normalized().cross( f );
+	Vector3f	u = f.cross( r );
+	return ( this->initRotation( f, u, r ) );
+}
+
+Matrix4f &			Matrix4f::initRotation( Vector3f const & forward, Vector3f const & up, Vector3f const & right )
+{
+	this->_m[0][0] = right.getX();
+	this->_m[0][1] = right.getY();
+	this->_m[0][2] = right.getZ();
+	this->_m[1][0] = up.getX();
+	this->_m[1][1] = up.getY();
+	this->_m[1][2] = up.getZ();
+	this->_m[2][0] = forward.getX();
+	this->_m[2][1] = forward.getY();
+	this->_m[2][2] = forward.getZ();
+	return ( *this );
 }
 
 Matrix4f &			Matrix4f::initPerspective( float fov, float aspect, float zNear, float zFar )

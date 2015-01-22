@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 16:43:50 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 18:04:12 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 13:27:29 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ public:
 	Matrix4f &			initTranslation( float x, float y, float z );
 	Matrix4f &			initTranslation( Vector3f const & v );
 	Matrix4f &			initScale( float x, float y, float z );
+	Matrix4f &			initScale( Vector3f const & v );
 	Matrix4f &			initRotation( float x, float y, float z );
+	Matrix4f &			initRotation( Vector3f const & forward, Vector3f const & up, Vector3f const & right );
+	Matrix4f &			initRotation( Vector3f const & forward, Vector3f const & up );
 	Matrix4f &			initIdentity();
 	Matrix4f &			initPerspective( float fov, float aspect, float zNear, float zFar );
 	Matrix4f			operator*( Matrix4f const & r );

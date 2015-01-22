@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 15:24:49 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 16:42:17 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/22 10:16:16 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,10 @@ float				Vector3f::dot( Vector3f const & v ) const
 
 Vector3f			Vector3f::cross( Vector3f const & v ) const
 {
-	float	x_ = this->_y * v.getZ() - this->_z * v.getY();
-	float	y_ = this->_z * v.getX() - this->_x * v.getZ();
-	float	z_ = this->_x * v.getY() - this->_y * v.getX();
-	return ( Vector3f( x_, y_, z_ ) );
+	float	x = this->_y * v.getZ() - this->_z * v.getY();
+	float	y = this->_z * v.getX() - this->_x * v.getZ();
+	float	z = this->_x * v.getY() - this->_y * v.getX();
+	return ( Vector3f( x, y, z ) );
 }
 
 Vector3f			Vector3f::reflect( Vector3f const & normal ) const

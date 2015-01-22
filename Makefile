@@ -6,7 +6,7 @@
 #    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/20 11:29:00 by rbenjami          #+#    #+#              #
-#    Updated: 2015/01/21 17:42:38 by rbenjami         ###   ########.fr        #
+#    Updated: 2015/01/22 10:30:30 by rbenjami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,16 +16,16 @@ CFLAGS			=	-Wall -Werror -Wextra -ansi
 
 NAME			=	mod1
 
-SRCS			=	$(NAME).cpp		\
-					Window.cpp		\
-					Shader.cpp		\
-					Utils.cpp		\
-					Error.cpp		\
-					Triangle.cpp	\
-					Core.cpp		\
-					Vector3f.cpp	\
-					Matrix4f.cpp	\
-					Quaternion.cpp	\
+SRCS			=	$(NAME).cpp			\
+					Window.cpp			\
+					Shader.cpp			\
+					Utils.cpp			\
+					Error.cpp			\
+					Triangle.cpp		\
+					Core.cpp			\
+					Vector3f.cpp		\
+					Matrix4f.cpp		\
+					Quaternion4f.cpp	\
 					Transform.cpp
 
 OBJS			=	$(SRCS:.cpp=.o)
