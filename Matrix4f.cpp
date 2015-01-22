@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Matrix4f.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 16:43:50 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 18:04:56 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/21 19:12:39 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,9 @@ Matrix4f &			Matrix4f::initRotation( float x, float y, float z )
 	Matrix4f ry;
 	Matrix4f rz;
 
-	x = (float) x / 180.0 * M_PI;
-	y = (float) y / 180.0 * M_PI;
-	z = (float) z / 180.0 * M_PI;
+	x = ( (float) x / 180.0 ) * M_PI;
+	y = ( (float) y / 180.0 ) * M_PI;
+	z = ( (float) z / 180.0 ) * M_PI;
 
 	rz.set( 0, 0, (float) cos( z ) );
 	rz.set( 0, 1, -(float) sin( z ) );

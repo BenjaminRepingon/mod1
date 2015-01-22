@@ -1,40 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Triangle.hpp                                       :+:      :+:    :+:   */
+/*   Map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/01/21 12:12:13 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/21 18:53:49 by dsousa           ###   ########.fr       */
+/*   Created: 2015/01/22 10:21:07 by dsousa            #+#    #+#             */
+/*   Updated: 2015/01/22 13:25:39 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TRIANGLE_HPP
-# define TRIANGLE_HPP
+#ifndef MAP_HPP
+# define MAP_HPP
 # include <OpenGL/gl.h>
+# include <iostream>
+# include <vector>
 # include "IObject.hpp"
+# include "Vertex.hpp"
 # include "Shader.hpp"
 # include "Core.hpp"
 
-class Triangle : public IObject
+class Map : public IObject
 {
 	public:
-		Triangle( void );
-		Triangle( Triangle const & src );
-		~Triangle( void );
+		Map( void );
+		Map( std::string fileMap );
+		Map( Map const & src );
+		~Map( void );
 
-		Triangle &			operator=( Triangle const & rhs );
+		Map &					operator=( Map const & rhs );
 
-		// GETTER
-		Matrix4f			getTranform( void ) const;
-
-		virtual void		update( void );
-		virtual void		render( Core const & core ) const;
+		virtual void			update( void );
+		virtual void			render( Core const & core ) const;
 
 	private:
-		GLuint				_positionBuff;
-		Shader *			_shader;
+		void					loadMap( void );
+		std::string				_fileMap;
+		std::vector<Vertex>		_vertex;
+		// GLuint				_positionBuff;
+		// Shader *				_shader;
 };
 
 #endif

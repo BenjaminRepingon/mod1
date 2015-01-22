@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Shader.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 16:25:56 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/21 18:42:34 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ public:
 	Shader &			operator=( Shader const & rhs );
 
 	// GETTER
+	GLuint				getProgramID( void ) const;
 
 	// SETTER
 

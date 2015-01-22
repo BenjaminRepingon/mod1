@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
+#    By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/20 11:29:00 by rbenjami          #+#    #+#              #
-#    Updated: 2015/01/21 17:42:38 by rbenjami         ###   ########.fr        #
+#    Updated: 2015/01/22 12:17:18 by dsousa           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,8 @@ SRCS			=	$(NAME).cpp		\
 					Vector3f.cpp	\
 					Matrix4f.cpp	\
 					Quaternion.cpp	\
+					Vertex.cpp		\
+					Map.cpp			\
 					Transform.cpp
 
 OBJS			=	$(SRCS:.cpp=.o)

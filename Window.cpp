@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Window.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/20 16:44:48 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/21 19:18:46 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,13 @@ bool		Window::initGL()
 		std::cerr << "Error initializing OpenGL!" << std::endl;
 		success = false;
 	}
+
+	glFrontFace( GL_CW );
+	glCullFace( GL_BACK );
+	glEnable( GL_CULL_FACE );
+	glEnable( GL_DEPTH_TEST );
+
+	glEnable( GL_DEPTH_CLAMP );
 
 	return success;
 }

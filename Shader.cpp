@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Shader.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 16:25:32 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/21 18:55:25 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,4 +138,10 @@ GLuint		Shader::createProgram( GLuint vertexShader, GLuint fragmentShader )
 	glDetachShader( program, vertexShader );
 	glDetachShader( program, fragmentShader );
 	return ( program );
+}
+
+// GETTER
+GLuint		Shader::getProgramID( void ) const
+{
+	return ( this->_program );
 }

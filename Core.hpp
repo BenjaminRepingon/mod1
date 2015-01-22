@@ -6,7 +6,7 @@
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 10:17:54 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/21 11:55:55 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/21 18:58:42 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include "Window.hpp"
 # include "Error.hpp"
 # include "IObject.hpp"
+# include "Matrix4f.hpp"
 
 class Core
 {
@@ -31,6 +32,7 @@ class Core
 		Core &					operator=( Core const & rhs );
 
 		Window *				getWindow( void ) const;
+		Matrix4f				getView( void ) const;
 		void					createWindow( std::string title, size_t width, size_t height );
 		void					start( void );
 		void					addObject( IObject * obj );
@@ -39,6 +41,7 @@ class Core
 		Window *				_win;
 		bool					_started;
 		std::vector<IObject *>	_obj;
+		Matrix4f				_view;
 
 		bool					catchEvent( void ) const;
 		void					updateAll( void );

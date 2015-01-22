@@ -6,7 +6,7 @@
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 10:24:27 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/21 13:22:03 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/21 19:17:00 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,21 @@ void			Core::start( void )
 	if ( !this->_win )
 		throw Error( "Please create a window");
 
+	this->_view.initPerspective( ( 70.0 / 180 ) * M_PI, (double) this->_win->getWidth() / this->_win->getHeight(), 1.0, 100.0);
+
 	glViewport( 0, 0, (GLsizei) this->_win->getWidth(), (GLsizei) this->_win->getHeight() );
 	this->_started = true;
 
 	while ( this->_started )
 	{
 		glClearColor( 0.0f, 0.0f, 0.0f, 0.0f );
-		glClear( GL_COLOR_BUFFER_BIT );
+		glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
 		this->updateAll();
 		this->_started = this->catchEvent();
 
 		this->renderAll();
+
 		SDL_GL_SwapWindow( this->_win->getSDLWindow() );
 		SDL_Delay( 10 );
 	}
@@ -110,7 +114,7 @@ void			Core::renderAll( void ) const
 {
 	for (std::vector<IObject *>::const_iterator it = this->_obj.begin(); it != this->_obj.end(); ++it )
 	{
-		((*it)->render());
+		((*it)->render( *this ));
 	}
 
 	return ;
@@ -134,5 +138,11 @@ Core &			Core::operator=( Core const & rhs )
 Window *		Core::getWindow( void ) const
 {
 	return ( this->_win );
+}
+
+
+Matrix4f		Core::getView( void ) const
+{
+	return ( this->_view );
 }
 
