@@ -6,7 +6,7 @@
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:21:07 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 13:25:39 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/22 16:37:56 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ class Map : public IObject
 
 	private:
 		void					loadMap( void );
+		void					saveVertex( std::string file );
+
 		std::string				_fileMap;
 		std::vector<Vertex>		_vertex;
 		// GLuint				_positionBuff;
