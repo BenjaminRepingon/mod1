@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 13:56:30 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 12:27:09 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 16:28:08 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ private:
 	float				_zNear;
 	float				_zFar;
 	bool				_mouseLocked;
+	float				_sensitivity;
 
 };
 

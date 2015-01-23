@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 12:12:29 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 16:37:39 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,4 +181,9 @@ size_t				Window::getHeight() const
 SDL_Window *		Window::getSDLWindow( void ) const
 {
 	return ( this->_gWindow );
+}
+
+Vector2f			Window::getCenter( void ) const
+{
+	return ( Vector2f( (float)this->_width / 2.0f, (float)this->_height / 2.0f ) );
 }

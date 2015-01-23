@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 13:56:30 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 12:21:19 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 16:59:33 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ Camera::Camera( float fov, float aspect, float zNear, float zFar ) :
 	_aspect( aspect ),
 	_zNear( zNear ),
 	_zFar( zFar ),
-	_mouseLocked( false )
+	_mouseLocked( false ),
+	_sensitivity( 0.2f )
 {
 	return ;
 }
@@ -56,18 +57,45 @@ void		Camera::reshape( int width, int height )
 
 void		Camera::update( void )
 {
+	if ( this->_mouseLocked )
+	{
+		Vector2f	mousePos( Input::getMousePosition() );
+		Vector2f	center( Input::getCore()->getWindow().getCenter() );
+		Vector2f	deltaPos = mousePos - center;
+
+		bool rotY = deltaPos.getX() != 0;
+		bool rotX = deltaPos.getY() != 0;
+
+		if ( rotY )
+			this->getTransform()->rotate( Vector3f( 0, 1, 0 ), - deltaPos.getX() * this->_sensitivity  * ( M_PI / 180.0f ) );
+		if ( rotX )
+			this->getTransform()->rotate( this->getTransform()->getRot().getRight(), - deltaPos.getY() * this->_sensitivity * ( M_PI / 180.0f ) );
+		if ( rotY || rotX )
+			Input::setMousePosition( Input::getCore()->getWindow().getCenter() );
+	}
+	if ( Input::getButtonDown( SDL_BUTTON_LEFT ) )
+	{
+		this->_mouseLocked = true;
+		SDL_ShowCursor( 0 );
+		Input::setMousePosition( Input::getCore()->getWindow().getCenter() );
+	}
+	if ( Input::getKeyDown( SDL_SCANCODE_ESCAPE ) )
+	{
+		this->_mouseLocked = false;
+		SDL_ShowCursor( 1);
+	}
+	if ( Input::getKeyDown( SDL_SCANCODE_D ) )
+		this->getTransform()->translate( 0.1f, 0, 0 );
+	if ( Input::getKeyDown( SDL_SCANCODE_A ) )
+		this->getTransform()->translate( -0.1f, 0, 0 );
+	if ( Input::getKeyDown( SDL_SCANCODE_W ) )
+		this->getTransform()->translate( 0, 0, -0.1f );
+	if ( Input::getKeyDown( SDL_SCANCODE_S ) )
+		this->getTransform()->translate( 0, 0, 0.1f );
 	if ( Input::getKeyDown( SDL_SCANCODE_SPACE ) )
 		this->getTransform()->translate( 0, 0.1f, 0 );
 	if ( Input::getKeyDown( SDL_SCANCODE_LSHIFT ) )
 		this->getTransform()->translate( 0, -0.1f, 0 );
-	if ( Input::getKeyDown( SDL_SCANCODE_UP ) )
-		this->getTransform()->translate( 0, 0, -0.1f );
-	if ( Input::getKeyDown( SDL_SCANCODE_DOWN ) )
-		this->getTransform()->translate( 0, 0, 0.1f );
-	if ( Input::getKeyDown( SDL_SCANCODE_LEFT ) )
-		this->getTransform()->rotate( Vector3f( 0, 1 ,0 ), 1.0f * M_PI / 180.0f );
-	if ( Input::getKeyDown( SDL_SCANCODE_RIGHT ) )
-		this->getTransform()->rotate( Vector3f( 0, 1 ,0 ), -1.0f * M_PI / 180.0f );
 	return ;
 }
 

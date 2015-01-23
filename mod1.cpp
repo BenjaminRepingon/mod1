@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 11:25:53 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 12:25:40 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 16:26:21 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 int		main( void )
 {
 	Core		test = Core();
+	Input::setCore( &test );
 
 	test.createWindow( "Mod1" , 850, 550 );
 

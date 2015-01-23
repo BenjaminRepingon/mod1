@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 12:12:13 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 17:50:26 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 17:46:51 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ class Triangle : public AObject
 		virtual void		render( Core const & core );
 
 	private:
-		GLuint				_positionBuff;
+		GLuint				_vbo;
+		GLuint				_ibo;
 		Shader *			_shader;
 };
 

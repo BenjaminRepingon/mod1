@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 15:24:49 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/21 16:39:53 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 15:13:45 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define VECTOR3F
 # include <iostream>
 # include <math.h>
+
+class Quaternion4f;
 
 class Vector3f
 {
@@ -41,6 +43,8 @@ public:
 	float				dot( Vector3f const & v ) const;
 	Vector3f			cross( Vector3f const & v ) const;
 	Vector3f			reflect( Vector3f const & normal ) const;
+	Vector3f			rotate( float angle, Vector3f const & axis ) const;
+	Vector3f			rotate( Quaternion4f const & rotation ) const;
 	Vector3f			operator+( Vector3f const & v ) const;
 	Vector3f			operator-( Vector3f const & v ) const;
 	Vector3f			operator*( float f ) const;

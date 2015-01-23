@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 10:24:27 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/23 12:19:20 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 16:46:54 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,12 @@ void			Core::start( void )
 
 		this->catchEvent();
 
-		if ( Input::getKeyDown( SDL_SCANCODE_ESCAPE ) )
-			this->_started = false;
-
 		this->updateAll();
 
 		this->renderAll();
 
 		SDL_GL_SwapWindow( this->_win->getSDLWindow() );
-		SDL_Delay( 10 );
+		SDL_Delay( 20 );
 	}
 
 }
@@ -94,15 +91,27 @@ bool			Core::catchEvent( void )
 		{
 			case SDL_QUIT:
 			this->_started = false;
-			break;
+			break ;
 
 			case SDL_KEYDOWN:
-			Input::setKeyDown( event.key.keysym.scancode );
-			break;
+			Input::setKeyState( event.key.keysym.scancode, true );
+			break ;
 
 			case SDL_KEYUP:
-			Input::setKeyUp( event.key.keysym.scancode );
-			break;
+			Input::setKeyState( event.key.keysym.scancode, false );
+			break ;
+
+			case SDL_MOUSEBUTTONDOWN:
+			Input::setButtonState( (int)event.button.button, true );
+			break ;
+
+			case SDL_MOUSEBUTTONUP:
+			Input::setButtonState( (int)event.button.button, false );
+			break ;
+
+			case SDL_MOUSEMOTION:
+			Input::setMousePosition( event.motion.x, event.motion.y );
+			break ;
 
 			case SDL_WINDOWEVENT:
 			if ( event.window.event == SDL_WINDOWEVENT_RESIZED )
@@ -111,10 +120,10 @@ bool			Core::catchEvent( void )
 				if ( this->_camera != 0 )
 					this->_camera->reshape( event.window.data1, event.window.data2 );
 			}
-			break;
+			break ;
 
 			default:
-			break;
+			break ;
 		}
 	}
 	return ( true );

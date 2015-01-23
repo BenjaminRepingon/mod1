@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:00:41 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 13:21:01 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 15:05:18 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,13 @@ public:
 	Quaternion4f			normalized( void ) const ;
 	Quaternion4f			conjugate( void ) const ;
 	float					dot( Quaternion4f r ) const;
-	Matrix4f				toRotationMatrix() const;
+	Matrix4f				toRotationMatrix( void ) const;
+	Vector3f				getForward( void ) const;
+	Vector3f				getBack( void ) const;
+	Vector3f				getUp( void ) const;
+	Vector3f				getDown( void ) const;
+	Vector3f				getRight( void ) const;
+	Vector3f				getLeft( void ) const;
 	Quaternion4f			operator+( Quaternion4f const & r ) const;
 	Quaternion4f			operator-( Quaternion4f const & r ) const;
 	Quaternion4f			operator*( float r ) const;

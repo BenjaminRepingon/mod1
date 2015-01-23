@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:00:41 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 13:20:29 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 15:04:39 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,36 @@ Matrix4f			Quaternion4f::toRotationMatrix() const
 							2.0f * ( this->_x * this->_y - this->_w * this->_z ),
 							2.0f * ( this->_x * this->_z + this->_w * this->_y ) );
 	return ( Matrix4f().initRotation( forward, up, right ) );
+}
+
+Vector3f			Quaternion4f::getForward() const
+{
+	return ( Vector3f( 0, 0, 1 ).rotate( *this ) );
+}
+
+Vector3f			Quaternion4f::getBack() const
+{
+	return ( Vector3f( 0, 0, -1 ).rotate( *this ) );
+}
+
+Vector3f			Quaternion4f::getUp() const
+{
+	return ( Vector3f( 0, 1, 0 ).rotate( *this ) );
+}
+
+Vector3f			Quaternion4f::getDown() const
+{
+	return ( Vector3f( 0, -1, 0 ).rotate( *this ) );
+}
+
+Vector3f			Quaternion4f::getRight() const
+{
+	return ( Vector3f( 1, 0, 0 ).rotate( *this ) );
+}
+
+Vector3f			Quaternion4f::getLeft() const
+{
+	return ( Vector3f( -1, 0, 0 ).rotate( *this ) );
 }
 
 Quaternion4f		Quaternion4f::operator+( Quaternion4f const & r ) const

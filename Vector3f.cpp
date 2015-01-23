@@ -6,11 +6,12 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 15:24:49 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 17:14:21 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 15:39:33 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "Vector3f.hpp"
+# include "Quaternion4f.hpp"
 
 Vector3f::Vector3f() :
 	_x( 0 ),
@@ -80,6 +81,21 @@ Vector3f			Vector3f::cross( Vector3f const & v ) const
 Vector3f			Vector3f::reflect( Vector3f const & normal ) const
 {
 	return ( *this - ( normal * ( this->dot( normal ) * 2 ) ) );
+}
+
+Vector3f			Vector3f::rotate( float angle, Vector3f const & axis ) const
+{
+	const float		sin = sinf( -angle );
+	const float		cos = cosf( -angle );
+
+	return ( this->cross( axis * sin ) + ( *this * cos ) + axis * this->dot( axis * (1 - cos) ) );
+}
+
+Vector3f			Vector3f::rotate( Quaternion4f const & rotation ) const
+{
+	Quaternion4f	conjugateQ = rotation.conjugate();
+	Quaternion4f	w = rotation * (*this) * conjugateQ;
+	return ( Vector3f( w.getX(), w.getY(), w.getZ() ) );
 }
 
 Vector3f			Vector3f::operator+( Vector3f const & v ) const

@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 12:12:34 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 16:37:37 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <SDL2/SDL.h>
 # include <OpenGL/gl.h>
 # include <OpenGL/glu.h>
+# include "Vector2f.hpp"
 
 class Window
 {
@@ -33,6 +34,7 @@ public:
 	size_t				getWidth( void ) const;
 	size_t				getHeight( void ) const;
 	SDL_Window *		getSDLWindow( void ) const;
+	Vector2f			getCenter( void ) const;
 
 	// SETTER
 
