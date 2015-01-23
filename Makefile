@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
+#    By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/20 11:29:00 by rbenjami          #+#    #+#              #
-#    Updated: 2015/01/22 18:52:47 by rbenjami         ###   ########.fr        #
+#    Updated: 2015/01/23 16:14:17 by dsousa           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,7 @@ SRCS			=	$(NAME).cpp			\
 					Map.cpp				\
 					Transform.cpp		\
 					Input.cpp			\
+					WaterParticular.cpp	\
 					Camera.cpp
 
 OBJS			=	$(SRCS:.cpp=.o)
