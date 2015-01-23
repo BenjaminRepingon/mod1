@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 14:14:50 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 12:12:34 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ public:
 	// FUNCTIONS
 	bool				init( void );
 	bool				initGL( void );
+	void				reshape( int width, int height );
 
 private:
 	std::string			_title;

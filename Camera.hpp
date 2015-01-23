@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 13:56:30 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 17:51:18 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 12:27:09 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 class Camera : public AObject
 {
 public:
-	Camera( Matrix4f const & projection );
+	Camera( float fov, float aspect, float zNear, float zFar );
 	Camera( Camera const & src );
 	~Camera( void );
 
@@ -33,10 +33,16 @@ public:
 	virtual void		update( void );
 	virtual void		render( Core const & core );
 	Matrix4f			getViewProjection();
+	void				reshape( int width, int height );
 
 private:
 	Camera( void );
 	Matrix4f			_projection;
+	float				_fov;
+	float				_aspect;
+	float				_zNear;
+	float				_zFar;
+	bool				_mouseLocked;
 
 };
 

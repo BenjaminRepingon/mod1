@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 16:43:50 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 17:12:08 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 11:49:54 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ Matrix4f &			Matrix4f::operator=( Matrix4f const & rhs )
 
 Matrix4f &			Matrix4f::initTranslation( float x, float y, float z )
 {
-	this->_m[0][3] = x;
-	this->_m[1][3] = y;
-	this->_m[2][3] = z;
+	this->_m[3][0] = x;
+	this->_m[3][1] = y;
+	this->_m[3][2] = z;
 	return ( *this );
 }
 
@@ -57,20 +57,20 @@ Matrix4f &			Matrix4f::initTranslation( Vector3f const & v )
 Matrix4f &			Matrix4f::initScale( float x, float y, float z )
 {
 	this->_m[0][0] = x;
-	this->_m[0][1] = 0;
-	this->_m[0][2] = 0;
-	this->_m[0][3] = 0;
 	this->_m[1][0] = 0;
-	this->_m[1][1] = y;
-	this->_m[1][2] = 0;
-	this->_m[1][3] = 0;
 	this->_m[2][0] = 0;
-	this->_m[2][1] = 0;
-	this->_m[2][2] = z;
-	this->_m[2][3] = 0;
 	this->_m[3][0] = 0;
+	this->_m[0][1] = 0;
+	this->_m[1][1] = y;
+	this->_m[2][1] = 0;
 	this->_m[3][1] = 0;
+	this->_m[0][2] = 0;
+	this->_m[1][2] = 0;
+	this->_m[2][2] = z;
 	this->_m[3][2] = 0;
+	this->_m[0][3] = 0;
+	this->_m[1][3] = 0;
+	this->_m[2][3] = 0;
 	this->_m[3][3] = 1;
 	return ( *this );
 }
@@ -96,18 +96,18 @@ Matrix4f &			Matrix4f::initRotation( float x, float y, float z )
 	z = ( (float)( z * M_PI / 180.0f ) );
 
 	rz.set( 0, 0, (float) cos( z ) );
-	rz.set( 0, 1, -(float) sin( z ) );
-	rz.set( 1, 0, (float) sin( z ) );
+	rz.set( 1, 0, -(float) sin( z ) );
+	rz.set( 0, 1, (float) sin( z ) );
 	rz.set( 1, 1, (float) cos( z ) );
 
 	rx.set( 1, 1, (float) cos( x ) );
-	rx.set( 1, 2, -(float) sin( x ) );
-	rx.set( 2, 1, (float) sin( x ) );
+	rx.set( 2, 1, -(float) sin( x ) );
+	rx.set( 1, 2, (float) sin( x ) );
 	rx.set( 2, 2, (float) cos( x ) );
 
 	ry.set( 0, 0, (float) cos( y ) );
-	ry.set( 0, 2, -(float) sin( y ) );
-	ry.set( 2, 0, (float) sin( y ) );
+	ry.set( 2, 0, -(float) sin( y ) );
+	ry.set( 0, 2, (float) sin( y ) );
 	ry.set( 2, 2, (float) cos( y ) );
 
 	return ( *this = rz * ry * rx );
@@ -124,26 +124,39 @@ Matrix4f &			Matrix4f::initRotation( Vector3f const & forward, Vector3f const & 
 Matrix4f &			Matrix4f::initRotation( Vector3f const & forward, Vector3f const & up, Vector3f const & right )
 {
 	this->_m[0][0] = right.getX();
-	this->_m[0][1] = right.getY();
-	this->_m[0][2] = right.getZ();
-	this->_m[1][0] = up.getX();
+	this->_m[1][0] = right.getY();
+	this->_m[2][0] = right.getZ();
+	this->_m[0][1] = up.getX();
 	this->_m[1][1] = up.getY();
-	this->_m[1][2] = up.getZ();
-	this->_m[2][0] = forward.getX();
-	this->_m[2][1] = forward.getY();
+	this->_m[2][1] = up.getZ();
+	this->_m[0][2] = forward.getX();
+	this->_m[1][2] = forward.getY();
 	this->_m[2][2] = forward.getZ();
 	return ( *this );
 }
 
 Matrix4f &			Matrix4f::initPerspective( float fov, float aspect, float zNear, float zFar )
 {
-	float	tanHalfFOV = (float) tan( fov / 2 );
+	float	tanHalfFOV = tanf( fov / 2 );
 	float	zRange = zNear - zFar;
 
-	this->_m[0][0] = 1.0f / ( tanHalfFOV * aspect );
-	this->_m[1][1] = 1.0f / tanHalfFOV;
-	this->_m[2][2] = ( -zNear - zFar ) / zRange;
-	this->_m[2][3] = 2 * zFar * zNear / zRange;
+	this->_m[0][0] = 1 / ( tanHalfFOV * aspect );
+	this->_m[1][0] = 0;
+	this->_m[2][0] = 0;
+	this->_m[3][0] = 0;
+	this->_m[0][1] = 0;
+	this->_m[1][1] = 1 / tanHalfFOV;
+	this->_m[2][1] = 0;
+	this->_m[3][1] = 0;
+	this->_m[0][2] = 0;
+	this->_m[1][2] = 0;
+	this->_m[2][2] = (-zNear - zFar) / zRange ;
+	this->_m[3][2] = 2 * zFar * zNear / zRange;
+	this->_m[0][3] = 0;
+	this->_m[1][3] = 0;
+	this->_m[2][3] = 1;
+	this->_m[3][3] = 0;
+
 	return ( *this );
 }
 
@@ -155,10 +168,10 @@ Matrix4f			Matrix4f::operator*( Matrix4f const & r )
 	{
 		for ( int j = 0; j < 4; j++ )
 		{
-			res.set( i, j,	this->_m[i][0] * r[0][j] +
-							this->_m[i][1] * r[1][j] +
-							this->_m[i][2] * r[2][j] +
-							this->_m[i][3] * r[3][j] );
+			res.set( i, j,	this->_m[0][i] * r[j][0] +
+							this->_m[1][i] * r[j][1] +
+							this->_m[2][i] * r[j][2] +
+							this->_m[3][i] * r[j][3] );
 		}
 	}
 	return ( res );

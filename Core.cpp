@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 10:24:27 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 19:13:33 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 12:19:20 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,6 @@ void			Core::start( void )
 	if ( !this->_win )
 		throw Error( "Please create a window");
 
-	glViewport( 0, 0, (GLsizei) this->_win->getWidth(), (GLsizei) this->_win->getHeight() );
 	this->_started = true;
 
 	while ( this->_started )
@@ -103,6 +102,15 @@ bool			Core::catchEvent( void )
 
 			case SDL_KEYUP:
 			Input::setKeyUp( event.key.keysym.scancode );
+			break;
+
+			case SDL_WINDOWEVENT:
+			if ( event.window.event == SDL_WINDOWEVENT_RESIZED )
+			{
+				this->_win->reshape( event.window.data1, event.window.data2 );
+				if ( this->_camera != 0 )
+					this->_camera->reshape( event.window.data1, event.window.data2 );
+			}
 			break;
 
 			default:

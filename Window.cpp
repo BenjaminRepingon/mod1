@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 14:14:37 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/23 12:12:29 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,13 @@ Window &	Window::operator=( Window const & rhs )
 	return ( *this );
 }
 
+void		Window::reshape( int width, int height )
+{
+	this->_width = width;
+	this->_height = height;
+	glViewport( 0, 0, (GLsizei) width, (GLsizei) height );
+}
+
 // FUNCTIONS
 bool		Window::init()
 {
@@ -67,7 +74,7 @@ bool		Window::init()
 		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
 
 		//Create window
-		this->_gWindow = SDL_CreateWindow( this->_title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->_width, this->_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN );
+		this->_gWindow = SDL_CreateWindow( this->_title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->_width, this->_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 		if ( this->_gWindow == NULL )
 		{
 			std::cerr << "Window could not be created! SDL Error: " << SDL_GetError() << std::endl;
