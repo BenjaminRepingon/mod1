@@ -94,9 +94,15 @@ void				Mesh::render( Core const & core, Shader const & shader, Transform const 
 	glEnableVertexAttribArray( 1 );
 	glEnableVertexAttribArray( 2 );
 
+# ifdef __APPLE__
 	glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 9 * 4, 0 );
 	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_TRUE, 9 * 4, (void *)12 );
 	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 9 * 4, (void *)24 );
+# else
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 9 * 4, 0 );
+	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_TRUE, 9 * 4, (void *)12 );
+	glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 9 * 4, (void *)24 );
+# endif
 
 	Matrix4f	worldMatrix = transform.getTransformation();
 	Matrix4f	projectedMatrix = core.getCamera().getViewProjection() * worldMatrix;

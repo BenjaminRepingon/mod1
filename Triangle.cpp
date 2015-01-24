@@ -78,9 +78,15 @@ void				Triangle::render( Core const & core )
 	glEnableVertexAttribArray( 1 );
 	glEnableVertexAttribArray( 2 );
 
+# ifdef __APPLE__
 	glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 9 * 4, 0 );
 	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_TRUE, 9 * 4, (void *)12 );
 	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 9 * 4, (void *)24 );
+# else
+	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 9 * 4, 0 );
+	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_TRUE, 9 * 4, (void *)12 );
+	glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 9 * 4, (void *)24 );
+# endif
 
 	Matrix4f	worldMatrix = getTransform()->getTransformation();
 	Matrix4f	projectedMatrix = core.getCamera().getViewProjection() * worldMatrix;
