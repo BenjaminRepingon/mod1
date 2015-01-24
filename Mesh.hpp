@@ -12,7 +12,6 @@
 
 #ifndef MESH
 # define MESH
-# include <OpenGL/gl.h>
 # include <string>
 # include <vector>
 # include "Vertex.hpp"

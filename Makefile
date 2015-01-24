@@ -38,9 +38,11 @@ SRCS			=	$(NAME).cpp			\
 
 OBJS			=	$(SRCS:.cpp=.o)
 
-INCLUDES		=	~/Library/Frameworks/SDL2.framework/Headers/
-
-LIBS			=	-F ~/Library/Frameworks -framework SDL2 -framework OpenGL
+ifeq ($(shell uname), Linux)
+	LIBS		=	-lglut -lGL -lGLU -lSDL2 -I/usr/include/GLES2/
+else
+	LIBS		=	-F ~/Library/Frameworks -framework SDL2 -framework OpenGL
+endif
 
 all:			$(NAME)
 

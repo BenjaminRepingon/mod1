@@ -14,8 +14,13 @@
 # define CORE_HPP
 # include <iostream>
 # include <SDL2/SDL.h>
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
+# ifdef __APPLE__
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glu.h>
+# else
+#  include <GL/gl.h>
+#  include <GL/glu.h>
+# endif
 # include <vector>
 # include "Window.hpp"
 # include "Error.hpp"

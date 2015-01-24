@@ -12,7 +12,6 @@
 
 #ifndef MAP_HPP
 # define MAP_HPP
-# include <OpenGL/gl.h>
 # include <iostream>
 # include <vector>
 # include "AObject.hpp"

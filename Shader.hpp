@@ -15,8 +15,13 @@
 # include <string>
 # include <fstream>
 # include <iostream>
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
+# ifdef __APPLE__
+#  include <OpenGL/gl.h>
+#  include <OpenGL/glu.h>
+# else
+#  include <GLES2/gl2.h>
+#  include <GL/glu.h>
+# endif
 # include "Matrix4f.hpp"
 
 class Shader

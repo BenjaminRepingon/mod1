@@ -12,7 +12,6 @@
 
 #ifndef TRIANGLE_HPP
 # define TRIANGLE_HPP
-# include <OpenGL/gl.h>
 # include "AObject.hpp"
 # include "Shader.hpp"
 # include "Core.hpp"

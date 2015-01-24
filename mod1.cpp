@@ -34,28 +34,28 @@ int		main( void )
 	cam->getTransform()->translate( 0, 0, 10 );
 	test.setCamera( cam );
 
-	std::vector<Vertex> vertices;
+	//std::vector<Vertex> vertices;
 
-	Vector3f normal( 0, 1, 0 );
+	//Vector3f normal( 0, 1, 0 );
 
-	vertices.push_back( Vertex( Vector3f( -1.0f, -1.0f, -1.0f ), Vector3f( 1.0f, 0.0f, 0.0f ), normal ) );
-	vertices.push_back( Vertex( Vector3f( -1.0f, -1.0f, 1.0f ), Vector3f( 0.0f, 1.0f, 0.0f ), normal ) );
-	vertices.push_back( Vertex( Vector3f( 1.0f, -1.0f, -1.0f ), Vector3f( 0.0f, 0.0f, 1.0f ), normal ) );
-	vertices.push_back( Vertex( Vector3f( 1.0f, -1.0f, 1.0f ), Vector3f( 1.0f, 0.0f, 1.0f ), normal ) );
+	//vertices.push_back( Vertex( Vector3f( -1.0f, -1.0f, -1.0f ), Vector3f( 1.0f, 0.0f, 0.0f ), normal ) );
+	//vertices.push_back( Vertex( Vector3f( -1.0f, -1.0f, 1.0f ), Vector3f( 0.0f, 1.0f, 0.0f ), normal ) );
+	//vertices.push_back( Vertex( Vector3f( 1.0f, -1.0f, -1.0f ), Vector3f( 0.0f, 0.0f, 1.0f ), normal ) );
+	//vertices.push_back( Vertex( Vector3f( 1.0f, -1.0f, 1.0f ), Vector3f( 1.0f, 0.0f, 1.0f ), normal ) );
 
-	BasicObject *	testMesh = new BasicObject();
-	Mesh			mesh( vertices );
-	mesh.addFace( 0, 1, 2 );
-	mesh.addFace( 2, 1, 3 );
-	mesh.generateBuffer();
+	//BasicObject *	testMesh = new BasicObject();
+	//Mesh			mesh( vertices );
+	//mesh.addFace( 0, 1, 2 );
+	//mesh.addFace( 2, 1, 3 );
+	//mesh.generateBuffer();
 
-	testMesh->setMesh( & mesh );
-	test.addObject( testMesh );
+	//testMesh->setMesh( & mesh );
+	//test.addObject( testMesh );
 
-	// Triangle *	t = new Triangle();
+	Triangle *	t = new Triangle();
 	// t->getTransform()->rotate( Vector3f( 0, 0, 0 ), 40.0f * M_PI / 180.0f );
 	// t->getTransform()->translate( 1, 1, 0 );
-	// test.addObject( t );
+	test.addObject( t );
 
 	// test.addObject( new Map( "demo2.mod1" ) );
 
