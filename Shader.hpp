@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 14:46:10 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/24 16:57:48 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ public:
 
 	// FUNCTIONS
 	void				bind( void ) const;
-	void				updateUniform( std::string name, Matrix4f const & m );
+	void				updateUniform( std::string name, Matrix4f const & m ) const;
 
 private:
 	Shader( void );

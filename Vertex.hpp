@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Vertex.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:38:37 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 18:53:29 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/24 17:38:47 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VERTEX_HPP
 # define VERTEX_HPP
+# include <vector>
 # include "Vector3f.hpp"
 
 class Vertex
@@ -41,6 +42,11 @@ class Vertex
 		void			setPos( Vector3f & data );
 		void			setColor( Vector3f & data );
 		void			setNormal( Vector3f & data );
+
+		/*
+		** FUNCTIONS
+		*/
+		static float *	createBuffer( std::vector<Vertex> const & vertices );
 
 
 	private:

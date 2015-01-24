@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 13:56:30 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 16:28:08 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/24 15:36:58 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ public:
 	virtual void		render( Core const & core );
 	Matrix4f			getViewProjection();
 	void				reshape( int width, int height );
+	void				move( Vector3f const & direction, float amount );
 
 private:
 	Camera( void );

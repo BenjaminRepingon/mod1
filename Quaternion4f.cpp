@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:00:41 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 15:04:39 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/24 19:20:15 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,12 +144,12 @@ Matrix4f			Quaternion4f::toRotationMatrix() const
 
 Vector3f			Quaternion4f::getForward() const
 {
-	return ( Vector3f( 0, 0, 1 ).rotate( *this ) );
+	return ( Vector3f( 0, 0, -1 ).rotate( *this ) );
 }
 
 Vector3f			Quaternion4f::getBack() const
 {
-	return ( Vector3f( 0, 0, -1 ).rotate( *this ) );
+	return ( Vector3f( 0, 0, 1 ).rotate( *this ) );
 }
 
 Vector3f			Quaternion4f::getUp() const

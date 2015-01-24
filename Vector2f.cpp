@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Vector2f.cpp                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/10 11:45:04 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/10 14:47:16 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/24 19:02:16 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ Vector2f &		Vector2f::operator+( Vector2f & rhs ) const
 
 Vector2f &		Vector2f::operator-( Vector2f & rhs ) const
 {
-	float		x = rhs.getX() - this->_x;
-	float		y = rhs.getY() - this->_y;
+	float		x = this->_x - rhs.getX();
+	float		y = this->_y - rhs.getY();
 	Vector2f	*tmp = new Vector2f( x, y );
 
 	return ( *tmp );

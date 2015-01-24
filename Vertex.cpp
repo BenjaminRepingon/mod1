@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Vertex.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:38:30 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 18:56:00 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/24 18:22:39 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,18 @@ Vertex::Vertex( void )
 	return ;
 }
 
-Vertex::Vertex( Vector3f const & pos, Vector3f const & color, Vector3f const & normal ) : _pos( pos ), _color( color ), _normal( normal )
+Vertex::Vertex( Vector3f const & pos, Vector3f const & color, Vector3f const & normal ) :
+	_pos( pos ),
+	_color( color ),
+	_normal( normal )
 {
 	return ;
 }
 
-Vertex::Vertex( float x, float y, float z ) : _pos( Vector3f(x, y, z) ), _color( ), _normal( )
+Vertex::Vertex( float x, float y, float z ) :
+	_pos( x, y, z ),
+	_color( 1, 1, 1 ),
+	_normal( 0, 1, 0 )
 {
 	return ;
 }
@@ -37,6 +43,31 @@ Vertex::Vertex( Vertex const & src )
 Vertex::~Vertex( void )
 {
 	return ;
+}
+
+/*
+** FUNCTIONS
+*/
+float *			Vertex::createBuffer( std::vector<Vertex> const & vertices )
+{
+	float *		res = new float[vertices.size() * sizeof( Vertex )];
+	size_t		index = 0;
+
+	std::vector<Vertex>::const_iterator it;
+
+	for ( it = vertices.begin(); it != vertices.end(); it++ )
+	{
+		res[index++] = it->getPos().getX();
+		res[index++] = it->getPos().getY();
+		res[index++] = it->getPos().getZ();
+		res[index++] = it->getColor().getX();
+		res[index++] = it->getColor().getY();
+		res[index++] = it->getColor().getZ();
+		res[index++] = it->getNormal().getX();
+		res[index++] = it->getNormal().getY();
+		res[index++] = it->getNormal().getZ();
+	}
+	return ( res );
 }
 
 /*

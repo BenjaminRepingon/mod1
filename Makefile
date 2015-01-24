@@ -6,7 +6,7 @@
 #    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/20 11:29:00 by rbenjami          #+#    #+#              #
-#    Updated: 2015/01/23 16:40:07 by rbenjami         ###   ########.fr        #
+#    Updated: 2015/01/24 16:51:25 by rbenjami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,8 +22,10 @@ SRCS			=	$(NAME).cpp			\
 					Utils.cpp			\
 					Error.cpp			\
 					Triangle.cpp		\
+					Mesh.cpp			\
 					Core.cpp			\
 					AObject.cpp			\
+					BasicObject.cpp		\
 					Vector2f.cpp		\
 					Vector3f.cpp		\
 					Matrix4f.cpp		\

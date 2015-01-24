@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 17:14:01 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/24 16:57:41 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void		Shader::bind() const
 	glUseProgram( this->_program );
 }
 
-void		Shader::updateUniform( std::string name, Matrix4f const & m )
+void		Shader::updateUniform( std::string name, Matrix4f const & m ) const
 {
 	glUniformMatrix4fv( glGetUniformLocation( this->_program, name.c_str() ), 1, GL_FALSE, &( m[0][0] ) );
 	return ;

@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 13:56:30 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 16:59:33 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/24 19:19:56 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,9 @@ void		Camera::update( void )
 		bool rotX = deltaPos.getY() != 0;
 
 		if ( rotY )
-			this->getTransform()->rotate( Vector3f( 0, 1, 0 ), - deltaPos.getX() * this->_sensitivity  * ( M_PI / 180.0f ) );
+			this->getTransform()->rotate( Vector3f( 0, 1, 0 ), ( ( deltaPos.getX() * this->_sensitivity ) * M_PI ) / 180.0f );
 		if ( rotX )
-			this->getTransform()->rotate( this->getTransform()->getRot().getRight(), - deltaPos.getY() * this->_sensitivity * ( M_PI / 180.0f ) );
+			this->getTransform()->rotate( this->getTransform()->getRot().getRight(), ( ( deltaPos.getY() * this->_sensitivity ) *  M_PI ) / 180.0f );
 		if ( rotY || rotX )
 			Input::setMousePosition( Input::getCore()->getWindow().getCenter() );
 	}
@@ -85,18 +85,23 @@ void		Camera::update( void )
 		SDL_ShowCursor( 1);
 	}
 	if ( Input::getKeyDown( SDL_SCANCODE_D ) )
-		this->getTransform()->translate( 0.1f, 0, 0 );
+		this->move( this->getTransform()->getRot().getRight(), 0.1f );
 	if ( Input::getKeyDown( SDL_SCANCODE_A ) )
-		this->getTransform()->translate( -0.1f, 0, 0 );
+		this->move( this->getTransform()->getRot().getLeft(), 0.1f );
 	if ( Input::getKeyDown( SDL_SCANCODE_W ) )
-		this->getTransform()->translate( 0, 0, -0.1f );
+		this->move( this->getTransform()->getRot().getForward(), 0.1f );
 	if ( Input::getKeyDown( SDL_SCANCODE_S ) )
-		this->getTransform()->translate( 0, 0, 0.1f );
+		this->move( this->getTransform()->getRot().getBack(), 0.1f );
 	if ( Input::getKeyDown( SDL_SCANCODE_SPACE ) )
-		this->getTransform()->translate( 0, 0.1f, 0 );
+		this->move( this->getTransform()->getRot().getUp(), 0.1f );
 	if ( Input::getKeyDown( SDL_SCANCODE_LSHIFT ) )
-		this->getTransform()->translate( 0, -0.1f, 0 );
+		this->move( this->getTransform()->getRot().getDown(), 0.1f );
 	return ;
+}
+
+void		Camera::move( Vector3f const & direction, float amount )
+{
+	this->getTransform()->translate( direction * amount );
 }
 
 void		Camera::render( Core const & core )
