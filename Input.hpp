@@ -14,7 +14,7 @@
 # define INPUT
 # include <string>
 # include <SDL2/SDL.h>
-# include "Vector2f.hpp"
+# include "glm/glm.hpp"
 # include "Core.hpp"
 # define NUM_SCANCODES 256
 # define NUM_MOUSE_BUTTONS 5
@@ -26,7 +26,7 @@ public:
 	static void			setKeyState( int scancode, bool state );
 	static void			setButtonState( int button, bool state );
 	static void			setMousePosition( int x, int y );
-	static void			setMousePosition( Vector2f const & pos );
+	static void			setMousePosition( glm::vec2 const & pos );
 	static void			setCore( Core * core );
 
 	// GETTER
@@ -36,7 +36,7 @@ public:
 	static bool			getButtonUp( int button );
 	static int			getMouseX( void );
 	static int			getMouseY( void );
-	static Vector2f		getMousePosition( void );
+	static glm::vec2		getMousePosition( void );
 	static Core *		getCore( void );
 
 private:

@@ -16,6 +16,7 @@ BasicObject::BasicObject() :
 	_mesh( 0 ),
 	_shader( new Shader("Basic") )
 {
+	this->_matrix = glm::mat4( 1 );
 	return ;
 }
 
@@ -46,7 +47,7 @@ void			BasicObject::update( void )
 void			BasicObject::render( Core const & core )
 {
 	if ( this->_mesh )
-		this->_mesh->render( core, * this->_shader, * getTransform() );
+		this->_mesh->render( core, * this->_shader, * getMatrix() );
 }
 
 // SETTER

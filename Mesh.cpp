@@ -83,7 +83,7 @@ void				Mesh::generateBuffer( void )
 	this->_isGenerated = true;
 }
 
-void				Mesh::render( Core const & core, Shader const & shader, Transform const & transform ) const throw()
+void				Mesh::render( Core const & core, Shader const & shader, glm::mat4 const & mat ) const throw()
 {
 	if ( ! this->_isGenerated )
 		throw ( Error( "Mesh not generated !, can't render it" ) );
@@ -104,8 +104,8 @@ void				Mesh::render( Core const & core, Shader const & shader, Transform const 
 	glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 9 * 4, (void *)24 );
 # endif
 
-	Matrix4f	worldMatrix = transform.getTransformation();
-	Matrix4f	projectedMatrix = core.getCamera().getViewProjection() * worldMatrix;
+	glm::mat4	worldMatrix = mat;
+	glm::mat4	projectedMatrix = core.getCamera().getViewProjection() * worldMatrix;
 
 	shader.updateUniform( "T_Model", worldMatrix );
 	shader.updateUniform( "T_MVP", projectedMatrix );

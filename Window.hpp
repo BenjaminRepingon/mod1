@@ -21,7 +21,7 @@
 #  include <GL/gl.h>
 #  include <GL/glu.h>
 # endif
-# include "Vector2f.hpp"
+# include "glm/glm.hpp"
 
 class Window
 {
@@ -39,7 +39,7 @@ public:
 	size_t				getWidth( void ) const;
 	size_t				getHeight( void ) const;
 	SDL_Window *		getSDLWindow( void ) const;
-	Vector2f			getCenter( void ) const;
+	glm::vec2			getCenter( void ) const;
 
 	// SETTER
 

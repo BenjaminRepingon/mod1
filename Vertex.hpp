@@ -13,14 +13,14 @@
 #ifndef VERTEX_HPP
 # define VERTEX_HPP
 # include <vector>
-# include "Vector3f.hpp"
+# include "glm/glm.hpp"
 
 class Vertex
 {
 	public:
 		Vertex( void );
 		Vertex( Vertex const & src );
-		Vertex( Vector3f const & pos, Vector3f const & color, Vector3f const & normal );
+		Vertex( glm::vec3 const & pos, glm::vec3 const & color, glm::vec3 const & normal );
 		Vertex( float x, float y, float z );
 		~Vertex( void );
 
@@ -32,16 +32,16 @@ class Vertex
 		/*
 		** GET
 		*/
-		Vector3f		getPos( void ) const;
-		Vector3f		getColor( void ) const;
-		Vector3f		getNormal( void ) const;
+		glm::vec3		getPos( void ) const;
+		glm::vec3		getColor( void ) const;
+		glm::vec3		getNormal( void ) const;
 
 		/*
 		** SET
 		*/
-		void			setPos( Vector3f & data );
-		void			setColor( Vector3f & data );
-		void			setNormal( Vector3f & data );
+		void			setPos( glm::vec3 & data );
+		void			setColor( glm::vec3 & data );
+		void			setNormal( glm::vec3 & data );
 
 		/*
 		** FUNCTIONS
@@ -50,9 +50,9 @@ class Vertex
 
 
 	private:
-		Vector3f		_pos;
-		Vector3f		_color;
-		Vector3f		_normal;
+		glm::vec3		_pos;
+		glm::vec3		_color;
+		glm::vec3		_normal;
 
 };
 

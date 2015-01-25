@@ -22,7 +22,8 @@
 #  include <GLES2/gl2.h>
 #  include <GL/glu.h>
 # endif
-# include "Matrix4f.hpp"
+# include "glm/glm.hpp"
+# include "glm/gtc/type_ptr.hpp"
 
 class Shader
 {
@@ -40,7 +41,7 @@ public:
 
 	// FUNCTIONS
 	void				bind( void ) const;
-	void				updateUniform( std::string name, Matrix4f const & m ) const;
+	void				updateUniform( std::string name, glm::mat4 const & m ) const;
 
 private:
 	Shader( void );

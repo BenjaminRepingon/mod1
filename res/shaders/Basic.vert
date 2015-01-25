@@ -2,20 +2,20 @@
 
 attribute vec3 position;
 attribute vec3 color;
-attribute vec3 normal;
+//attribute vec3 normal;
 
 varying vec4 color0;
-varying vec3 normal0;
-varying vec3 worldPos0;
+//varying vec3 normal0;
+//varying vec3 worldPos0;
 
 uniform mat4 T_model;
 
-uniform mat4 T_MVP;
+uniform mat4 T_Projection;
 
 void main()
 {
-	gl_Position = T_MVP * vec4(position, 1.0);
+	gl_Position = T_Projection * T_model * vec4(position, 1.0);
 	color0 = vec4( color, 1.0 );
-	normal0 = (T_model * vec4(normal, 0.0)).xyz;
-	worldPos0 = (T_model * vec4(position, 1.0)).xyz;
+//	normal0 = (T_model * vec4(normal, 0.0)).xyz;
+//	worldPos0 = (T_model * vec4(position, 1.0)).xyz;
 }

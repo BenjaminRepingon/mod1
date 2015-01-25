@@ -13,7 +13,7 @@
 #ifndef IOBJECT_HPP
 # define IOBJECT_HPP
 # include <iostream>
-# include "Transform.hpp"
+# include "glm/glm.hpp"
 
 class Core;
 
@@ -23,10 +23,10 @@ class AObject
 		virtual void		update( void ) = 0;
 		virtual void		render( Core const & core ) = 0;
 
-		Transform *			getTransform( void );
+		glm::mat4 *			getMatrix( void );
 
 	protected:
-		Transform			_transform;
+		glm::mat4			_matrix;
 
 };
 

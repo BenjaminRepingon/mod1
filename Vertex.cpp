@@ -18,7 +18,7 @@ Vertex::Vertex( void )
 	return ;
 }
 
-Vertex::Vertex( Vector3f const & pos, Vector3f const & color, Vector3f const & normal ) :
+Vertex::Vertex( glm::vec3 const & pos, glm::vec3 const & color, glm::vec3 const & normal ) :
 	_pos( pos ),
 	_color( color ),
 	_normal( normal )
@@ -57,15 +57,15 @@ float *			Vertex::createBuffer( std::vector<Vertex> const & vertices )
 
 	for ( it = vertices.begin(); it != vertices.end(); it++ )
 	{
-		res[index++] = it->getPos().getX();
-		res[index++] = it->getPos().getY();
-		res[index++] = it->getPos().getZ();
-		res[index++] = it->getColor().getX();
-		res[index++] = it->getColor().getY();
-		res[index++] = it->getColor().getZ();
-		res[index++] = it->getNormal().getX();
-		res[index++] = it->getNormal().getY();
-		res[index++] = it->getNormal().getZ();
+		res[index++] = it->getPos().x;
+		res[index++] = it->getPos().y;
+		res[index++] = it->getPos().z;
+		res[index++] = it->getColor().x;
+		res[index++] = it->getColor().y;
+		res[index++] = it->getColor().z;
+		res[index++] = it->getNormal().x;
+		res[index++] = it->getNormal().y;
+		res[index++] = it->getNormal().z;
 	}
 	return ( res );
 }
@@ -85,17 +85,17 @@ Vertex &		Vertex::operator=( Vertex const & lhs )
 /*
 ** GET
 */
-Vector3f		Vertex::getPos( void ) const
+glm::vec3		Vertex::getPos( void ) const
 {
 	return ( this->_pos );
 }
 
-Vector3f		Vertex::getColor( void ) const
+glm::vec3		Vertex::getColor( void ) const
 {
 	return ( this->_color );
 }
 
-Vector3f		Vertex::getNormal( void ) const
+glm::vec3		Vertex::getNormal( void ) const
 {
 	return ( this->_normal );
 }
@@ -103,19 +103,19 @@ Vector3f		Vertex::getNormal( void ) const
 /*
 ** SET
 */
-void			Vertex::setPos( Vector3f & data )
+void			Vertex::setPos( glm::vec3 & data )
 {
 	this->_pos = data;
 	return ;
 }
 
-void			Vertex::setColor( Vector3f & data )
+void			Vertex::setColor( glm::vec3 & data )
 {
 	this->_color = data;
 	return ;
 }
 
-void			Vertex::setNormal( Vector3f & data )
+void			Vertex::setNormal( glm::vec3 & data )
 {
 	this->_normal = data;
 	return ;

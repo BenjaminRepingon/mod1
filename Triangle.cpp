@@ -12,16 +12,18 @@
 
 #include "Triangle.hpp"
 
-Triangle::Triangle( void ) : _shader( new Shader("Basic") )
+Triangle::Triangle( void ) : _shader( new Shader("Basic2") )
 {
+	this->_matrix = glm::mat4( 1 );
+
 	const float		vertexBuffer[] = {
-		-0.5f, -0.5f, 0.0f,
+		-0.5f, -0.5f, -1.0f,
 		1.0f, 0.0, 0.0f,
 		0.0f, 1.0, 0.0f,
-		0.0f, 0.5f, 0.0f,
+		0.0f, 0.5f, -1.0f,
 		0.0, 1.0f, 0.0f,
 		0.0f, 1.0, 0.0f,
-		0.5f, -0.5f, 0.0f,
+		0.5f, -0.5f, -1.0f,
 		0.0, 0.0f, 1.0f,
 		0.0f, 1.0, 0.0f,
 	};
@@ -71,7 +73,6 @@ void				Triangle::update( void )
 
 void				Triangle::render( Core const & core )
 {
-	(void)core;
 	this->_shader->bind();
 	glBindBuffer( GL_ARRAY_BUFFER, this->_vbo );
 	glEnableVertexAttribArray( 0 );
@@ -88,11 +89,11 @@ void				Triangle::render( Core const & core )
 	glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 9 * 4, (void *)24 );
 # endif
 
-	Matrix4f	worldMatrix = getTransform()->getTransformation();
-	Matrix4f	projectedMatrix = core.getCamera().getViewProjection() * worldMatrix;
+	glm::mat4	worldMatrix = glm::mat4( 1 );
+	glm::mat4	projectionMatrix = core.getCamera().getViewProjection();
 
 	this->_shader->updateUniform( "T_Model", worldMatrix );
-	this->_shader->updateUniform( "T_MVP", projectedMatrix );
+	this->_shader->updateUniform( "T_Projection", projectionMatrix );
 
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, this->_ibo );
 	glDrawElements( GL_TRIANGLES, 3 /* nb vertex */, GL_UNSIGNED_INT, 0 );

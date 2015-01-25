@@ -66,9 +66,9 @@ void			Input::setMousePosition( int x, int y )
 	Input::_mousePosY = y;
 }
 
-void			Input::setMousePosition( Vector2f const & pos )
+void			Input::setMousePosition( glm::vec2 const & pos )
 {
-	SDL_WarpMouseInWindow( Input::_core->getWindow().getSDLWindow(), (int)pos.getX(), (int)pos.getY() );
+	SDL_WarpMouseInWindow( Input::_core->getWindow().getSDLWindow(), (int)pos.x, (int)pos.y );
 }
 
 // GETTER
@@ -115,8 +115,8 @@ int				Input::getMouseY( void )
 	return ( Input::_mousePosY );
 }
 
-Vector2f		Input::getMousePosition( void )
+glm::vec2		Input::getMousePosition( void )
 {
-	return ( Vector2f( Input::_mousePosX, Input::_mousePosY ) );
+	return ( glm::vec2( Input::_mousePosX, Input::_mousePosY ) );
 }
 

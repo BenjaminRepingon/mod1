@@ -19,13 +19,16 @@ Camera::Camera()
 }
 
 Camera::Camera( float fov, float aspect, float zNear, float zFar ) :
-	_projection( Matrix4f().initPerspective( fov, aspect, zNear, zFar ) ),
+	_projection( glm::perspective( fov, aspect, zNear, zFar ) ),
 	_fov( fov ),
 	_aspect( aspect ),
 	_zNear( zNear ),
 	_zFar( zFar ),
 	_mouseLocked( false ),
-	_sensitivity( 0.2f )
+	_sensitivity( 0.2f ),
+	_forward( 0, 0, 1 ),
+	_up( 0, 1, 0 ),
+	_right( 1, 0, 0 )
 {
 	return ;
 }
@@ -52,24 +55,27 @@ Camera &	Camera::operator=( Camera const & rhs )
 void		Camera::reshape( int width, int height )
 {
 	this->_aspect = (float)width / (float)height;
-	this->_projection = Matrix4f().initPerspective( this->_fov, this->_aspect, this->_zNear, this->_zFar );
+	this->_projection = glm::perspective( this->_fov, this->_aspect, this->_zNear, this->_zFar );
 }
 
 void		Camera::update( void )
 {
 	if ( this->_mouseLocked )
 	{
-		Vector2f	mousePos( Input::getMousePosition() );
-		Vector2f	center( Input::getCore()->getWindow().getCenter() );
-		Vector2f	deltaPos = mousePos - center;
+		glm::vec2	mousePos( Input::getMousePosition() );
+		glm::vec2	center( Input::getCore()->getWindow().getCenter() );
+		glm::vec2	deltaPos = mousePos - center;
 
-		bool rotY = deltaPos.getX() != 0;
-		bool rotX = deltaPos.getY() != 0;
+		bool rotY = deltaPos.x != 0;
+		bool rotX = deltaPos.y != 0;
 
 		if ( rotY )
-			this->getTransform()->rotate( Vector3f( 0, 1, 0 ), ( ( deltaPos.getX() * this->_sensitivity ) * M_PI ) / 180.0f );
+		{
+			this->_matrix = glm::rotate( this->_matrix, (float)( ( deltaPos.x * this->_sensitivity ) * M_PI ) / 180.0f, glm::vec3( 0, 1, 0 ) );
+			// this->_forward = glm::rotate( this->_forward, (float)( ( deltaPos.x * this->_sensitivity ) * M_PI ) / 180.0f, glm::vec3( 0, 1, 0 ) );
+		}
 		if ( rotX )
-			this->getTransform()->rotate( this->getTransform()->getRot().getRight(), ( ( deltaPos.getY() * this->_sensitivity ) *  M_PI ) / 180.0f );
+			this->_matrix = glm::rotate( this->_matrix, /*this->getTransform()->getRot().getRight()*/(float)( ( deltaPos.y * this->_sensitivity ) *  M_PI ) / 180.0f, glm::vec3( 1, 0, 0 ) );
 		if ( rotY || rotX )
 			Input::setMousePosition( Input::getCore()->getWindow().getCenter() );
 	}
@@ -85,23 +91,25 @@ void		Camera::update( void )
 		SDL_ShowCursor( 1);
 	}
 	if ( Input::getKeyDown( SDL_SCANCODE_D ) )
-		this->move( this->getTransform()->getRot().getRight(), 0.1f );
+		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0.1f, 0, 0 ) );
 	if ( Input::getKeyDown( SDL_SCANCODE_A ) )
-		this->move( this->getTransform()->getRot().getLeft(), 0.1f );
+		this->_matrix = glm::translate( this->_matrix, glm::vec3( -0.1f, 0, 0 ) );
 	if ( Input::getKeyDown( SDL_SCANCODE_W ) )
-		this->move( this->getTransform()->getRot().getForward(), 0.1f );
+		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0, 0, 0.1 ) );
 	if ( Input::getKeyDown( SDL_SCANCODE_S ) )
-		this->move( this->getTransform()->getRot().getBack(), 0.1f );
+		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0, 0, -0.1 ) );
 	if ( Input::getKeyDown( SDL_SCANCODE_SPACE ) )
-		this->move( this->getTransform()->getRot().getUp(), 0.1f );
+		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0, 0.1f, 0 ) );
 	if ( Input::getKeyDown( SDL_SCANCODE_LSHIFT ) )
-		this->move( this->getTransform()->getRot().getDown(), 0.1f );
+		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0, -0.1f, 0 ) );
 	return ;
 }
 
 void		Camera::move( Vector3f const & direction, float amount )
 {
-	this->getTransform()->translate( direction * amount );
+	(void)direction;
+	(void)amount;
+	// this->getTransform()->translate( direction * amount );
 }
 
 void		Camera::render( Core const & core )
@@ -110,11 +118,12 @@ void		Camera::render( Core const & core )
 	return ;
 }
 
-Matrix4f	Camera::getViewProjection()
+glm::mat4	Camera::getViewProjection()
 {
-	Matrix4f	cameraRotation = this->getTransform()->getTransformedRot().conjugate().toRotationMatrix();
-	Matrix4f	cameraTranslation;
+	// Matrix4f	cameraRotation = this->getTransform()->getTransformedRot().conjugate().toRotationMatrix();
+	// Matrix4f	cameraTranslation;
 
-	cameraTranslation.initTranslation( this->getTransform()->getTransformedPos() * -1 );
-	return ( this->_projection * cameraRotation * cameraTranslation );
+	// cameraTranslation.initTranslation( this->getTransform()->getTransformedPos() * -1 );
+	// return ( this->_projection * cameraRotation * cameraTranslation );
+	return ( this->_projection * this->_matrix );
 }

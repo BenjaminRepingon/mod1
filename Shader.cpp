@@ -45,9 +45,9 @@ void		Shader::bind() const
 	glUseProgram( this->_program );
 }
 
-void		Shader::updateUniform( std::string name, Matrix4f const & m ) const
+void		Shader::updateUniform( std::string name, glm::mat4 const & m ) const
 {
-	glUniformMatrix4fv( glGetUniformLocation( this->_program, name.c_str() ), 1, GL_FALSE, &( m[0][0] ) );
+	glUniformMatrix4fv( glGetUniformLocation( this->_program, name.c_str() ), 1, GL_FALSE, value_ptr( m ) );
 	return ;
 }
 

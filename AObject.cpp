@@ -12,7 +12,7 @@
 
 # include "AObject.hpp"
 
-Transform *		AObject::getTransform()
+glm::mat4 *		AObject::getMatrix()
 {
-	return ( & this->_transform );
+	return ( & this->_matrix );
 }

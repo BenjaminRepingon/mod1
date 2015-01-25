@@ -14,7 +14,8 @@
 # define CAMERA
 # include <string>
 # include "AObject.hpp"
-# include "Matrix4f.hpp"
+# include "glm/glm.hpp"
+# include "glm/gtx/transform.hpp"
 
 class Camera : public AObject
 {
@@ -32,19 +33,22 @@ public:
 	// METHODES
 	virtual void		update( void );
 	virtual void		render( Core const & core );
-	Matrix4f			getViewProjection();
+	glm::mat4			getViewProjection();
 	void				reshape( int width, int height );
 	void				move( Vector3f const & direction, float amount );
 
 private:
 	Camera( void );
-	Matrix4f			_projection;
+	glm::mat4			_projection;
 	float				_fov;
 	float				_aspect;
 	float				_zNear;
 	float				_zFar;
 	bool				_mouseLocked;
 	float				_sensitivity;
+	glm::vec3			_forward;
+	glm::vec3			_up;
+	glm::vec3			_right;
 
 };
 

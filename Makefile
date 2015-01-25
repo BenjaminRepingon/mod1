@@ -27,14 +27,14 @@ SRCS			=	$(NAME).cpp			\
 					AObject.cpp			\
 					BasicObject.cpp		\
 					Vector2f.cpp		\
-					Vector3f.cpp		\
-					Matrix4f.cpp		\
-					Quaternion4f.cpp	\
 					Vertex.cpp			\
 					Map.cpp				\
-					Transform.cpp		\
 					Input.cpp			\
 					Camera.cpp
+					# Vector3f.cpp		\
+					# Matrix4f.cpp		\
+					# Quaternion4f.cpp	\
+					# Transform.cpp		\
 
 OBJS			=	$(SRCS:.cpp=.o)
 

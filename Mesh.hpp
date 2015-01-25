@@ -18,7 +18,6 @@
 # include "Error.hpp"
 # include "Core.hpp"
 # include "Shader.hpp"
-# include "Transform.hpp"
 
 class Mesh
 {
@@ -42,7 +41,7 @@ public:
 	void					addVertex( Vertex const & v ) throw();
 	void					addFace( int a, int b, int c ) throw();
 	void					generateBuffer( void );
-	void					render( Core const & core, Shader const & shader, Transform const & transform ) const throw();
+	void					render( Core const & core, Shader const & shader, glm::mat4 const & mat ) const throw();
 
 private:
 	GLuint					_vbo;

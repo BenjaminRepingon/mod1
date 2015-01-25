@@ -73,6 +73,9 @@ bool		Window::init()
 		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
 		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
 
+		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
+		SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 24 );
+		
 		//Create window
 		this->_gWindow = SDL_CreateWindow( this->_title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->_width, this->_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 		if ( this->_gWindow == NULL )
@@ -109,52 +112,23 @@ bool		Window::init()
 
 bool		Window::initGL()
 {
-	bool		success = true;
 	GLenum		error = GL_NO_ERROR;
 
-	//Initialize Projection Matrix
-	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
-
-	//Check for error
-	error = glGetError();
-	if( error != GL_NO_ERROR )
-	{
-		std::cerr << "Error initializing OpenGL!" << std::endl;
-		success = false;
-	}
-
-	//Initialize Modelview Matrix
-	glMatrixMode( GL_MODELVIEW );
-	glLoadIdentity();
-
-	//Check for error
-	error = glGetError();
-	if( error != GL_NO_ERROR )
-	{
-		std::cerr << "Error initializing OpenGL!" << std::endl;
-		success = false;
-	}
-
-	//Initialize clear color
 	glClearColor( 0.f, 0.f, 0.f, 1.f );
 
 	//Check for error
 	error = glGetError();
 	if( error != GL_NO_ERROR )
-	{
 		std::cerr << "Error initializing OpenGL!" << std::endl;
-		success = false;
-	}
 
-	glFrontFace( GL_CW );
-	glCullFace( GL_BACK );
-	glEnable( GL_CULL_FACE );
-	glEnable( GL_DEPTH_TEST );
+	// glFrontFace( GL_CW );
+	// glCullFace( GL_FRONT );
+	// glEnable( GL_CULL_FACE );
+	// glEnable( GL_DEPTH_TEST );
 
-	glEnable( GL_DEPTH_CLAMP );
+	// glEnable( GL_DEPTH_CLAMP );
 
-	return success;
+	return ( true );
 }
 
 // GETTER
@@ -183,7 +157,7 @@ SDL_Window *		Window::getSDLWindow( void ) const
 	return ( this->_gWindow );
 }
 
-Vector2f			Window::getCenter( void ) const
+glm::vec2			Window::getCenter( void ) const
 {
-	return ( Vector2f( (float)this->_width / 2.0f, (float)this->_height / 2.0f ) );
+	return ( glm::vec2( (float)this->_width / 2.0f, (float)this->_height / 2.0f ) );
 }
