@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Shader.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 17:14:01 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/24 14:13:00 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,13 @@ void		Shader::bind() const
 void		Shader::updateUniform( std::string name, Matrix4f const & m )
 {
 	glUniformMatrix4fv( glGetUniformLocation( this->_program, name.c_str() ), 1, GL_FALSE, &( m[0][0] ) );
+	return ;
+}
+
+
+void		Shader::updateUniform( std::string name, float f )
+{
+	glUniform1f( glGetUniformLocation( this->_program, name.c_str() ), f );
 	return ;
 }
 

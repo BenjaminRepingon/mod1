@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Shader.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 14:46:10 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/24 14:13:13 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ public:
 	// FUNCTIONS
 	void				bind( void ) const;
 	void				updateUniform( std::string name, Matrix4f const & m );
+	void				updateUniform( std::string name, float f );
+
 
 private:
 	Shader( void );
