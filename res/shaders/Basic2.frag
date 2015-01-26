@@ -1,12 +1,16 @@
 // Version du GLSL
 
-#version 410
+#version 150
 
 
 // Entrée
 
 in vec3 color;
 
+
+// Sortie
+
+out vec4 out_Color;
 
 
 // Fonction main
@@ -15,5 +19,5 @@ void main()
 {
     // Couleur finale du pixel
 
-    gl_FragColor = vec4( color, 1.0 );
+    out_Color = vec4(color, 1.0);
 }

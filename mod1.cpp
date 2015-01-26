@@ -5,64 +5,73 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/01/20 11:25:53 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/26 14:08:51 by rbenjami         ###   ########.fr       */
+/*   Created: 2015/01/26 15:36:36 by rbenjami          #+#    #+#             */
+/*   Updated: 2015/01/26 15:38:43 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <algorithm>
-# include <vector>
-# include "Window.hpp"
-# include "Map.hpp"
-# include "Shader.hpp"
-# include "Core.hpp"
-# include "Triangle.hpp"
-# include "BasicObject.hpp"
-# include "Vertex.hpp"
+#include <GLFW/glfw3.h>
+#include <stdlib.h>
+#include <stdio.h>
 
-int		main( void )
+static void error_callback(int error, const char* description)
 {
-	Core		test = Core();
-	Input::setCore( &test );
+	(void)error;
+	fputs(description, stderr);
+}
+static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+	(void)scancode;
+	(void)mods;
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+	glfwSetWindowShouldClose(window, GL_TRUE);
+}
+int main(void)
+{
+	GLFWwindow* window;
+	glfwSetErrorCallback(error_callback);
 
-	test.createWindow( "Mod1" , 850, 550 );
+	if (!glfwInit())
+		exit(EXIT_FAILURE);
 
-	//START INIT
+	window = glfwCreateWindow(640, 480, "Simple example", NULL, NULL);
 
-std::cout << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
-	Camera *	cam = new Camera( 70.0f, test.getWindow().getAspect(), 0.1f, 1000.0f );
-	// cam->getMatrix()->translate( 0, 0, 10 );
-	test.setCamera( cam );
+	if (!window)
+	{
+		glfwTerminate();
+		exit(EXIT_FAILURE);
+	}
 
-	// std::vector<Vertex> vertices;
+	glfwMakeContextCurrent(window);
+	glfwSwapInterval(1);
+	glfwSetKeyCallback(window, key_callback);
 
-	// glm::vec3 normal( 0, 1, 0 );
-
-	// vertices.push_back( Vertex( glm::vec3( -1.0f, -1.0f, -1.0f ), glm::vec3( 1.0f, 0.0f, 0.0f ), normal ) );
-	// vertices.push_back( Vertex( glm::vec3( -1.0f, -1.0f, 1.0f ), glm::vec3( 0.0f, 1.0f, 0.0f ), normal ) );
-	// vertices.push_back( Vertex( glm::vec3( 1.0f, -1.0f, -1.0f ), glm::vec3( 0.0f, 0.0f, 1.0f ), normal ) );
-	// vertices.push_back( Vertex( glm::vec3( 1.0f, -1.0f, 1.0f ), glm::vec3( 1.0f, 0.0f, 1.0f ), normal ) );
-
-	// BasicObject *	testMesh = new BasicObject();
-	// Mesh			mesh( vertices );
-	// mesh.addFace( 0, 1, 2 );
-	// mesh.addFace( 2, 1, 3 );
-	// mesh.generateBuffer();
-
-	// testMesh->setMesh( & mesh );
-	// test.addObject( testMesh );
-
-	Triangle *	t = new Triangle();
-	// t->getTransform()->rotate( glm::vec3( 0, 0, 0 ), 40.0f * M_PI / 180.0f );
-	// t->getTransform()->translate( 1, 1, 0 );
-	test.addObject( t );
-
-	// test.addObject( new Map( "demo2.mod1" ) );
-
-
-	//END INIT
-
-	test.start( );
-
-	return ( 0 );
+	while (!glfwWindowShouldClose(window))
+	{
+		float ratio;
+		int width, height;
+		glfwGetFramebufferSize(window, &width, &height);
+		ratio = width / (float) height;
+		glViewport(0, 0, width, height);
+		glClear(GL_COLOR_BUFFER_BIT);
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		glOrtho(-ratio, ratio, -1.f, 1.f, 1.f, -1.f);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+		glRotatef((float) glfwGetTime() * 50.f, 0.f, 0.f, 1.f);
+		glBegin(GL_TRIANGLES);
+		glColor3f(1.f, 0.f, 0.f);
+		glVertex3f(-0.6f, -0.4f, 0.f);
+		glColor3f(0.f, 1.f, 0.f);
+		glVertex3f(0.6f, -0.4f, 0.f);
+		glColor3f(0.f, 0.f, 1.f);
+		glVertex3f(0.f, 0.6f, 0.f);
+		glEnd();
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+	glfwDestroyWindow(window);
+	glfwTerminate();
+	exit(EXIT_SUCCESS);
 }
