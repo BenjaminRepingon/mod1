@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 13:56:30 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 19:19:56 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 11:48:47 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,12 @@ void		Camera::update( void )
 		bool rotX = deltaPos.y != 0;
 
 		if ( rotY )
-		{
-			this->_matrix = glm::rotate( this->_matrix, (float)( ( deltaPos.x * this->_sensitivity ) * M_PI ) / 180.0f, glm::vec3( 0, 1, 0 ) );
-			// this->_forward = glm::rotate( this->_forward, (float)( ( deltaPos.x * this->_sensitivity ) * M_PI ) / 180.0f, glm::vec3( 0, 1, 0 ) );
-		}
+			this->getTransform()->rotate( glm::vec3( 0, 1, 0 ), (float)( ( deltaPos.x * this->_sensitivity ) * M_PI ) / 180.0f );
 		if ( rotX )
-			this->_matrix = glm::rotate( this->_matrix, /*this->getTransform()->getRot().getRight()*/(float)( ( deltaPos.y * this->_sensitivity ) *  M_PI ) / 180.0f, glm::vec3( 1, 0, 0 ) );
+			this->getTransform()->rotate( glm::vec3( 1, 0, 0 ), (float)( ( deltaPos.y * this->_sensitivity ) *  M_PI ) / 180.0f );
 		if ( rotY || rotX )
 			Input::setMousePosition( Input::getCore()->getWindow().getCenter() );
+		std::cerr << this->getTransform()->getMatrix()[2][2] << std::endl;
 	}
 	if ( Input::getButtonDown( SDL_BUTTON_LEFT ) )
 	{
@@ -90,18 +88,18 @@ void		Camera::update( void )
 		this->_mouseLocked = false;
 		SDL_ShowCursor( 1);
 	}
-	if ( Input::getKeyDown( SDL_SCANCODE_D ) )
-		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0.1f, 0, 0 ) );
-	if ( Input::getKeyDown( SDL_SCANCODE_A ) )
-		this->_matrix = glm::translate( this->_matrix, glm::vec3( -0.1f, 0, 0 ) );
 	if ( Input::getKeyDown( SDL_SCANCODE_W ) )
-		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0, 0, 0.1 ) );
+		this->getTransform()->translate( glm::vec3( 0, 0, 0.1 ) );
 	if ( Input::getKeyDown( SDL_SCANCODE_S ) )
-		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0, 0, -0.1 ) );
+		this->getTransform()->translate( glm::vec3( 0, 0, -0.1 ) );
+	if ( Input::getKeyDown( SDL_SCANCODE_D ) )
+		this->getTransform()->translate( glm::vec3( -0.1f, 0, 0 ) );
+	if ( Input::getKeyDown( SDL_SCANCODE_A ) )
+		this->getTransform()->translate( glm::vec3( 0.1f, 0, 0 ) );
 	if ( Input::getKeyDown( SDL_SCANCODE_SPACE ) )
-		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0, 0.1f, 0 ) );
+		this->getTransform()->translate( glm::vec3( 0, -0.1f, 0 ) );
 	if ( Input::getKeyDown( SDL_SCANCODE_LSHIFT ) )
-		this->_matrix = glm::translate( this->_matrix, glm::vec3( 0, -0.1f, 0 ) );
+		this->getTransform()->translate( glm::vec3( 0, 0.1f, 0 ) );
 	return ;
 }
 
@@ -118,12 +116,7 @@ void		Camera::render( Core const & core )
 	return ;
 }
 
-glm::mat4	Camera::getViewProjection()
+glm::mat4	Camera::getProjection()
 {
-	// Matrix4f	cameraRotation = this->getTransform()->getTransformedRot().conjugate().toRotationMatrix();
-	// Matrix4f	cameraTranslation;
-
-	// cameraTranslation.initTranslation( this->getTransform()->getTransformedPos() * -1 );
-	// return ( this->_projection * cameraRotation * cameraTranslation );
-	return ( this->_projection * this->_matrix );
+	return ( this->_projection );
 }

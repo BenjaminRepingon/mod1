@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 16:37:37 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 13:57:57 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #  include <GL/glu.h>
 # endif
 # include "glm/glm.hpp"
+# include <GLFW/glfw3.h>
 
 class Window
 {

@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 13:24:11 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/24 18:34:17 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 12:09:43 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 Triangle::Triangle( void ) : _shader( new Shader("Basic2") )
 {
-	this->_matrix = glm::mat4( 1 );
-
 	const float		vertexBuffer[] = {
 		-0.5f, -0.5f, -1.0f,
 		1.0f, 0.0, 0.0f,
@@ -73,27 +71,25 @@ void				Triangle::update( void )
 
 void				Triangle::render( Core const & core )
 {
+	(void)core;
+
 	this->_shader->bind();
 	glBindBuffer( GL_ARRAY_BUFFER, this->_vbo );
 	glEnableVertexAttribArray( 0 );
 	glEnableVertexAttribArray( 1 );
 	glEnableVertexAttribArray( 2 );
 
-# ifdef __APPLE__
-	glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 9 * 4, 0 );
-	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_TRUE, 9 * 4, (void *)12 );
-	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 9 * 4, (void *)24 );
-# else
 	glVertexAttribPointer( 0, 3, GL_FLOAT, GL_FALSE, 9 * 4, 0 );
 	glVertexAttribPointer( 1, 3, GL_FLOAT, GL_TRUE, 9 * 4, (void *)12 );
 	glVertexAttribPointer( 2, 3, GL_FLOAT, GL_FALSE, 9 * 4, (void *)24 );
-# endif
 
-	glm::mat4	worldMatrix = glm::mat4( 1 );
-	glm::mat4	projectionMatrix = core.getCamera().getViewProjection();
+	glm::mat4	model = glm::mat4( 1 );
+	glm::mat4	view = core.getCamera().getTransform()->getTransformation();
+	glm::mat4	projection = core.getCamera().getProjection();
 
-	this->_shader->updateUniform( "T_Model", worldMatrix );
-	this->_shader->updateUniform( "T_Projection", projectionMatrix );
+	this->_shader->updateUniform( "T_Model", model );
+	this->_shader->updateUniform( "T_View", view );
+	this->_shader->updateUniform( "T_Projection", projection );
 
 	glBindBuffer( GL_ELEMENT_ARRAY_BUFFER, this->_ibo );
 	glDrawElements( GL_TRIANGLES, 3 /* nb vertex */, GL_UNSIGNED_INT, 0 );

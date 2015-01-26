@@ -1,11 +1,11 @@
 // Version du GLSL
 
-#version 120
+#version 410
 
 
 // Entrée
 
-varying vec3 color;
+in vec3 color;
 
 
 

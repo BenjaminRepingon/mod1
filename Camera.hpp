@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 13:56:30 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 15:36:58 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 11:46:34 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ public:
 	// METHODES
 	virtual void		update( void );
 	virtual void		render( Core const & core );
-	glm::mat4			getViewProjection();
+	glm::mat4			getProjection( void );
 	void				reshape( int width, int height );
 	void				move( Vector3f const & direction, float amount );
+	void				oriantation( int xRel, int yRel );
 
 private:
 	Camera( void );
@@ -49,7 +50,6 @@ private:
 	glm::vec3			_forward;
 	glm::vec3			_up;
 	glm::vec3			_right;
-
 };
 
 #endif

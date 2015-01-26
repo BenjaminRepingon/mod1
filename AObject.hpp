@@ -6,14 +6,14 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 11:41:39 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 17:50:54 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 10:06:59 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef IOBJECT_HPP
 # define IOBJECT_HPP
 # include <iostream>
-# include "glm/glm.hpp"
+# include "Transform.hpp"
 
 class Core;
 
@@ -23,10 +23,10 @@ class AObject
 		virtual void		update( void ) = 0;
 		virtual void		render( Core const & core ) = 0;
 
-		glm::mat4 *			getMatrix( void );
+		Transform *			getTransform( void );
 
 	protected:
-		glm::mat4			_matrix;
+		Transform			_transform;
 
 };
 

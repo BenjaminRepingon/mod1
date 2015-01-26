@@ -6,30 +6,16 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 17:34:49 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 17:41:09 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 13:52:02 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "Transform.hpp"
 
 Transform::Transform() :
-	_pos( 0, 0, 0 ),
-	_rot( 0, 0, 0, 1 ),
-	_scale( 1, 1, 1 ),
 	_parent( 0 ),
-	_parentMatrix( Matrix4f().initIdentity() ),
-	_isInitialized( false )
-{
-	return ;
-}
-
-Transform::Transform( Vector3f const & pos, Quaternion4f const & rot, Vector3f const & scale ) :
-	_pos( pos ),
-	_rot( rot ),
-	_scale( scale ),
-	_parent( 0 ),
-	_parentMatrix( Matrix4f().initIdentity() ),
-	_isInitialized( false )
+	_matrix( glm::mat4( 1.0f ) ),
+	_parentMatrix( glm::mat4( 1.0f ) )
 {
 	return ;
 }
@@ -49,114 +35,92 @@ Transform &	Transform::operator=( Transform const & rhs )
 	if ( this != &rhs )
 	{
 		this->_parent = & rhs.getParent();
+		this->_matrix = rhs._matrix;
 		this->_parentMatrix = rhs._parentMatrix;
-		this->_pos = rhs.getPos();
-		this->_rot = rhs.getRot();
-		this->_scale = rhs.getScale();
-		this->_oldPos = rhs._oldPos;
-		this->_oldRot = rhs._oldRot;
-		this->_oldScale = rhs._oldScale;
 	}
 	return ( *this );
 }
 
-void					Transform::update()
-{
-	if ( this->_isInitialized )
-	{
-		this->_oldPos = this->_pos;
-		this->_oldRot = this->_rot;
-		this->_oldScale = this->_scale;
-	}
-	else
-	{
-		this->_oldPos = Vector3f( this->_pos ) + Vector3f( 1, 1, 1 );
-		this->_oldRot = Quaternion4f( this->_rot ) * 0.5f;
-		this->_oldScale = Vector3f( this->_scale ) + Vector3f( 1, 1, 1 );
-		this->_isInitialized = true;
-	}
-	if ( this->_parent != 0 && this->_parent->hasChanged() )
-		this->_parentMatrix = this->_parent->getTransformation();
-}
-
-bool					Transform::hasChanged() const
-{
-	if ( this->_parent != 0 && this->_parent->hasChanged() )
-		return ( true );
-	return ( this->_pos != this->_oldPos || this->_rot != this->_oldRot || this->_scale != this->_oldScale );
-}
-
 void					Transform::translate( float x, float y, float z )
 {
-	this->_pos = this->_pos + Vector3f( x, y, z );
+	this->_pos = this->_pos + glm::vec3( x, y, z );
 }
 
-void					Transform::translate( Vector3f const & vec )
+void					Transform::translate( glm::vec3 const & vec )
 {
 	this->_pos = this->_pos + vec;
 }
 
-void					Transform::rotate( Vector3f const & axis, float angle )
+void					Transform::rotate( glm::vec3 const & axis, float angle )
 {
-	this->_rot = ( ( Quaternion4f( axis, angle ) * this->_rot ).normalized() );
+	this->_rot = glm::normalize( this->_rot * glm::angleAxis( angle, axis ) );
+	// this->_matrix = glm::rotate( this->_matrix, angle, axis );
+	// (void)axis;
+	// (void)angle;
+	// std::cerr << getPos().x << " " << getPos().y << " " << getPos().z << std::endl;
+	// this->_matrix = glm::lookAt( getPos(), glm::vec3( 0, 0, 0 ),  glm::vec3( 0, 1, 0 ) );
 }
 
-void					Transform::lookAt( Vector3f const & point, Vector3f up )
+void					Transform::lookAt( glm::vec3 const & point, glm::vec3 up )
 {
-	this->_rot = this->getLookAtRotation( point, up );
-}
-
-Quaternion4f			Transform::getLookAtRotation( Vector3f const & point, Vector3f const & up )
-{
-	return ( Quaternion4f( Matrix4f().initRotation( ( point - this->_pos ).normalized(), up ) ) );
-}
-
-Matrix4f				Transform::getTransformation() const
-{
-	Matrix4f	translationMatrix;
-	Matrix4f	scaleMatrix;
-
-	translationMatrix.initTranslation( this->_pos );
-	scaleMatrix.initScale( this->_scale );
-	return ( this->getParentMatrix() * translationMatrix * this->_rot.toRotationMatrix() * scaleMatrix );
-}
-
-Vector3f				Transform::getTransformedPos() const
-{
-	return ( Vector3f( this->getParentMatrix().transform( this->_pos ) ) );
-}
-
-Quaternion4f			Transform::getTransformedRot() const
-{
-	Quaternion4f	parentRot;
-
-	if ( this->_parent != 0 )
-		parentRot = this->_parent->getTransformedRot();
-	return ( parentRot * this->_rot );
+	this->_matrix = glm::lookAt( this->getPos(), point, up );
 }
 
 // GETTER
+glm::mat4				Transform::getTransformation()
+{
+	glm::mat4 translation = glm::translate( glm::mat4( 1.0f ), this->_pos );
+
+	// this->_matrix = this->_matrix * translation * glm::toMat4( this->_rot );
+
+	return ( this->_parentMatrix * translation * glm::toMat4( this->_rot ) );
+}
+
+glm::vec3				Transform::getTransformedPos()
+{
+	glm::vec4	tmp = getParentMatrix() * glm::vec4( this->_pos, 0 );
+	glm::vec3	res( tmp.x, tmp.y, tmp.z );
+	return ( res );
+}
+
+glm::quat				Transform::getTransformedRot()
+{
+	glm::quat parentRotation( 0, 0, 0, 1 );
+
+	if ( this->_parent != 0 )
+		parentRotation = this->_parent->getTransformedRot();
+	return ( parentRotation * this->_rot );
+}
+
+
+glm::mat4				Transform::getMatrix() const
+{
+	return ( this->_matrix );
+}
+
 Transform &				Transform::getParent() const
 {
 	return ( * this->_parent );
 }
 
-Matrix4f				Transform::getParentMatrix() const
+glm::mat4				Transform::getParentMatrix() const
 {
 	return ( this->_parentMatrix );
 }
 
-Vector3f				Transform::getPos() const
+glm::vec3				Transform::getPos() const
 {
-	return ( this->_pos );
+	return ( glm::vec3( this->_matrix[3][0], this->_matrix[3][1], this->_matrix[3][2] ) );
 }
 
-Quaternion4f			Transform::getRot() const
+glm::quat				Transform::getRot() const
 {
-	return ( this->_rot );
+	return ( glm::quat( 0, 0, 0, 1 ) );
 }
 
-Vector3f				Transform::getScale() const
+glm::vec3				Transform::getScale() const
 {
-	return ( this->_scale );
+	return ( glm::vec3( 0, 0, 0 ) );
 }
+
+

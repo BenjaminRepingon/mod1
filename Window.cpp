@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 16:37:39 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 14:07:11 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,14 @@ bool		Window::init()
 	}
 	else
 	{
+		SDL_GL_SetAttribute( SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE );
 		//Use OpenGL 2.1
-		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 2 );
+		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MAJOR_VERSION, 4 );
 		SDL_GL_SetAttribute( SDL_GL_CONTEXT_MINOR_VERSION, 1 );
 
 		SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
 		SDL_GL_SetAttribute( SDL_GL_DEPTH_SIZE, 24 );
-		
+
 		//Create window
 		this->_gWindow = SDL_CreateWindow( this->_title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, this->_width, this->_height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE );
 		if ( this->_gWindow == NULL )
@@ -113,6 +114,13 @@ bool		Window::init()
 bool		Window::initGL()
 {
 	GLenum		error = GL_NO_ERROR;
+
+	glfwInit();
+
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
 
 	glClearColor( 0.f, 0.f, 0.f, 1.f );
 

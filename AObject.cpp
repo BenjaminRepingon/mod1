@@ -6,13 +6,13 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 16:33:59 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 17:46:47 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 10:07:28 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "AObject.hpp"
 
-glm::mat4 *		AObject::getMatrix()
+Transform *		AObject::getTransform()
 {
-	return ( & this->_matrix );
+	return ( & this->_transform );
 }

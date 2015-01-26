@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/23 17:13:47 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 18:41:29 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 12:07:21 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ public:
 	void					addVertex( Vertex const & v ) throw();
 	void					addFace( int a, int b, int c ) throw();
 	void					generateBuffer( void );
-	void					render( Core const & core, Shader const & shader, glm::mat4 const & mat ) const throw();
+	void					render( Core const & core, Shader const & shader, Transform & transform ) const throw();
 
 private:
 	GLuint					_vbo;

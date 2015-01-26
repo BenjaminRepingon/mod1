@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 11:25:53 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 19:17:46 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 14:08:51 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		main( void )
 
 	//START INIT
 
-
+std::cout << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 	Camera *	cam = new Camera( 70.0f, test.getWindow().getAspect(), 0.1f, 1000.0f );
 	// cam->getMatrix()->translate( 0, 0, 10 );
 	test.setCamera( cam );
