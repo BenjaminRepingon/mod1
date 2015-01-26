@@ -6,7 +6,7 @@
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 14:13:00 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/25 17:38:31 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,9 @@ Shader::Shader( std::string const & fileName )
 {
 	GLuint vertexShader = createShader( GL_VERTEX_SHADER, this->loadShader( fileName + ".vert" ) );
 	GLuint fragmentShader = createShader( GL_FRAGMENT_SHADER, this->loadShader( fileName + ".frag" ) );
+	// GLuint geometryShader = createShader(GL_GEOMETRY_SHADER, this->loadShader( fileName + ".geo" ) );
 	this->_program = createProgram( vertexShader, fragmentShader );
+	// (void)geometryShader;
 	return ;
 }
 
@@ -121,12 +123,13 @@ GLuint		Shader::createShader( GLenum eShaderType, std::string const & strShaderF
 	return ( shader );
 }
 
-GLuint		Shader::createProgram( GLuint vertexShader, GLuint fragmentShader )
+GLuint		Shader::createProgram( GLuint vertexShader, GLuint fragmentShader)
 {
 	GLuint program = glCreateProgram();
 
 	glAttachShader( program, vertexShader );
 	glAttachShader( program, fragmentShader );
+	// glAttachShader( program, geometryShader );
 
 	glLinkProgram( program );
 
@@ -145,6 +148,7 @@ GLuint		Shader::createProgram( GLuint vertexShader, GLuint fragmentShader )
 
 	glDetachShader( program, vertexShader );
 	glDetachShader( program, fragmentShader );
+	// glDetachShader( program, geometryShader );
 	return ( program );
 }
 

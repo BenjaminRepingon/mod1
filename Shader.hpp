@@ -6,7 +6,7 @@
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 14:13:13 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/25 17:37:31 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,7 @@
 # include <string>
 # include <fstream>
 # include <iostream>
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
+# include <OpenGL/gl3.h>
 # include "Matrix4f.hpp"
 
 class Shader

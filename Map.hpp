@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   Map.hpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
+/*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:21:07 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 19:15:10 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 14:06:32 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_HPP
 # define MAP_HPP
-# include <OpenGL/gl.h>
+# include <OpenGL/gl3.h>
 # include <iostream>
 # include <vector>
 # include "AObject.hpp"

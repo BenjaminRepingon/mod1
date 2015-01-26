@@ -6,7 +6,7 @@
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 11:25:53 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/25 11:54:31 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/26 14:15:28 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,23 @@ int		main( void )
 
 	test.createWindow( "Mod1" , 850, 550 );
 
-	//START INIT
-
-
 	Camera *	cam = new Camera( 70.0f * M_PI / 180.0f, test.getWindow().getAspect(), 0.1f, 1000.0f );
 
 	cam->getTransform()->translate( 0, 0, 10 );
 	test.setCamera( cam );
 
-	Sphere *	s = new Sphere();
+	GLuint		buff;
+
+	float		point[6] = { 1.0f, 0, 0, 1.0f, 0, 0 };
+
+	glGenBuffers( 1, &buff );
+
+	glBindBuffer( GL_ARRAY_BUFFER, buff );
+	glBufferData( GL_ARRAY_BUFFER, 6 * sizeof( float ), point, GL_STATIC_DRAW );
+
+	glBindBuffer( GL_ARRAY_BUFFER, 0 );
+
+	WaterParticular *	s = new WaterParticular(buff);
 	test.addObject( s );
 
 

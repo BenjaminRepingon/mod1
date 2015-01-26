@@ -6,10 +6,9 @@
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/23 16:05:25 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/24 16:31:42 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/25 15:41:02 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "WaterParticular.hpp"
 
@@ -75,7 +74,7 @@ void				WaterParticular::render( Core const & core )
 
 	this->_shader->updateUniform( "T_MVP", projectedMatrix );
 
-	glDrawArrays( GL_POINTS, 0, 1 );
+	glDrawArrays( GL_GEOMETRY_INPUT_TYPE, 0, 1 );
 
 	glDisableVertexAttribArray( 0 );
 	glDisableVertexAttribArray( 1 );

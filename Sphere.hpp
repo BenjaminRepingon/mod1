@@ -6,13 +6,13 @@
 /*   By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/24 16:32:41 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/24 16:33:01 by dsousa           ###   ########.fr       */
+/*   Updated: 2015/01/25 14:06:32 by dsousa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SPHERE_HPP
 # define SPHERE_HPP
-# include <OpenGL/gl.h>
+# include <OpenGL/gl3.h>
 # include "AObject.hpp"
 # include "Shader.hpp"
 # include "Core.hpp"
