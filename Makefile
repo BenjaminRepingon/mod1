@@ -6,7 +6,7 @@
 #    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/20 11:29:00 by rbenjami          #+#    #+#              #
-#    Updated: 2015/01/26 15:38:14 by rbenjami         ###   ########.fr        #
+#    Updated: 2015/01/26 15:49:11 by rbenjami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ CFLAGS			=	-Wall -Werror -Wextra -ansi
 
 NAME			=	mod1
 
-SRCS			=	$(NAME).cpp
+SRCS			=	$(NAME).cpp		\
+					Window.cpp
 
 OBJS			=	$(SRCS:.cpp=.o)
 
