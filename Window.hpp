@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/26 15:41:40 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/26 15:54:05 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 16:11:23 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ public:
 
 	static void			key_callback( GLFWwindow* window, int key, int scancode, int action, int mods );
 	static void			error_callback( int error, const char* description );
-	void				createWindow( void );
+	void				create( void );
 
 private:
 	GLFWwindow *		_window;

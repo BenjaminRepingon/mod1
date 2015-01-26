@@ -1,36 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mod1.cpp                                           :+:      :+:    :+:   */
+/*   Object.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/01/26 15:36:36 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/26 16:31:58 by rbenjami         ###   ########.fr       */
+/*   Created: 2015/01/26 16:13:07 by rbenjami          #+#    #+#             */
+/*   Updated: 2015/01/26 16:29:10 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <stdlib.h>
-# include <stdio.h>
-# include "Core.hpp"
+#ifndef OBJECT
+# define OBJECT
+# include <string>
+# include <GLFW/glfw3.h>
 
-int main(void)
+class Core;
+
+class Object
 {
-	Core *	core = new Core();
+public:
+	Object( void );
+	Object( Object const & src );
+	virtual ~Object( void );
 
-	core->createWindow( 850, 550, "Test" );
+	Object &			operator=( Object const & rhs );
 
-	// START INIT
+	// GETTER
 
-	Object *	o = new Object();
+	// SETTER
 
-	core->addObject( o );
+	// METHODES
+	virtual void				render( Core const & core );
 
-	// END INIT
+private:
 
-	core->start();
+};
 
-	delete core;
+#endif
 
-	exit( EXIT_SUCCESS );
-}

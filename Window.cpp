@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/26 15:41:40 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/26 15:55:35 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/26 16:10:07 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Window::Window( int width, int height, std::string const & title ) :
 
 Window::Window( Window const & src )
 {
-	*this= src;
+	*this = src;
 }
 
 Window::~Window( void )
@@ -54,7 +54,7 @@ void		Window::key_callback( GLFWwindow* window, int key, int scancode, int actio
 }
 
 
-void		Window::createWindow()
+void		Window::create()
 {
 	 glfwSetErrorCallback( error_callback );
 
