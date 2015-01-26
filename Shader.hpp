@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 16:57:48 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 17:48:22 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 # include <string>
 # include <fstream>
 # include <iostream>
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
+# include <OpenGL/gl3.h>
+# include "glm/glm.hpp"
 # include "Matrix4f.hpp"
 
 class Shader

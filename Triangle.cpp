@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 13:24:11 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/24 18:34:17 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 16:24:27 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ Triangle &			Triangle::operator=( Triangle const & rhs )
 
 void				Triangle::update( void )
 {
-
+	// this->getTransform()->rotate( Quaternion4f( Vector3f( 0, 1, 0 ), 1.0f * M_PI / 180.0f ) );
 }
 
 void				Triangle::render( Core const & core )

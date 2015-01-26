@@ -6,13 +6,12 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 12:12:13 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/23 17:46:51 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 15:34:12 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TRIANGLE_HPP
 # define TRIANGLE_HPP
-# include <OpenGL/gl.h>
 # include "AObject.hpp"
 # include "Shader.hpp"
 # include "Core.hpp"

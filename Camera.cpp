@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 13:56:30 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 19:19:56 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 17:50:33 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,9 @@ void		Camera::update( void )
 		this->_mouseLocked = false;
 		SDL_ShowCursor( 1);
 	}
+
+	// std::cerr << "Pos: " << this->getTransform()->getPos() << std::endl;
+
 	if ( Input::getKeyDown( SDL_SCANCODE_D ) )
 		this->move( this->getTransform()->getRot().getRight(), 0.1f );
 	if ( Input::getKeyDown( SDL_SCANCODE_A ) )

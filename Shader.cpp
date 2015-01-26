@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 17:51:57 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 16:57:41 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 15:32:32 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ GLuint		Shader::createShader( GLenum eShaderType, std::string const & strShaderF
 		switch( eShaderType )
 		{
 			case GL_VERTEX_SHADER: strShaderType = "vertex"; break;
-			// case GL_GEOMETRY_SHADER: strShaderType = "geometry"; break;
+			case GL_GEOMETRY_SHADER: strShaderType = "geometry"; break;
 			case GL_FRAGMENT_SHADER: strShaderType = "fragment"; break;
 		}
 

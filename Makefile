@@ -6,7 +6,7 @@
 #    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/20 11:29:00 by rbenjami          #+#    #+#              #
-#    Updated: 2015/01/24 16:51:25 by rbenjami         ###   ########.fr        #
+#    Updated: 2015/01/25 17:45:50 by rbenjami         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,20 +27,20 @@ SRCS			=	$(NAME).cpp			\
 					AObject.cpp			\
 					BasicObject.cpp		\
 					Vector2f.cpp		\
-					Vector3f.cpp		\
-					Matrix4f.cpp		\
-					Quaternion4f.cpp	\
 					Vertex.cpp			\
 					Map.cpp				\
-					Transform.cpp		\
 					Input.cpp			\
 					Camera.cpp
+					# Vector3f.cpp		\
+					# Matrix4f.cpp		\
+					# Quaternion4f.cpp	\
+					# Transform.cpp		\
 
 OBJS			=	$(SRCS:.cpp=.o)
 
 INCLUDES		=	~/Library/Frameworks/SDL2.framework/Headers/
 
-LIBS			=	-F ~/Library/Frameworks -framework SDL2 -framework OpenGL
+LIBS			=	-F ~/Library/Frameworks -framework SDL2 -framework OpenGL -lm
 
 all:			$(NAME)
 

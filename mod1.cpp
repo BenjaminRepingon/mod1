@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 11:25:53 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 19:17:46 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 17:15:46 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ int		main( void )
 
 	Vector3f normal( 0, 1, 0 );
 
-	vertices.push_back( Vertex( Vector3f( -1.0f, -1.0f, -1.0f ), Vector3f( 1.0f, 0.0f, 0.0f ), normal ) );
-	vertices.push_back( Vertex( Vector3f( -1.0f, -1.0f, 1.0f ), Vector3f( 0.0f, 1.0f, 0.0f ), normal ) );
-	vertices.push_back( Vertex( Vector3f( 1.0f, -1.0f, -1.0f ), Vector3f( 0.0f, 0.0f, 1.0f ), normal ) );
-	vertices.push_back( Vertex( Vector3f( 1.0f, -1.0f, 1.0f ), Vector3f( 1.0f, 0.0f, 1.0f ), normal ) );
+	vertices.push_back( Vertex( Vector3f( -1.0f, 0.0f, -1.0f ), Vector3f( 1.0f, 0.0f, 0.0f ), normal ) );
+	vertices.push_back( Vertex( Vector3f( -1.0f, 0.0f, 1.0f ), Vector3f( 0.0f, 1.0f, 0.0f ), normal ) );
+	vertices.push_back( Vertex( Vector3f( 1.0f, 0.0f, -1.0f ), Vector3f( 0.0f, 0.0f, 1.0f ), normal ) );
+	vertices.push_back( Vertex( Vector3f( 1.0f, 0.0f, 1.0f ), Vector3f( 1.0f, 0.0f, 1.0f ), normal ) );
 
 	BasicObject *	testMesh = new BasicObject();
 	Mesh			mesh( vertices );
@@ -50,6 +50,7 @@ int		main( void )
 	mesh.generateBuffer();
 
 	testMesh->setMesh( & mesh );
+	testMesh->getTransform()->setScale( Vector3f( 1, 1, 1 ) );
 	test.addObject( testMesh );
 
 	// Triangle *	t = new Triangle();

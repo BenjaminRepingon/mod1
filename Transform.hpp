@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 17:34:49 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 14:52:48 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 15:56:34 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ public:
 	Vector3f			getScale( void ) const;
 
 	// SETTER
+	void				setPos( Vector3f const & pos );
+	void				setRot( Quaternion4f const & rot );
+	void				setScale( Vector3f const & scale );
 
 	// FUNCTIONS
 	void				update( void );
@@ -42,6 +45,7 @@ public:
 	void				translate( float x, float y, float z );
 	void				translate( Vector3f const & vec );
 	void				rotate( Vector3f const & axis, float angle );
+	void				rotate( Quaternion4f const & rotation );
 	void				lookAt( Vector3f const & point, Vector3f up );
 	Vector3f			getTransformedPos() const;
 	Quaternion4f		getTransformedRot() const;

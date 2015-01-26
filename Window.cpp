@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 16:37:39 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 16:53:56 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ bool		Window::initGL()
 	GLenum		error = GL_NO_ERROR;
 
 	//Initialize Projection Matrix
-	glMatrixMode( GL_PROJECTION );
-	glLoadIdentity();
+	// glMatrixMode( GL_PROJECTION );
+	// glLoadIdentity();
 
 	//Check for error
 	error = glGetError();
@@ -125,8 +125,8 @@ bool		Window::initGL()
 	}
 
 	//Initialize Modelview Matrix
-	glMatrixMode( GL_MODELVIEW );
-	glLoadIdentity();
+	// glMatrixMode( GL_MODELVIEW );
+	// glLoadIdentity();
 
 	//Check for error
 	error = glGetError();
@@ -148,7 +148,7 @@ bool		Window::initGL()
 	}
 
 	glFrontFace( GL_CW );
-	glCullFace( GL_BACK );
+	glCullFace( GL_FRONT );
 	glEnable( GL_CULL_FACE );
 	glEnable( GL_DEPTH_TEST );
 

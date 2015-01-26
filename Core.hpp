@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 10:17:54 by dsousa            #+#    #+#             */
-/*   Updated: 2015/01/22 18:52:36 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 15:34:37 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 # define CORE_HPP
 # include <iostream>
 # include <SDL2/SDL.h>
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
+# include <OpenGL/gl3.h>
 # include <vector>
 # include "Window.hpp"
 # include "Error.hpp"

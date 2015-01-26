@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/21 17:34:49 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/22 17:41:09 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 16:35:31 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,11 @@ void					Transform::rotate( Vector3f const & axis, float angle )
 	this->_rot = ( ( Quaternion4f( axis, angle ) * this->_rot ).normalized() );
 }
 
+void					Transform::rotate( Quaternion4f const & rotation )
+{
+	this->_rot = Quaternion4f( ( rotation * this->_rot ).normalized() );
+}
+
 void					Transform::lookAt( Vector3f const & point, Vector3f up )
 {
 	this->_rot = this->getLookAtRotation( point, up );
@@ -160,3 +165,20 @@ Vector3f				Transform::getScale() const
 {
 	return ( this->_scale );
 }
+
+// SETTER
+void					Transform::setPos( Vector3f const & pos )
+{
+	this->_pos = pos;
+}
+
+void					Transform::setRot( Quaternion4f const & rot )
+{
+	this->_rot = rot;
+}
+
+void					Transform::setScale( Vector3f const & scale )
+{
+	this->_scale = scale;
+}
+

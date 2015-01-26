@@ -6,13 +6,12 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/23 17:13:47 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 18:41:29 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 15:33:57 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MESH
 # define MESH
-# include <OpenGL/gl.h>
 # include <string>
 # include <vector>
 # include "Vertex.hpp"

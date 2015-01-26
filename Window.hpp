@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/20 14:46:31 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/23 16:37:37 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 15:35:11 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 # define WINDOW
 # include <iostream>
 # include <SDL2/SDL.h>
-# include <OpenGL/gl.h>
-# include <OpenGL/glu.h>
+# include <OpenGL/gl3.h>
 # include "Vector2f.hpp"
 
 class Window

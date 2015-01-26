@@ -6,7 +6,7 @@
 /*   By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/01/22 10:00:41 by rbenjami          #+#    #+#             */
-/*   Updated: 2015/01/24 19:20:15 by rbenjami         ###   ########.fr       */
+/*   Updated: 2015/01/25 16:35:36 by rbenjami         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ Quaternion4f::Quaternion4f( float x, float y, float z, float w ) :
 
 Quaternion4f::Quaternion4f( Vector3f const & axis, float angle )
 {
-	float	sinHalfAngle = (float) sin( angle / 2 );
-	float	cosHalfAngle = (float) cos( angle / 2 );
+	float	sinHalfAngle = sin( angle / 2 );
+	float	cosHalfAngle = cos( angle / 2 );
 
 	this->_x = axis.getX() * sinHalfAngle;
 	this->_y = axis.getY() * sinHalfAngle;
@@ -128,28 +128,21 @@ float				Quaternion4f::dot( Quaternion4f r ) const
 
 Matrix4f			Quaternion4f::toRotationMatrix() const
 {
-	Vector3f	forward(	2.0f * ( this->_x * this->_z - this->_w * this->_y ),
-							2.0f * ( this->_y * this->_z + this->_w * this->_x ),
-							1.0f - 2.0f * ( this->_x * this->_x + this->_y * this->_y ) );
+	Vector3f	forward = Vector3f( 2.0f * ( getX() * getZ() - getW() * getY() ), 2.0f * ( getY() * getZ() + getW() * getX() ), 1.0f - 2.0f * ( getX() * getX() + getY() * getY() ) );
+	Vector3f	up = Vector3f( 2.0f * ( getX() * getY() + getW() * getZ() ), 1.0f - 2.0f * ( getX() * getX() + getZ() * getZ() ), 2.0f * ( getY() * getZ() - getW() * getX() ) );
+	Vector3f	right = Vector3f( 1.0f - 2.0f * ( getY() * getY() + getZ() * getZ() ), 2.0f * ( getX() * getY() - getW() * getZ() ), 2.0f * ( getX() * getZ() + getW() * getY() ) );
 
-	Vector3f	up(			2.0f * ( this->_x * this->_y + this->_w * this->_z ),
-							1.0f - 2.0f * ( this->_x * this->_x + this->_z * this->_z ),
-							2.0f * ( this->_y * this->_z - this->_w * this->_x ) );
-
-	Vector3f	right(		1.0f - 2.0f * ( this->_y * this->_y + this->_z * this->_z ),
-							2.0f * ( this->_x * this->_y - this->_w * this->_z ),
-							2.0f * ( this->_x * this->_z + this->_w * this->_y ) );
 	return ( Matrix4f().initRotation( forward, up, right ) );
 }
 
 Vector3f			Quaternion4f::getForward() const
 {
-	return ( Vector3f( 0, 0, -1 ).rotate( *this ) );
+	return ( Vector3f( 0, 0, 1 ).rotate( *this ) );
 }
 
 Vector3f			Quaternion4f::getBack() const
 {
-	return ( Vector3f( 0, 0, 1 ).rotate( *this ) );
+	return ( Vector3f( 0, 0, -1 ).rotate( *this ) );
 }
 
 Vector3f			Quaternion4f::getUp() const
@@ -199,25 +192,25 @@ bool				Quaternion4f::operator!=( Quaternion4f const & rhs ) const
 
 Quaternion4f		Quaternion4f::operator*( Quaternion4f r ) const
 {
-	float	w = this->_w * r.getW() - this->_x * r.getX() - this->_y * r.getY() - this->_z * r.getZ();
-	float	x = this->_x * r.getW() + this->_w * r.getX() + this->_y * r.getZ() - this->_z * r.getY();
-	float	y = this->_y * r.getW() + this->_w * r.getY() + this->_z * r.getX() - this->_x * r.getZ();
-	float	z = this->_z * r.getW() + this->_w * r.getZ() + this->_x * r.getY() - this->_y * r.getX();
+	float	w = ( getW() * r.getW() ) - ( getX() * r.getX() ) - ( getY() * r.getY() ) - ( getZ() * r.getZ() );
+	float	x = ( getX() * r.getW() ) + ( getW() * r.getX() ) + ( getY() * r.getZ() ) - ( getZ() * r.getY() );
+	float	y = ( getY() * r.getW() ) + ( getW() * r.getY() ) + ( getZ() * r.getX() ) - ( getX() * r.getZ() );
+	float	z = ( getZ() * r.getW() ) + ( getW() * r.getZ() ) + ( getX() * r.getY() ) - ( getY() * r.getX() );
 	return ( Quaternion4f( x, y, z, w ) );
 }
 
 Quaternion4f		Quaternion4f::operator*( Vector3f r ) const
 {
-	float	w = -this->_x * r.getX() - this->_y * r.getY() - this->_z * r.getZ();
-	float	x = this->_w * r.getX() + this->_y * r.getZ() - this->_z * r.getY();
-	float	y = this->_w * r.getY() + this->_z * r.getX() - this->_x * r.getZ();
-	float	z = this->_w * r.getZ() + this->_x * r.getY() - this->_y * r.getX();
+	float	w = - ( getX() * r.getX() ) - ( getY() * r.getY() ) - ( getZ() * r.getZ() );
+	float	x = ( getW() * r.getX() ) + ( getY() * r.getZ() ) - ( getZ() * r.getY() );
+	float	y = ( getW() * r.getY() ) + ( getZ() * r.getX() ) - ( getX() * r.getZ() );
+	float	z = ( getW() * r.getZ() ) + ( getX() * r.getY() ) - ( getY() * r.getX() );
 	return ( Quaternion4f( x, y, z, w ) );
 }
 
 std::ostream &		operator<<( std::ostream & lhs, Quaternion4f const & q )
 {
-	return ( lhs << "Quaternion4f( x: " << q.getX() << ", y: " << q.getY() << ", z: " << q.getZ() << ", w: " << q.getW() << ")" << std::endl );
+	return ( lhs << "Quaternion4f( x: " << q.getX() << ", y: " << q.getY() << ", z: " << q.getZ() << ", w: " << q.getW() << ")" );
 }
 
 // GETTER
