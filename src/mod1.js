@@ -1,6 +1,6 @@
 MOD1.scene = function( scene )
 {
-	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
+	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(50, 30, -70), scene);
 	camera.setTarget(BABYLON.Vector3.Zero());
 	camera.attachControl(canvas, true);
 
@@ -10,7 +10,14 @@ MOD1.scene = function( scene )
 	// light0.diffuse = new BABYLON.Color3(1, 0, 0);
 	// light0.specular = new BABYLON.Color3(1, 1, 1);
 
-	var ground = new BABYLON.Mesh.CreateGround( "ground", 10, 10, 2, scene );
+	var map = new MOD1.Map(100, 100, scene, 2);
+	map.ground.receiveShadows = true;
+
+	var mat = new BABYLON.StandardMaterial("mat", scene);
+	mat.diffuseColor = BABYLON.Color3.White();
+	mat.wireframe = true;
+
+	map.ground.material = mat;
 
 	// Emitters
 	var emitter0 = BABYLON.Mesh.CreateBox("emitter0", 0.1, scene);
