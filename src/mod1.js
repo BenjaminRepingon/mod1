@@ -24,9 +24,6 @@ MOD1.scene = function( scene )
 	emitter0.position.y = 10;
 	emitter0.isVisible = false;
 
-		console.log(map.getAltitude( 40, 20 ));
-		console.log(map.getAltitude( 40, 22 ));
-
 
 	// Custom shader for particles
 	// BABYLON.Effect.ShadersStore["myParticleFragmentShader"] =
@@ -58,20 +55,21 @@ MOD1.scene = function( scene )
 	// var effect = engine.createEffectForParticles("myParticle", ["time"]);
 
 	// Particles
-	var defaultRadius = 0.5;
-	var particleSystem = new BABYLON.ParticleSystem("particles", 50, scene/*, effect*/);
+	var defaultRadius = 0.3;
+	var defaultRestitution = 0.2;
+	var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene/*, effect*/);
 	particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
-	particleSystem.minSize = 0.1;
+	particleSystem.minSize = 1.0;
 	particleSystem.maxSize = 1.0;
-	particleSystem.minLifeTime = 0.5;
+	particleSystem.minLifeTime = 5.0;
 	particleSystem.maxLifeTime = 5.0;
-	particleSystem.minEmitPower = 0.5;
+	particleSystem.minEmitPower = 3.0;
 	particleSystem.maxEmitPower = 3.0;
 	particleSystem.emitter = emitter0;
-	particleSystem.emitRate = 10;
+	particleSystem.emitRate = 100;
 	particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
-	// particleSystem.direction1 = new BABYLON.Vector3(-0.01, -0.3, -0.01);
-	// particleSystem.direction2 = new BABYLON.Vector3(0.01, -0.3, 0.01);
+	particleSystem.direction1 = new BABYLON.Vector3(-0.1, -0.1, -0.1);
+	particleSystem.direction2 = new BABYLON.Vector3(0.1, -0.1, 0.1);
 	particleSystem.color1 = new BABYLON.Color4(0, 0.5, 1, 1);
 	particleSystem.color2 = new BABYLON.Color4(0, 0.2, 0.5, 1);
 	// particleSystem.gravity = new BABYLON.Vector3(0, -10.0, 0);
@@ -81,33 +79,58 @@ MOD1.scene = function( scene )
 	{
 		for ( var i = 0; i < particles.length; i++ )
 		{
+			// Update pos
+			var particle = particles[i];
+			particle.direction.y -= 0.005; // gravity
+			particle.position = particle.position.add( particle.direction );
+		}
+
+		for ( var i = 0; i < particles.length; i++ )
+		{
 			var particle = particles[i];
 
-			var oldpos = particle.position;
-
-			// Update pos
-			particle.direction.y -= 0.1; // gravity
-			particle.position = particle.position.add( particle.direction );
-
-			if ( particle.position.y - defaultRadius <= ground.position.y )
+			if ( particle.position.y - defaultRadius <= map.ground.position.y )
 			{
 				// particle.direction = BABYLON.Vector3( -0.5, -0.5, -0.5 );//particle.direction.multiply( BABYLON.Vector3( -0.5, -0.5, -0.5 ) );
-				particle.position.y = ground.position.y + defaultRadius;
-				particle.direction.x = -particle.direction.x / 2;
-				particle.direction.y = -particle.direction.y / 2;
-				particle.direction.z = -particle.direction.z / 2;
+				particle.position.y = map.ground.position.y + defaultRadius;
+
+				particle.direction.x *= 0.975;
+				particle.direction.y = 0;
+				particle.direction.z *= 0.975;
 			}
-			for ( var j = i; j < particles.length; j++ )
+			for ( var j = i + 1; j < particles.length; j++ )
 			{
 				var particle2 = particles[j];
+
+				if ( particle2.position.y - defaultRadius <= map.ground.position.y )
+					particle2.direction.y = 0;
 
 				var distVec = particle2.position.subtract( particle.position );
 				var dist = distVec.length();
 
-
-				if ( dist <= 0 )
+				if ( dist <= defaultRadius + defaultRadius )
 				{
-					console.log( dist );
+					var coeff = defaultRadius / dist;
+
+					particle.position.x += particle.direction.x / -coeff;
+					particle.position.y += particle.direction.y / -coeff;
+					particle.position.z += particle.direction.z / -coeff;
+
+					particle2.position.x += -particle.direction.x / -coeff;
+					particle2.position.y += -particle.direction.y / -coeff;
+					particle2.position.z += -particle.direction.z / -coeff;
+
+					var tmp1 = particle.direction.length();
+					var tmp2 = particle2.direction.length();
+					var tmp3 = tmp2 / 2 + tmp1 / 2;
+
+					particle.direction.subtractInPlace( distVec );
+					particle.direction.normalize();
+					particle.direction = particle.direction.multiplyByFloats( tmp3, tmp3, tmp3 );
+
+					particle2.direction.addInPlace( distVec );
+					particle2.direction.normalize();
+					particle2.direction = particle2.direction.multiplyByFloats( tmp3, tmp3, tmp3 );
 				}
 			}
 		}
