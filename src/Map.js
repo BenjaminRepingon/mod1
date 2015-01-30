@@ -1,7 +1,6 @@
 var MOD1;
 (function (MOD1)
 {
-
 	MOD1.Map = function Map( width, height, scene, points )
 	{
 		this.indices = [];
@@ -40,35 +39,68 @@ var MOD1;
 		if ( points.length == 0 )
 			return ;
 
+		points.sort(function(a, b){ return a[1] - b[1] } );
+
 		for (var i = points.length - 1; i >= 0; i--)
 		{
-			this.interpol( points[i][0], points[i][2], points[i][1], width );
+			this.interpolVertex( points[i][0], points[i][2], points[i][1], width, 7 );
 		};
+
+		// smooth = 4;
+		// for (var i = points.length - 1; i >= 0; i--)
+		// {
+		// 	index = this.getCustomIndex( points[i][0], points[i][2], width );
+		// 	if ( this.positions[index] != points[i][1] )
+		// 	{
+		// 		this.interpolVertex( points[i][0], points[i][2], points[i][1], width, smooth);
+		// 		// i = points.length;
+		// 		// smooth--;
+		// 	}
+		// };
+
 	};
 
-	MOD1.Map.prototype.interpol = function( x, y, altitude, width )
+	MOD1.Map.prototype.interpolMap = function( )
+	{
+		for ( var x = 0; x < this.width; x++ )
+		{
+			for ( var y = 0; y < this.width; y++ )
+			{
+
+			};
+		};
+	}
+
+	MOD1.Map.prototype.interpolVertex = function( x, y, altitude, width, smooth )
 	{
 		altitude = altitude < 0 ? altitude + 1 : altitude;
 		firstCollision = -1;
 
-		for ( var i = 1; i <= Math.abs( altitude * 40 ); i++ )
+		for ( var i = 1; i <= Math.abs( altitude * smooth / 5 ); i++ )
 		{
-			for ( var j = 0; j <= 360; j+= 0.3 )
+			for ( var j = 0; j <= 360; j+= 0.2 )
 			{
 				rad = (j * 3.14159) / 180;
 				a = Math.ceil( x + i * Math.cos(rad) );
 				b = Math.ceil( y + i * Math.sin(rad) );
-				index = this.getCustomIndex( a, b, width );
-
-				newAltitude = altitude * Math.exp( - ( (a - x) * (a - x) ) / Math.abs( altitude * 10 ) - ( (b - y) * (b - y) ) / Math.abs( altitude * 10 ) );
-
-				if ( Math.abs( newAltitude ) > Math.abs( this.positions[ index ] ) )
-						this.positions[ index ] = newAltitude;
-				else if ( this.positions[ index ] > newAltitude && firstCollision < 1 )
+				if ( a < width && a >= 0 && b < width && b >= 0)
 				{
-					firstCollision = 0;
-					this.positions[ index ] = (this.positions[ index ] * 1.15 + newAltitude) / 2;
+					max_size = 0;
+					index = this.getCustomIndex( a, b, width );
+
+					for ( check = 1; check < smooth; check++ )
+					{
+						tmp_a = Math.ceil( x + i + check * Math.cos(rad) );
+						tmp_b = Math.ceil( y + i + check * Math.sin(rad) );
+						tmp_index = this.getCustomIndex( a, b, width );
+						if ( Math.abs( this.positions[ tmp_index ] ) > Math.abs( max_size ) )
+							max_size = this.positions[ tmp_index ];
+					}
+
+					newAltitude = (altitude - max_size) * Math.exp( - ( (a - x) * (a - x) ) / Math.abs( altitude * smooth ) - ( (b - y) * (b - y) ) / Math.abs( altitude * smooth ) );
+					this.positions[ index ] = newAltitude + max_size;
 				}
+
 			};
 			firstCollision = firstCollision == 0 ? 1 : firstCollision;
 		};
