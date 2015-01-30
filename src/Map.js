@@ -5,6 +5,7 @@ var MOD1;
 	MOD1.Map = function Map( width, height, scene, points )
 	{
 		this.indices = [];
+		this.width = width;
 		this.positions = [];
 		this.normals = [];
 		this.uvs = [];
@@ -22,7 +23,11 @@ var MOD1;
 		this.ground.setVerticesData(this.normals, BABYLON.VertexBuffer.NormalKind, true);
 		this.ground.setVerticesData(this.uvs, BABYLON.VertexBuffer.UVKind, true);
 		this.ground.setIndices(this.indices);
+	};
 
+	MOD1.Map.prototype.getAltitude = function( x, y )
+	{
+		return ( this.positions[this.getCustomIndex( x, y, this.width )] );
 	};
 
 	MOD1.Map.prototype.getCustomIndex = function( x, y, width )
@@ -100,6 +105,5 @@ var MOD1;
 			}
 		}
 	};
-
 
 })(MOD1 || (MOD1 = {}));

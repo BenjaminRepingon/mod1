@@ -24,6 +24,10 @@ MOD1.scene = function( scene )
 	emitter0.position.y = 10;
 	emitter0.isVisible = false;
 
+		console.log(map.getAltitude( 40, 20 ));
+		console.log(map.getAltitude( 40, 22 ));
+
+
 	// Custom shader for particles
 	// BABYLON.Effect.ShadersStore["myParticleFragmentShader"] =
 	// "#ifdef GL_ES\n" +
