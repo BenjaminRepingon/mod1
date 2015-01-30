@@ -48,7 +48,7 @@ MOD1.scene = function( scene )
 
 	// Particles
 	var defaultRadius = 0.5;
-	var particleSystem = new BABYLON.ParticleSystem("particles", 100, scene/*, effect*/);
+	var particleSystem = new BABYLON.ParticleSystem("particles", 50, scene/*, effect*/);
 	particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
 	particleSystem.minSize = 0.1;
 	particleSystem.maxSize = 1.0;
@@ -59,23 +59,46 @@ MOD1.scene = function( scene )
 	particleSystem.emitter = emitter0;
 	particleSystem.emitRate = 10;
 	particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
-	particleSystem.direction1 = new BABYLON.Vector3(-1, 1, -1);
-	particleSystem.direction2 = new BABYLON.Vector3(1, 1, 1);
+	// particleSystem.direction1 = new BABYLON.Vector3(-0.01, -0.3, -0.01);
+	// particleSystem.direction2 = new BABYLON.Vector3(0.01, -0.3, 0.01);
 	particleSystem.color1 = new BABYLON.Color4(0, 0.5, 1, 1);
 	particleSystem.color2 = new BABYLON.Color4(0, 0.2, 0.5, 1);
-	particleSystem.gravity = new BABYLON.Vector3(0, -10.0, 0);
+	// particleSystem.gravity = new BABYLON.Vector3(0, -10.0, 0);
 	particleSystem.start();
 
 	particleSystem.updateFunction = function ( particles )
 	{
-		for ( var index = 0; index < particles.length; index++ )
+		for ( var i = 0; i < particles.length; i++ )
 		{
-			var particle = particles[index];
+			var particle = particles[i];
 
-			console.log( "pok" )
+			var oldpos = particle.position;
+
+			// Update pos
+			particle.direction.y -= 0.1; // gravity
+			particle.position = particle.position.add( particle.direction );
 
 			if ( particle.position.y - defaultRadius <= ground.position.y )
-				particle.direction.y = 0;
+			{
+				// particle.direction = BABYLON.Vector3( -0.5, -0.5, -0.5 );//particle.direction.multiply( BABYLON.Vector3( -0.5, -0.5, -0.5 ) );
+				particle.position.y = ground.position.y + defaultRadius;
+				particle.direction.x = -particle.direction.x / 2;
+				particle.direction.y = -particle.direction.y / 2;
+				particle.direction.z = -particle.direction.z / 2;
+			}
+			for ( var j = i; j < particles.length; j++ )
+			{
+				var particle2 = particles[j];
+
+				var distVec = particle2.position.subtract( particle.position );
+				var dist = distVec.length();
+
+
+				if ( dist <= 0 )
+				{
+					console.log( dist );
+				}
+			}
 		}
 	};
 
