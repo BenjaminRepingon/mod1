@@ -3,10 +3,13 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-		<title>Babylon.js sample code</title>
+		<title>Mod1</title>
 		<!-- Babylon.js -->
-		<script src="./res/babylon.js"></script>
-		<script src="./res/mod1.min.js"></script>
+		<script src="./res/babylon.1.14.js"></script>
+		<!-- <script src="./res/mod1.min.js"></script> -->
+
+		<script src="./src/core.js"></script>
+		<script src="./src/mod1.js"></script>
 		<style>
 			html, body {
 				overflow: hidden;
@@ -30,18 +33,27 @@
 		var engine = new BABYLON.Engine( canvas, true );
 		var scene = new BABYLON.Scene( engine );
 
-		var core = new MOD1.Core( scene );
-		core.initScene();
-
-		engine.runRenderLoop(function ()
+		document.addEventListener("DOMContentLoaded", function()
 		{
-			scene.render();
-		});
+			if (BABYLON.Engine.isSupported())
+			{
+				var core = new MOD1.Core( scene );
+				core.initScene();
 
-		window.addEventListener( "resize", function ()
+				engine.runRenderLoop(function ()
+				{
+					scene.render();
+				});
+			}
+		}, false);
+
+		window.addEventListener("resize", function ()
 		{
-			engine.resize();
-		});
+			if (engine)
+			{
+				engine.resize();
+			}
+		}, false);
 	</script>
 </body>
 </html>
