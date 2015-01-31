@@ -26,38 +26,30 @@ MOD1.scene = function( scene )
 
 
 	// Custom shader for particles
-	// BABYLON.Effect.ShadersStore["myParticleFragmentShader"] =
-	// "#ifdef GL_ES\n" +
-	// "precision highp float;\n" +
-	// "#endif\n" +
+	BABYLON.Effect.ShadersStore["myParticleFragmentShader"] =
+	"#ifdef GL_ES\n" +
+	"precision highp float;\n" +
+	"#endif\n" +
 
-	// "varying vec2 vUV;\n" +                     // Provided by babylon.js
-	// "varying vec4 vColor;\n" +                  // Provided by babylon.js
+	"varying vec2 vUV;\n" +                     // Provided by babylon.js
+	"varying vec4 vColor;\n" +                  // Provided by babylon.js
 
-	// "uniform sampler2D diffuseSampler;\n" +     // Provided by babylon.js
-	// "uniform float time;\n" +                   // This one is custom so we need to declare it to the effect
+	"uniform sampler2D diffuseSampler;\n" +     // Provided by babylon.js
+	"uniform float time;\n" +                   // This one is custom so we need to declare it to the effect
 
-	// "void main(void) {\n" +
-	// 	"vec2 position = vUV;\n" +
-
-	// 	"float color = 0.0;\n" +
-	// 	"vec2 center = vec2(0.5, 0.5);\n" +
-
-	// 	"color = sin(distance(position, center) * 10.0+ time * vColor.g);\n" +
-
-	// 	"vec4 baseColor = texture2D(diffuseSampler, vUV);\n" +
-
-	// 	"gl_FragColor = baseColor * vColor * vec4( vec3(color, color, color), 1.0 );\n" +
-	// "}\n" +
-	// "";
+	"void main(void) \n" +
+	"{\n" +
+		"gl_FragColor = vColor;\n" +
+	"}\n" +
+	"";
 
 	// // Effect
-	// var effect = engine.createEffectForParticles("myParticle", ["time"]);
+	var effect = engine.createEffectForParticles("myParticle"/*, ["time"]*/);
 
 	// Particles
-	var defaultRadius = 0.3;
+	var defaultRadius = 0.35;
 	var defaultRestitution = 0.2;
-	var particleSystem = new BABYLON.ParticleSystem("particles", 2000, scene/*, effect*/);
+	var particleSystem = new BABYLON.ParticleSystem("particles", 1500, scene/*, effect*/);
 	particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
 	particleSystem.minSize = 1.0;
 	particleSystem.maxSize = 1.0;
@@ -66,7 +58,7 @@ MOD1.scene = function( scene )
 	particleSystem.minEmitPower = 3.0;
 	particleSystem.maxEmitPower = 3.0;
 	particleSystem.emitter = emitter0;
-	particleSystem.emitRate = 100;
+	particleSystem.emitRate = 400;
 	particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
 	particleSystem.direction1 = new BABYLON.Vector3(-0.1, -0.1, -0.1);
 	particleSystem.direction2 = new BABYLON.Vector3(0.1, -0.1, 0.1);
@@ -75,20 +67,26 @@ MOD1.scene = function( scene )
 	// particleSystem.gravity = new BABYLON.Vector3(0, -10.0, 0);
 	particleSystem.start();
 
+	var precision = 0.01;
+
 	particleSystem.updateFunction = function ( particles )
 	{
-		for ( var i = 0; i < particles.length; i++ )
-		{
-			// Update pos
-			var particle = particles[i];
-			particle.direction.y -= 0.005; // gravity
-			particle.position = particle.position.add( particle.direction );
-		}
+		// for ( var i = 0; i < particles.length; i++ )
+		// {
+		// 	// Update pos
+		// 	var particle = particles[i];
+		// }
 
 		for ( var i = 0; i < particles.length; i++ )
 		{
 			var particle = particles[i];
 
+			particle.direction.y -= 0.05; // gravity
+
+			if ( particle.sleep )
+				continue ;
+
+			// ground collision
 			if ( particle.position.y - defaultRadius <= map.ground.position.y )
 			{
 				// particle.direction = BABYLON.Vector3( -0.5, -0.5, -0.5 );//particle.direction.multiply( BABYLON.Vector3( -0.5, -0.5, -0.5 ) );
@@ -98,40 +96,120 @@ MOD1.scene = function( scene )
 				particle.direction.y = 0;
 				particle.direction.z *= 0.975;
 			}
-			for ( var j = i + 1; j < particles.length; j++ )
-			{
-				var particle2 = particles[j];
 
-				if ( particle2.position.y - defaultRadius <= map.ground.position.y )
-					particle2.direction.y = 0;
+			// Wall
+			var test = 8;
+			if ( particle.position.x - defaultRadius >= test )
+			{
+				particle.position.x = test + defaultRadius;
+				particle.direction.x = -particle.direction.x * 0.975;
+			}
+			if ( particle.position.x - defaultRadius <= -test )
+			{
+				particle.position.x = -test + defaultRadius;
+				particle.direction.x = -particle.direction.x * 0.975;
+			}
+			if ( particle.position.z - defaultRadius >= test )
+			{
+				particle.position.z = test + defaultRadius;
+				particle.direction.z = -particle.direction.z * 0.975;
+			}
+			if ( particle.position.z - defaultRadius <= -test )
+			{
+				particle.position.z = -test + defaultRadius;
+				particle.direction.z = -particle.direction.z * 0.975;
+			}
+
+			// 	 particle.position.z - defaultRadius >= test ||
+			// 	 particle.position.z - defaultRadius <= -test )
+			// {
+			// 	particle.position =
+			// 	particle.direction = particle.direction.multiplyByFloats( -0.975, -0.975, -0.975 );
+			// 	// particle.position = particle.direction.multiplyByFloats( -0.975, -0.975, -0.975 );
+			// }
+			for ( var j = 0; j < particles.length; j++ )
+			{
+				// don't check same
+				if ( i == j )
+					continue ;
+				var particle2 = particles[j];
 
 				var distVec = particle2.position.subtract( particle.position );
 				var dist = distVec.length();
 
 				if ( dist <= defaultRadius + defaultRadius )
 				{
-					var coeff = defaultRadius / dist;
+					// get the mtd
+					var delta = particle.position.subtract( particle2.position );
+					var d = delta.length();
+					// minimum translation distance to push balls apart after intersecting
+					var tmp = ( ( defaultRadius + defaultRadius ) -d ) / d;
+					var mtd = delta.multiplyByFloats( tmp, tmp, tmp );
 
-					particle.position.x += particle.direction.x / -coeff;
-					particle.position.y += particle.direction.y / -coeff;
-					particle.position.z += particle.direction.z / -coeff;
+					// resolve intersection --
+					// inverse mass quantities
+					var mass = 10;
+					var im1 = 1 / 10;
+					var im2 = 1 / 10;
 
-					particle2.position.x += -particle.direction.x / -coeff;
-					particle2.position.y += -particle.direction.y / -coeff;
-					particle2.position.z += -particle.direction.z / -coeff;
+					// push-pull them apart based off their mass
+					var tmp1 = im1 / ( im1 + im2 );
+					particle.position.addInPlace( mtd.multiplyByFloats( tmp1, tmp1, tmp1 ) );
+					var tmp2 = im2 / ( im1 + im2 );
+					particle2.position.subtractInPlace( mtd.multiplyByFloats( tmp2, tmp2, tmp2 ) );
 
-					var tmp1 = particle.direction.length();
-					var tmp2 = particle2.direction.length();
-					var tmp3 = tmp2 / 2 + tmp1 / 2;
+					// impact speed
+					var v = particle.direction.subtract( particle2.direction );
+					var vn = BABYLON.Vector3.Dot( v, mtd.normalize() );
 
-					particle.direction.subtractInPlace( distVec );
-					particle.direction.normalize();
-					particle.direction = particle.direction.multiplyByFloats( tmp3, tmp3, tmp3 );
+					// sphere intersecting but moving away from each other already
+					if ( vn > 0.0 )
+						continue ;
 
-					particle2.direction.addInPlace( distVec );
-					particle2.direction.normalize();
-					particle2.direction = particle2.direction.multiplyByFloats( tmp3, tmp3, tmp3 );
+					// collision impulse
+					var reduction = 0.2;
+					var i_ = ( -( 1.0 + reduction ) * vn ) / ( im1 + im2 );
+					var impulse = mtd.normalize().multiplyByFloats( i_, i_, i_ );
+
+					// change in momentum
+					if ( ! particle2.sleep )
+						particle.direction.addInPlace( impulse.multiplyByFloats( im1, im1, im1 ) );
+					if ( ! particle.sleep )
+						particle2.direction.subtractInPlace( impulse.multiplyByFloats( im2, im2, im2 ) );
+
+					// is sleep ?
+					if ( particle2.direction.x < precision && particle2.direction.x > -precision &&
+						 particle2.direction.y < precision && particle2.direction.y > -precision &&
+						 particle2.direction.z < precision && particle2.direction.z > -precision )
+					{
+						particle2.sleep = true;
+						particle2.direction = BABYLON.Vector3.Zero();
+						particle2.color = new BABYLON.Color4( 0.5, 0, 0, 1 );
+					}
+					else
+					{
+						particle2.sleep = false;
+						particle2.color = new BABYLON.Color4( 0, 0.35, 0.75, 1 );
+					}
 				}
+			}
+
+			// move
+			particle.position = particle.position.add( particle.direction );
+
+			// is sleep ?
+			if ( particle.direction.x < precision && particle.direction.x > -precision &&
+				 particle.direction.y < precision && particle.direction.y > -precision &&
+				 particle.direction.z < precision && particle.direction.z > -precision )
+			{
+				particle.sleep = true;
+				particle.direction = BABYLON.Vector3.Zero();
+				particle.color = new BABYLON.Color4( 0.5, 0, 0, 1 );
+			}
+			else
+			{
+				particle.sleep = false;
+				particle.color = new BABYLON.Color4( 0, 0.35, 0.75, 1 );
 			}
 		}
 	};
