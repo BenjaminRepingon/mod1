@@ -85,20 +85,22 @@ var MOD1;
 				b = Math.ceil( y + i * Math.sin(rad) );
 				if ( a < width && a >= 0 && b < width && b >= 0)
 				{
-					max_size = 0;
+					// max_size = 0;
 					index = this.getCustomIndex( a, b, width );
 
-					for ( check = 1; check < smooth; check++ )
-					{
-						tmp_a = Math.ceil( x + i + check * Math.cos(rad) );
-						tmp_b = Math.ceil( y + i + check * Math.sin(rad) );
-						tmp_index = this.getCustomIndex( a, b, width );
-						if ( Math.abs( this.positions[ tmp_index ] ) > Math.abs( max_size ) )
-							max_size = this.positions[ tmp_index ];
-					}
+					// for ( check = 1; check < smooth; check++ )
+					// {
+					// 	tmp_a = Math.ceil( x + i + check * Math.cos(rad) );
+					// 	tmp_b = Math.ceil( y + i + check * Math.sin(rad) );
+					// 	tmp_index = this.getCustomIndex( a, b, width );
+					// 	if ( Math.abs( this.positions[ tmp_index ] ) > Math.abs( max_size ) )
+					// 		max_size = this.positions[ tmp_index ];
+					// }
 
-					newAltitude = (altitude - max_size) * Math.exp( - ( (a - x) * (a - x) ) / Math.abs( altitude * smooth ) - ( (b - y) * (b - y) ) / Math.abs( altitude * smooth ) );
-					this.positions[ index ] = newAltitude + max_size;
+					newAltitude = altitude * Math.exp( - ( (a - x) * (a - x) ) / Math.abs( altitude * smooth ) - ( (b - y) * (b - y) ) / Math.abs( altitude * smooth ) );
+					// newAltitude = (altitude - max_size) * Math.exp( - ( (a - x) * (a - x) ) / Math.abs( altitude * smooth ) - ( (b - y) * (b - y) ) / Math.abs( altitude * smooth ) );
+					// this.positions[ index ] = newAltitude + max_size;
+					this.positions[ index ] = newAltitude;
 				}
 
 			};
