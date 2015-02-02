@@ -49,7 +49,7 @@ MOD1.scene = function( scene )
 	// Particles
 	var defaultRadius = 0.35;
 	var defaultRestitution = 0.2;
-	var particleSystem = new BABYLON.ParticleSystem("particles", 1800, scene/*, effect*/);
+	var particleSystem = new BABYLON.ParticleSystem("particles", 1000, scene/*, effect*/);
 	particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
 	particleSystem.minSize = 1.0;
 	particleSystem.maxSize = 1.0;
@@ -100,7 +100,7 @@ MOD1.scene = function( scene )
 
 				if ( diffPoint < groundAltitude )
 				{
-					inclination = new BABYLON.Vector3( -1, diffPoint - groundAltitude, 0 );
+					inclination = new BABYLON.Vector3( ( diffPoint - groundAltitude ), 0, 0 );
 					groundAltitude = diffPoint;
 				}
 
@@ -108,7 +108,7 @@ MOD1.scene = function( scene )
 
 				if ( diffPoint < groundAltitude )
 				{
-					inclination = new BABYLON.Vector3( 1, diffPoint - groundAltitude, 0 );
+					inclination = new BABYLON.Vector3( -( diffPoint - groundAltitude ), 0, 0 );
 					groundAltitude = diffPoint;
 				}
 
@@ -117,7 +117,7 @@ MOD1.scene = function( scene )
 
 				if ( diffPoint < groundAltitude )
 				{
-					inclination = new BABYLON.Vector3( 0 , diffPoint - groundAltitude, -1 );
+					inclination = new BABYLON.Vector3( 0 , 0, ( diffPoint - groundAltitude ) );
 					groundAltitude = diffPoint;
 				}
 
@@ -125,7 +125,7 @@ MOD1.scene = function( scene )
 
 				if ( diffPoint < groundAltitude )
 				{
-					inclination = new BABYLON.Vector3( 0 , diffPoint - groundAltitude, 1 );
+					inclination = new BABYLON.Vector3( 0 , 0, -( diffPoint - groundAltitude ) );
 					groundAltitude = diffPoint;
 				}
 				// tmp = map.getAltitude( particle.position.x - 1, particle.position.z );
@@ -158,28 +158,25 @@ MOD1.scene = function( scene )
 
 
 
-				inclination.normalize();
-				// inclination.multiplyByFloats( particle.direction.length() * 0.0000001, particle.direction.length() * 0.0000001, particle.direction.length() * 0.0000001 );
-
-				particle.direction.x += inclination.x;
-				// particle.direction.y += inclination.y;
-				particle.direction.z += inclination.z;
-
-				if ( particle.direction.y > 0.001 )
-				{
-					particle.direction.x *= 0.5;
-					particle.direction.y *= 0.5;
-					particle.direction.z *= 0.5;
-				}
-
 				particle.direction.x *= 0.975;
 				particle.direction.y = 0;
 				particle.direction.z *= 0.975;
+
+				if ( inclination.length() > 0.01 )
+				{
+					inclination = inclination.multiplyByFloats( 0.3, 0.3, 0.3 );
+					particle.direction.x += inclination.x;
+					particle.direction.x *= 0.975;
+					particle.direction.y = 0;
+					particle.direction.y *= 0.975;
+					particle.direction.z += inclination.z;
+					particle.direction.z *= 0.975;
+				}
 				// particle.direction.addInPlace( diffPoint );
 			}
 
 			// Wall
-			var test = 15;
+			var test = 50;
 			if ( particle.position.x - defaultRadius >= test )
 			{
 				particle.position.x = test + defaultRadius;
