@@ -1,6 +1,7 @@
 var MOD1;
 (function (MOD1)
 {
+	var debug = 0;
 	MOD1.Map = function Map( width, height, scene, points )
 	{
 		this.indices = [];
@@ -9,12 +10,15 @@ var MOD1;
 		this.normals = [];
 		this.uvs = [];
 		this.ground = new BABYLON.Mesh("Map", scene);
+		this.altitude = [];
 
 		this.basicGround( width, height, width , height , scene );
 
 		// var test = [[10, 15, 10], [30, 42, 10], [70, -15, 10], [40, 21, 10], [70, -12, 10], [50, -5, 50], [90, 8, 90], [70, 35, 70]];
-		var test = [[10, 15, 10], [11, -15, 11], [70, 15, 70]];
+		var test = [[10, 15, 10], [35, -10, 35], [70, 15, 70]];
+		// var test = [[50, 50, 50]];
 		this.drawMontains(test, width);
+		this.CreateArrayOfAltitude();
 
 		/*
 		** Set Vertices
@@ -27,12 +31,26 @@ var MOD1;
 
 	MOD1.Map.prototype.getAltitude = function( x, y )
 	{
-		return ( this.positions[this.getCustomIndex( x, y, this.width )] );
+		if ( Math.round(y) >= this.altitude.length || Math.round(y) < -50 )
+			return 0;
+		return ( this.altitude[Math.round( y )][Math.round( x )] + this.ground.position.y );
 	};
 
-	MOD1.Map.prototype.getCustomIndex = function( x, y, width )
+	MOD1.Map.prototype.getCustomIndex = function( x, y )
 	{
-		return ( ( x * (width + 1) + y ) * 3 + 1 );
+		return ( ( x * (this.width + 1) + y ) * 3 + 1 );
+	};
+
+	MOD1.Map.prototype.CreateArrayOfAltitude = function( )
+	{
+		for ( var i = 0; i < this.width ; i++ )
+		{
+			this.altitude[this.width - i - 50] = [];
+			for ( var j = 0; j < this.width; j++ )
+			{
+				this.altitude[this.width - i - 50][j - 50] = this.positions[ this.getCustomIndex( i, j ) ];
+			};
+		};
 	};
 
 	MOD1.Map.prototype.drawMontains = function( points, width )
@@ -50,19 +68,18 @@ var MOD1;
 		// smooth = 4;
 		// for (var i = points.length - 1; i >= 0; i--)
 		// {
-		// 	index = this.getCustomIndex( points[i][0], points[i][2], width );
-		// 	if ( this.positions[index] != points[i][1] )
-		// 	{
-		// 		this.interpolVertex( points[i][0], points[i][2], points[i][1], width, smooth);
-		// 		// i = points.length;
-		// 		// smooth--;
-		// 	}
+		//  index = this.getCustomIndex( points[i][0], points[i][2], width );
+		//  if ( this.positions[index] != points[i][1] )
+		//  {
+		//      this.interpolVertex( points[i][0], points[i][2], points[i][1], width, smooth);
+		//      // i = points.length;
+		//      // smooth--;
+		//  }
 		// };
 
 	};
 
-
-	MOD1.Map.prototype.defineAltitude = function( x, y, altitude, smooth, points )
+	MOD1.Map.prototype.defineAltitude = function( x, y, smooth, points )
 	{
 		newAltitude = 0;
 		nb_vertex = 0;
@@ -101,14 +118,14 @@ var MOD1;
 
 					// for ( check = 1; check < smooth; check++ )
 					// {
-					// 	tmp_a = Math.ceil( x + i + check * Math.cos(rad) );
-					// 	tmp_b = Math.ceil( y + i + check * Math.sin(rad) );
-					// 	tmp_index = this.getCustomIndex( a, b, width );
-					// 	if ( Math.abs( this.positions[ tmp_index ] ) > Math.abs( max_size ) )
-					// 		max_size = this.positions[ tmp_index ];
+					//  tmp_a = Math.ceil( x + i + check * Math.cos(rad) );
+					//  tmp_b = Math.ceil( y + i + check * Math.sin(rad) );
+					//  tmp_index = this.getCustomIndex( a, b, width );
+					//  if ( Math.abs( this.positions[ tmp_index ] ) > Math.abs( max_size ) )
+					//      max_size = this.positions[ tmp_index ];
 					// }
 
-					newAltitude = this.defineAltitude( a, b, altitude, smooth, points );
+					newAltitude = this.defineAltitude( a, b, smooth, points );
 					// newAltitude = (altitude - max_size) * Math.exp( - ( (a - x) * (a - x) ) / Math.abs( altitude * smooth ) - ( (b - y) * (b - y) ) / Math.abs( altitude * smooth ) );
 					// this.positions[ index ] = newAltitude + max_size;
 					this.positions[ index ] = newAltitude;

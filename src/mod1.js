@@ -49,7 +49,7 @@ MOD1.scene = function( scene )
 	// Particles
 	var defaultRadius = 0.35;
 	var defaultRestitution = 0.2;
-	var particleSystem = new BABYLON.ParticleSystem("particles", 1500, scene/*, effect*/);
+	var particleSystem = new BABYLON.ParticleSystem("particles", 1800, scene/*, effect*/);
 	particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
 	particleSystem.minSize = 1.0;
 	particleSystem.maxSize = 1.0;
@@ -87,18 +87,99 @@ MOD1.scene = function( scene )
 				continue ;
 
 			// ground collision
-			if ( particle.position.y - defaultRadius <= map.ground.position.y )
+			inclination = new BABYLON.Vector3(0, 0, 0);
+			groundAltitude = map.getAltitude( particle.position.x, particle.position.z );
+			// groundAltitude = map.ground.position.y;
+			if ( particle.position.y - defaultRadius <= groundAltitude )
 			{
 				// particle.direction = BABYLON.Vector3( -0.5, -0.5, -0.5 );//particle.direction.multiply( BABYLON.Vector3( -0.5, -0.5, -0.5 ) );
-				particle.position.y = map.ground.position.y + defaultRadius;
+				particle.position.y = groundAltitude + defaultRadius;
+
+				// groundAltitude;
+				diffPoint = map.getAltitude( particle.position.x - 1, particle.position.z );
+
+				if ( diffPoint < groundAltitude )
+				{
+					inclination = new BABYLON.Vector3( -1, diffPoint - groundAltitude, 0 );
+					groundAltitude = diffPoint;
+				}
+
+				diffPoint = map.getAltitude( particle.position.x + 1, particle.position.z );
+
+				if ( diffPoint < groundAltitude )
+				{
+					inclination = new BABYLON.Vector3( 1, diffPoint - groundAltitude, 0 );
+					groundAltitude = diffPoint;
+				}
+
+
+				diffPoint = map.getAltitude( particle.position.x, particle.position.z - 1 );
+
+				if ( diffPoint < groundAltitude )
+				{
+					inclination = new BABYLON.Vector3( 0 , diffPoint - groundAltitude, -1 );
+					groundAltitude = diffPoint;
+				}
+
+				diffPoint = map.getAltitude( particle.position.x, particle.position.z + 1 );
+
+				if ( diffPoint < groundAltitude )
+				{
+					inclination = new BABYLON.Vector3( 0 , diffPoint - groundAltitude, 1 );
+					groundAltitude = diffPoint;
+				}
+				// tmp = map.getAltitude( particle.position.x - 1, particle.position.z );
+				// if ( tmp < diffPoint )
+				// {
+				// 	slope = new BABYLON.Vector3( -1, particle.position.z , tmp );
+				// 	diffPoint = tmp;
+				// }
+				// tmp = map.getAltitude( particle.position.x + 1, particle.position.z );
+				// if ( tmp < diffPoint )
+				// {
+				// 	slope = new BABYLON.Vector3( 1, particle.position.z , tmp );
+				// 	diffPoint = tmp;
+				// }
+				// diffPoint = diffPoint > tmp ? tmp : diffPoint;
+				// tmp = map.getAltitude( particle.position.x, particle.position.z - 1 );
+				// if ( tmp < diffPoint )
+				// {
+				// 	slope = new BABYLON.Vector3( particle.position.x, -1 , tmp );
+				// 	diffPoint = tmp;
+				// }
+				// diffPoint = diffPoint > tmp ? tmp : diffPoint;
+				// tmp = map.getAltitude( particle.position.x, particle.position.z + 1 );
+				// if ( tmp < diffPoint )
+				// {
+				// 	slope = new BABYLON.Vector3( particle.position.x, 1 , tmp );
+				// 	diffPoint = tmp;
+				// }
+				// diffPoint = diffPoint > tmp ? tmp : diffPoint;
+
+
+
+				inclination.normalize();
+				// inclination.multiplyByFloats( particle.direction.length() * 0.0000001, particle.direction.length() * 0.0000001, particle.direction.length() * 0.0000001 );
+
+				particle.direction.x += inclination.x;
+				// particle.direction.y += inclination.y;
+				particle.direction.z += inclination.z;
+
+				if ( particle.direction.y > 0.001 )
+				{
+					particle.direction.x *= 0.5;
+					particle.direction.y *= 0.5;
+					particle.direction.z *= 0.5;
+				}
 
 				particle.direction.x *= 0.975;
 				particle.direction.y = 0;
 				particle.direction.z *= 0.975;
+				// particle.direction.addInPlace( diffPoint );
 			}
 
 			// Wall
-			var test = 8;
+			var test = 15;
 			if ( particle.position.x - defaultRadius >= test )
 			{
 				particle.position.x = test + defaultRadius;
@@ -167,7 +248,7 @@ MOD1.scene = function( scene )
 						continue ;
 
 					// collision impulse
-					var reduction = 0.2;
+					var reduction = 0.5;
 					var i_ = ( -( 1.0 + reduction ) * vn ) / ( im1 + im2 );
 					var impulse = mtd.normalize().multiplyByFloats( i_, i_, i_ );
 
