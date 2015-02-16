@@ -14,14 +14,16 @@ MOD1.scene = function( scene )
 	map.ground.receiveShadows = true;
 
 	var mat = new BABYLON.StandardMaterial("mat", scene);
-	mat.diffuseColor = BABYLON.Color3.White();
+	mat.diffuseColor = new BABYLON.Color3( 0.8, 0.8, 0.8 );
+	// mat.ambientColor = new BABYLON.Color3(1, 0.2, 0.7);
+	// mat.specularColor = new BABYLON.Color3(1.0, 0.2, 0.7);
 	mat.wireframe = true;
 
 	map.ground.material = mat;
 
 	// Emitters
 	var emitter0 = BABYLON.Mesh.CreateBox("emitter0", 0.1, scene);
-	emitter0.position.y = 10;
+	emitter0.position.y = 50;
 	emitter0.position.x = 0;
 	emitter0.position.z = 0;
 	emitter0.isVisible = false;
@@ -49,7 +51,7 @@ MOD1.scene = function( scene )
 	var effect = engine.createEffectForParticles("myParticle"/*, ["time"]*/);
 
 	// Particles
-	var particleSystem = new BABYLON.ParticleSystem("particles", 500, scene/*, effect*/);
+	var particleSystem = new BABYLON.ParticleSystem("particles", 1000, scene/*, effect*/);
 	particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
 	particleSystem.minSize = 3.0;
 	particleSystem.maxSize = 3.0;
@@ -58,33 +60,125 @@ MOD1.scene = function( scene )
 	particleSystem.minEmitPower = 3.0;
 	particleSystem.maxEmitPower = 3.0;
 	particleSystem.emitter = emitter0;
-	particleSystem.emitRate = 100;
-	particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
-	particleSystem.direction1 = new BABYLON.Vector3(-0.1, 0, -0.1);
-	particleSystem.direction2 = new BABYLON.Vector3(0.1, 0, 0.1);
+	particleSystem.emitRate = 50;
+	// particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
+	particleSystem.direction1 = new BABYLON.Vector3(-0.5, 0, -0.5);
+	particleSystem.direction2 = new BABYLON.Vector3(0.5, 0, 0.5);
 	particleSystem.color1 = new BABYLON.Color4(0, 0.5, 1, 1);
 	particleSystem.color2 = new BABYLON.Color4(0, 0.2, 0.5, 1);
 	// particleSystem.gravity = new BABYLON.Vector3(0, -10.0, 0);
 	particleSystem.start();
 
-	var iterations = 1;
+	var iterations = 10;
 	var defaultRadius = 1;
 	var defaultMass = 10;
-	var defaultWallMass = 100;
+	var defaultWallMass = 100000;
 	var gravity = new BABYLON.Vector3( 0, -50, 0 );
+
+	var test = function( x, z )
+	{
+		return ( new BABYLON.Vector3( Math.round( x ), map.getAltitude( x, z ), Math.round( z ) ) );
+	}
+
+	function toRad( value )
+	{
+		/** Converts numeric degrees to radians */
+		return ( value * Math.PI / 180 );
+	}
+
+	function toDeg( value )
+	{
+		/** Converts numeric radians to degrees */
+		return ( value * 180 / Math.PI );
+	}
+
+	function checkTriangleCollide( A, B, C, Particle, contacts )
+	{
+		A = A.subtract( Particle.position );
+		B = B.subtract( Particle.position );
+		C = C.subtract( Particle.position );
+
+		V = BABYLON.Vector3.Cross( B.subtract( A ), C.subtract( A ) );
+		// N = V.normalize();
+		// d = BABYLON.Vector3.Dot( A, V );
+
+		rr = defaultRadius * defaultRadius;
+
+		d = BABYLON.Vector3.Dot( A, V );
+		e = BABYLON.Vector3.Dot( V, V );
+		sep1 = d * d > rr * e;
+
+		if ( sep1 )
+			return ;
+
+		aa = BABYLON.Vector3.Dot( A, A );
+		ab = BABYLON.Vector3.Dot( A, B );
+		ac = BABYLON.Vector3.Dot( A, C );
+		bb = BABYLON.Vector3.Dot( B, B );
+		bc = BABYLON.Vector3.Dot( B, C );
+		cc = BABYLON.Vector3.Dot( C, C );
+		sep2 = ( aa > rr ) && ( ab > aa ) && ( ac > aa );
+		if ( sep2 )
+			return ;
+		sep3 = ( bb > rr ) && ( ab > bb ) && ( bc > bb );
+		if ( sep3 )
+			return ;
+		sep4 = ( cc > rr ) && ( ac > cc ) && ( bc > cc );
+		if ( sep4 )
+			return ;
+		AB = B.subtract( A );
+		BC = C.subtract( B );
+		CA = A.subtract( C );
+		d1 = ab - aa;
+		d2 = bc - bb;
+		d3 = ac - cc;
+		e1 = BABYLON.Vector3.Dot( AB, AB );
+		e2 = BABYLON.Vector3.Dot( BC, BC );
+		e3 = BABYLON.Vector3.Dot( CA, CA );
+		Q1 = A.multiplyByFloats( e1, e1, e1 ).subtract( AB.multiplyByFloats( d1, d1, d1 ) );
+		Q2 = B.multiplyByFloats( e2, e2, e2 ).subtract( BC.multiplyByFloats( d2, d2, d2 ) );
+		Q3 = C.multiplyByFloats( e3, e3, e3 ).subtract( CA.multiplyByFloats( d3, d3, d3 ) );
+		QC = C.multiplyByFloats( e1, e1, e1 ).subtract( Q1 );
+		QA = A.multiplyByFloats( e2, e2, e2 ).subtract( Q2 );
+		QB = B.multiplyByFloats( e3, e3, e3 ).subtract( Q3 );
+		sep5 = ( BABYLON.Vector3.Dot( Q1, Q1 ) > rr * e1 * e1 ) && ( BABYLON.Vector3.Dot( Q1, QC ) > 0 );
+		if ( sep5 )
+			return ;
+		sep6 = ( BABYLON.Vector3.Dot( Q2, Q2 ) > rr * e2 * e2 ) && ( BABYLON.Vector3.Dot( Q2, QA ) > 0 );
+		if ( sep6 )
+			return ;
+		sep7 = ( BABYLON.Vector3.Dot( Q3, Q3 ) > rr * e3 * e3 ) && ( BABYLON.Vector3.Dot( Q3, QB ) > 0 );
+		if ( sep7 )
+			return ;
+		separated = sep1 || sep2 || sep3 || sep4 || sep5 || sep6 || sep7;
+
+		// console.log( d );
+
+		if ( ! separated )
+		{
+			N = V.normalize();
+			distance = Math.abs( BABYLON.Vector3.Dot( A, N ) - defaultRadius );
+			B = {
+				direction: N.multiplyByFloats( distance, distance, distance ),
+				// direction: Particle.direction.negate(),
+				position: BABYLON.Vector3.Zero()
+			};
+			contacts.push ( {
+					A: Particle,
+					AMass: defaultMass,
+					B: B,
+					BMass: defaultWallMass,
+					penetration: distance,
+					normal: N,
+				} );
+		}
+	}
 
 	particleSystem.updateFunction = function ( particles )
 	{
-		// dt = scene.getEngine().getDeltaTime();
 		fps = scene.getEngine().getFps();
 		dt = 1 / fps;
-		// console.log( "Frame per second: " + fps );
-		// console.log( "Delta time: " + dt );
-		// if ( fps < 60 )
-		// {
-		// 	console.log( "Collisions skiped" );
-		// 	return ;
-		// }
+
 		contacts = [];
 
 		// Generate new collision info
@@ -92,29 +186,173 @@ MOD1.scene = function( scene )
 		{
 			A = particles[i];
 
-			if ( A.position.y - defaultRadius <= 0 )
-			{
-				B = {
-					direction: new BABYLON.Vector3( 0, -A.direction.y, 0 ),
-					position: new BABYLON.Vector3( A.position.x, 0, A.position.z )
-				};
+			// y1 = map.getAltitude( A.position.x, A.position.z );
 
-				normal = new BABYLON.Vector3( 0, -1, 0 );
-				// normal = A.position.subtract( B.position );
+			// base = new BABYLON.Vector3( Math.round( A.position.x ), y1, Math.round( A.position.z ) );
 
-				// normal.normalize();
+			// v = A.position.subtract( base );
 
-				contacts.push ( {
-						A: A,
-						AMass: defaultMass,
-						B: B,
-						BMass: defaultWallMass,
-						penetration: -( A.position.y - defaultRadius ),
-						normal: normal,
-					} );
-			}
+			// if ( v.x > 0 )
+			// {
+			// 	if ( v.z < 0 )
+			// 	{
+			// 		v1 = test( A.position.x, A.position.z - 1 );
+			// 		v2 = test( A.position.x + 1, A.position.z );
+			// 	}
+			// 	else
+			// 	{
+			// 		if ( v.x < v.z )
+			// 		{
+			// 			v1 = test( A.position.x + 1, A.position.z + 1 );
+			// 			v2 = test( A.position.x, A.position.z + 1 );
+			// 		}
+			// 		else
+			// 		{
+			// 			v1 = test( A.position.x + 1, A.position.z );
+			// 			v2 = test( A.position.x + 1, A.position.z + 1 );
+			// 		}
+			// 	}
+			// }
+			// else
+			// {
+			// 	if ( v.z > 0 )
+			// 	{
+			// 		v1 = test( A.position.x, A.position.z + 1 );
+			// 		v2 = test( A.position.x - 1, A.position.z );
+			// 	}
+			// 	else
+			// 	{
+			// 		if ( v.x < v.z )
+			// 		{
+			// 			v1 = test( A.position.x - 1, A.position.z );
+			// 			v2 = test( A.position.x - 1, A.position.z - 1 );
+			// 		}
+			// 		else
+			// 		{
+			// 			v1 = test( A.position.x - 1, A.position.z - 1 );
+			// 			v2 = test( A.position.x, A.position.z - 1 );
+			// 		}
+			// 	}
+			// }
 
-			wall = 50;
+			// y1 = map.getAltitude( A.position.x, A.position.z );
+
+			A_ = test( A.position.x, A.position.z );
+			B_ = test( A.position.x, A.position.z - 1 );
+			C_ = test( A.position.x + 1, A.position.z );
+			checkTriangleCollide( A_, B_, C_, A, contacts );
+
+			A_ = test( A.position.x, A.position.z );
+			B_ = test( A.position.x + 1, A.position.z + 1 );
+			C_ = test( A.position.x, A.position.z + 1 );
+			checkTriangleCollide( A_, B_, C_, A, contacts );
+
+			A_ = test( A.position.x, A.position.z );
+			B_ = test( A.position.x + 1, A.position.z );
+			C_ = test( A.position.x + 1, A.position.z + 1 );
+			checkTriangleCollide( A_, B_, C_, A, contacts );
+
+			A_ = test( A.position.x, A.position.z );
+			B_ = test( A.position.x, A.position.z + 1 );
+			C_ = test( A.position.x - 1, A.position.z );
+			checkTriangleCollide( A_, B_, C_, A, contacts );
+
+			A_ = test( A.position.x, A.position.z );
+			B_ = test( A.position.x - 1, A.position.z );
+			C_ = test( A.position.x - 1, A.position.z - 1 );
+			checkTriangleCollide( A_, B_, C_, A, contacts );
+
+			A_ = test( A.position.x, A.position.z );
+			B_ = test( A.position.x - 1, A.position.z - 1 );
+			C_ = test( A.position.x, A.position.z - 1 );
+			checkTriangleCollide( A_, B_, C_, A, contacts );
+
+			// A_ = A_.subtract( A.position );
+			// B_ = B_.subtract( A.position );
+			// C_ = C_.subtract( A.position );
+
+			// V = BABYLON.Vector3.Cross( B_.subtract( A_ ), C_.subtract( A_ ) );
+			// N = V.normalize();
+			// distance = BABYLON.Vector3.Dot( A_, N );
+
+			// if ( distance - defaultRadius < 0 )
+			// {
+			// 	distance = Math.abs( distance - defaultRadius);
+			// 	length = A.direction.length();
+			// 	B = {
+			// 		direction: N,
+			// 		position: BABYLON.Vector3.Zero()
+			// 	};
+			// 	contacts.push ( {
+			// 			A: A,
+			// 			AMass: defaultMass,
+			// 			B: B,
+			// 			BMass: defaultWallMass,
+			// 			penetration: distance,
+			// 			normal: N,
+			// 		} );
+			// }
+
+			// console.log( distance );
+
+			// v1 = test( A.position.x + 1, A.position.z + 1 ).subtract( base );
+			// v2 = test( A.position.x, A.position.z + 1 ).subtract( base );
+			// normal = BABYLON.Vector3.Cross( v1, v2 ).normalize();
+			// d = Math.abs( BABYLON.Vector3.Dot( base, normal ) );
+
+
+			// v1 = test( A.position.x + 1, A.position.z ).subtract( base );
+			// v2 = test( A.position.x + 1, A.position.z + 1 ).subtract( base );
+			// normal = BABYLON.Vector3.Cross( v1, v2 ).normalize();
+			// d = Math.abs( BABYLON.Vector3.Dot( base, normal ) );
+
+
+			// v1 = test( A.position.x, A.position.z + 1 ).subtract( base );
+			// v2 = test( A.position.x - 1, A.position.z ).subtract( base );
+			// normal = BABYLON.Vector3.Cross( v1, v2 ).normalize();
+			// d = Math.abs( BABYLON.Vector3.Dot( base, normal ) );
+
+
+			// v1 = test( A.position.x - 1, A.position.z ).subtract( base );
+			// v2 = test( A.position.x - 1, A.position.z - 1 ).subtract( base );
+			// normal = BABYLON.Vector3.Cross( v1, v2 ).normalize();
+			// d = Math.abs( BABYLON.Vector3.Dot( base, normal ) );
+
+
+			// v1 = test( A.position.x - 1, A.position.z - 1 ).subtract( base );
+			// v2 = test( A.position.x, A.position.z - 1 ).subtract( base );
+			// normal = BABYLON.Vector3.Cross( v1, v2 ).normalize();
+			// d = Math.abs( BABYLON.Vector3.Dot( base, normal ) );
+
+
+			// normal.normalize();
+
+			// tmp = v1.normalize().multiplyByFloats( v.z, v.z, v.z );
+			// tmp2 = tmp.x - v.x;
+			// tmp = tmp.add( v2.normalize().multiplyByFloats( tmp2, tmp2, tmp2 ) );
+			// tmp.addInPlace( base );
+
+			// distance = ( A.position.y - defaultRadius ) - tmp.y;
+
+
+			// if ( distance <= 0 )
+			// {
+			// 	B = {
+			// 		direction: A.direction.negate(),
+			// 		position: tmp
+			// 	};
+			// 	distance = -distance;
+			// 	contacts.push ( {
+			// 			A: A,
+			// 			AMass: defaultMass,
+			// 			B: B,
+			// 			BMass: defaultWallMass,
+			// 			penetration: distance,
+			// 			normal: normal,
+			// 		} );
+			// }
+
+			wall = 10;
 			if ( A.position.x + defaultRadius <= -wall )
 			{
 				B = {
@@ -200,6 +438,9 @@ MOD1.scene = function( scene )
 			{
 				B = particles[j];
 
+
+				// if ( B.sleep )
+				// 	continue ;
 				// Calculate translational vector, which is normal
 				normal = B.position.subtract( A.position );
 
@@ -241,8 +482,8 @@ MOD1.scene = function( scene )
 		// console.log( contacts.length + " collisions detected !" );
 
 		// Integrate forces
-		// for ( i = 0; i < particles.length; i++ )
-		// 	particles[i].direction.addInPlace( gravity.multiplyByFloats( dt / 2.0, dt / 2.0, dt / 2.0 ) );
+		for ( i = 0; i < particles.length; i++ )
+			particles[i].direction.addInPlace( gravity.multiplyByFloats( dt / 2.0, dt / 2.0, dt / 2.0 ) );
 		// Integrate forces
 		// for ( i = 0; i < particles.length; i++ )
 		// {
@@ -254,6 +495,25 @@ MOD1.scene = function( scene )
 			for ( i = 0; i < contacts.length; i++ )
 				applyImpulse( contacts[i] );
 
+		// if ( particles[0] )
+		// 	console.log( particles[0].direction.length() );
+
+		for ( i = 0; i < particles.length; i++ )
+		{
+			// console.log(particles[i].direction.length());
+			if ( particles[i].direction.length() <= 0.1 )
+			{
+				// console.log("pok");
+				particles[i].sleep = true;
+				particles[i].direction = new BABYLON.Vector3.Zero();
+				particles[i].color = new BABYLON.Color4( 0.5, 0, 0, 1 );
+			}
+			else
+			{
+				particles[i].sleep = false;
+				particles[i].color = new BABYLON.Color4( 0, 0.5, 0.5, 1 );
+			}
+		}
 		// Integrate direction
 		for ( i = 0; i < particles.length; i++ )
 		{
@@ -267,6 +527,7 @@ MOD1.scene = function( scene )
 		// Correct positions
 		for ( i = 0; i < particles.length; i++ )
 			particles[i].direction = particles[i].direction.multiplyByFloats( 0.975, 0.975, 0.975 );
+
 	}
 
 	var positionalCorrection = function( contact )
@@ -274,7 +535,7 @@ MOD1.scene = function( scene )
 		A = contact.A;
 		B = contact.B;
 
-		k_slop = 0.0; // Penetration allowance
+		k_slop = 0.05; // Penetration allowance
 		percent = 0.5; // Penetration percentage to correct
 		correction = ( Math.max( contact.penetration - k_slop, 0.0 ) / ( 1 / contact.AMass + 1 / contact.BMass ) ) * percent;
 		correction = contact.normal.multiplyByFloats( correction, correction, correction );
@@ -329,167 +590,4 @@ MOD1.scene = function( scene )
 		A.direction.addInPlace( impulse.multiplyByFloats( im1, im1, im1 ) );
 		B.direction.subtractInPlace( impulse.multiplyByFloats( im2, im2, im2 ) );
 	}
-
-	// particleSystem.updateFunction = function ( particles )
-	// {
-	// 	// for ( var i = 0; i < particles.length; i++ )
-	// 	// {
-	// 	// 	// Update pos
-	// 	// 	var particle = particles[i];
-	// 	// }
-
-	// 	for ( var i = 0; i < particles.length; i++ )
-	// 	{
-	// 		var particle = particles[i];
-
-	// 		particle.direction.y -= 0.05; // gravity
-
-	// 		if ( particle.sleep )
-	// 			continue ;
-
-	// 		// ground collision
-	// 		if ( particle.position.y - defaultRadius <= map.ground.position.y )
-	// 		{
-	// 			// particle.direction = BABYLON.Vector3( -0.5, -0.5, -0.5 );//particle.direction.multiply( BABYLON.Vector3( -0.5, -0.5, -0.5 ) );
-	// 			particle.position.y = map.ground.position.y + defaultRadius;
-
-	// 			particle.direction.x *= 0.975;
-	// 			particle.direction.y = 0;
-	// 			particle.direction.z *= 0.975;
-	// 		}
-
-	// 		// Wall
-	// 		var test = 8;
-	// 		if ( particle.position.x - defaultRadius >= test )
-	// 		{
-	// 			particle.position.x = test + defaultRadius;
-	// 			particle.direction.x = -particle.direction.x * 0.975;
-	// 		}
-	// 		if ( particle.position.x - defaultRadius <= -test )
-	// 		{
-	// 			particle.position.x = -test + defaultRadius;
-	// 			particle.direction.x = -particle.direction.x * 0.975;
-	// 		}
-	// 		if ( particle.position.z - defaultRadius >= test )
-	// 		{
-	// 			particle.position.z = test + defaultRadius;
-	// 			particle.direction.z = -particle.direction.z * 0.975;
-	// 		}
-	// 		if ( particle.position.z - defaultRadius <= -test )
-	// 		{
-	// 			particle.position.z = -test + defaultRadius;
-	// 			particle.direction.z = -particle.direction.z * 0.975;
-	// 		}
-
-	// 		// 	 particle.position.z - defaultRadius >= test ||
-	// 		// 	 particle.position.z - defaultRadius <= -test )
-	// 		// {
-	// 		// 	particle.position =
-	// 		// 	particle.direction = particle.direction.multiplyByFloats( -0.975, -0.975, -0.975 );
-	// 		// 	// particle.position = particle.direction.multiplyByFloats( -0.975, -0.975, -0.975 );
-	// 		// }
-	// 		for ( var j = 0; j < particles.length; j++ )
-	// 		{
-	// 			// don't check same
-	// 			if ( i == j )
-	// 				continue ;
-	// 			var particle2 = particles[j];
-
-	// 			var distVec = particle2.position.subtract( particle.position );
-	// 			var dist = distVec.length();
-
-	// 			if ( dist <= defaultRadius + defaultRadius )
-	// 			{
-	// 				// get the mtd
-	// 				var delta = particle.position.subtract( particle2.position );
-	// 				var d = delta.length();
-	// 				// minimum translation distance to push balls apart after intersecting
-	// 				var tmp = ( ( defaultRadius + defaultRadius ) -d ) / d;
-	// 				var mtd = delta.multiplyByFloats( tmp, tmp, tmp );
-
-	// 				// resolve intersection --
-	// 				// inverse mass quantities
-	// 				var mass = 10;
-	// 				var im1 = 1 / 10;
-	// 				var im2 = 1 / 10;
-
-	// 				// push-pull them apart based off their mass
-	// 				var tmp1 = im1 / ( im1 + im2 );
-	// 				particle.position.addInPlace( mtd.multiplyByFloats( tmp1, tmp1, tmp1 ) );
-	// 				var tmp2 = im2 / ( im1 + im2 );
-	// 				particle2.position.subtractInPlace( mtd.multiplyByFloats( tmp2, tmp2, tmp2 ) );
-
-	// 				// impact speed
-	// 				var v = particle.direction.subtract( particle2.direction );
-	// 				var vn = BABYLON.Vector3.Dot( v, mtd.normalize() );
-
-	// 				// sphere intersecting but moving away from each other already
-	// 				if ( vn > 0.0 )
-	// 					continue ;
-
-	// 				// collision impulse
-	// 				var reduction = 0.2;
-	// 				var i_ = ( -( 1.0 + reduction ) * vn ) / ( im1 + im2 );
-	// 				var impulse = mtd.normalize().multiplyByFloats( i_, i_, i_ );
-
-	// 				// change in momentum
-	// 				if ( ! particle2.sleep )
-	// 					particle.direction.addInPlace( impulse.multiplyByFloats( im1, im1, im1 ) );
-	// 				if ( ! particle.sleep )
-	// 					particle2.direction.subtractInPlace( impulse.multiplyByFloats( im2, im2, im2 ) );
-
-	// 				// is sleep ?
-	// 				if ( particle2.direction.x < precision && particle2.direction.x > -precision &&
-	// 					 particle2.direction.y < precision && particle2.direction.y > -precision &&
-	// 					 particle2.direction.z < precision && particle2.direction.z > -precision )
-	// 				{
-	// 					particle2.sleep = true;
-	// 					particle2.direction = BABYLON.Vector3.Zero();
-	// 					particle2.color = new BABYLON.Color4( 0.5, 0, 0, 1 );
-	// 				}
-	// 				else
-	// 				{
-	// 					particle2.sleep = false;
-	// 					particle2.color = new BABYLON.Color4( 0, 0.35, 0.75, 1 );
-	// 				}
-	// 			}
-	// 		}
-
-	// 		// move
-	// 		particle.position = particle.position.add( particle.direction );
-
-	// 		// is sleep ?
-	// 		if ( particle.direction.x < precision && particle.direction.x > -precision &&
-	// 			 particle.direction.y < precision && particle.direction.y > -precision &&
-	// 			 particle.direction.z < precision && particle.direction.z > -precision )
-	// 		{
-	// 			particle.sleep = true;
-	// 			particle.direction = BABYLON.Vector3.Zero();
-	// 			particle.color = new BABYLON.Color4( 0.5, 0, 0, 1 );
-	// 		}
-	// 		else
-	// 		{
-	// 			particle.sleep = false;
-	// 			particle.color = new BABYLON.Color4( 0, 0.35, 0.75, 1 );
-	// 		}
-	// 	}
-	// };
-
-	// var time = 0;
-	// var order = 0.1;
-
-	// scene.registerBeforeRender(function () {
-	// 	// Waiting for effect to be compiled
-	// 	if (!effect) {
-	// 		return;
-	// 	}
-
-	// 	effect.setFloat("time", time);
-
-	// 	time += order;
-
-	// 	if (time > 100 || time < 0) {
-	// 		order *= -1;
-	// 	}
-	// });
 }
