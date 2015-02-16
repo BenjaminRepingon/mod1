@@ -4,12 +4,6 @@ if [[ $# -eq 0 ]] ; then
 	exit 0;
 fi
 
-if ! test -f ./res/mod1.min.js; then
-	echo 'no mod1.min.js';
-	echo '"make" before launch mod1';
-	exit 0;
-fi
-
 echo $1 > .map;
 
 open "index.html";

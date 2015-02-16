@@ -15,7 +15,7 @@ var MOD1;
 		this.basicGround( width, height, width , height , scene );
 
 		// var test = [[10, 15, 10], [30, 42, 10], [70, -15, 10], [40, 21, 10], [70, -12, 10], [50, -5, 50], [90, 8, 90], [70, 35, 70]];
-		var test = [[25, 15, 25]/*, [60, -15, 60]/*, [50, 15, 50]*/];
+		var test = [[25, 15, 25], [60, -15, 60], [50, 15, 50]];
 		// var test = [[50, 50, 50]];
 		this.drawMontains(test, width);
 		this.CreateArrayOfAltitude();
