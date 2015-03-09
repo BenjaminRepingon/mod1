@@ -1,9 +1,18 @@
-#!/bin/sh
-if [[ $# -eq 0 ]] ; then
-	echo 'Usage: mod1 <map.mod1>';
+#!/bin/bash
+if [ "$1" == "" ] ; then
+	echo 'Usage: mod1 <map.mod1> [water, wave, rain]';
 	exit 0;
 fi
 
-echo $1 > .map;
+if [ "$2" == "" ] ; then
+	echo -n "var param_mod = \"water\";" > .params.js;
+else
+	echo -n "var param_mod = \"$2\";" > .params.js;
+fi
 
-open "index.html";
+echo -n "var param_map = \"" >> .params.js;
+cat $1 | tr -d "\n" >> .params.js
+if [ $? == 0 ]; then
+	echo -n "\";" >> .params.js
+	open "index.html";
+fi

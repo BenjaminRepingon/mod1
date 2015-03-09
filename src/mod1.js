@@ -1,5 +1,7 @@
 MOD1.scene = function( scene )
 {
+	console.log(param_mod);
+	console.log(param_map);
 	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(50, 30, -70), scene);
 	camera.setTarget(BABYLON.Vector3.Zero());
 	camera.attachControl(canvas, true);
@@ -28,13 +30,12 @@ MOD1.scene = function( scene )
 
 	// Emitters
 	var emitter0 = BABYLON.Mesh.CreateBox("emitter0", 0.1, scene);
-	emitter0.position.y = 50;
 	emitter0.position.x = 0;
 	emitter0.position.z = 0;
 	emitter0.isVisible = false;
 
 	// Particles
-	var particleSystem = new BABYLON.ParticleSystem("particles", 1500, scene);
+	var particleSystem = new BABYLON.ParticleSystem("particles", 1000, scene);
 	particleSystem.particleTexture = new BABYLON.Texture("textures/flare.png", scene);
 	particleSystem.minSize = 7.5;
 	particleSystem.maxSize = 7.5;
@@ -42,13 +43,35 @@ MOD1.scene = function( scene )
 	particleSystem.maxLifeTime = 5.0;
 	particleSystem.minEmitPower = 3.0;
 	particleSystem.maxEmitPower = 3.0;
-	particleSystem.minEmitBox = new BABYLON.Vector3(-48, 0, -48);
-	particleSystem.maxEmitBox = new BABYLON.Vector3(48, 0, 48);
+
+	// Wave
+	if ( param_mod == "wave" )
+	{
+		particleSystem.minEmitBox = new BABYLON.Vector3(50, 0, 50);
+		particleSystem.maxEmitBox = new BABYLON.Vector3(50, 1, -50);
+		emitter0.position.y = 10;
+		particleSystem.emitRate = 100;
+	}
+	else if ( param_mod == "water" )
+	{
+		particleSystem.minEmitBox = new BABYLON.Vector3(-48, 0, -48);
+		particleSystem.maxEmitBox = new BABYLON.Vector3(48, 0, 48);
+		emitter0.position.y = 5;
+		particleSystem.emitRate = 25;
+	}
+	else if ( param_mod == "rain" )
+	{
+		particleSystem.minEmitBox = new BABYLON.Vector3(-48, 0, -48);
+		particleSystem.maxEmitBox = new BABYLON.Vector3(48, 0, 48);
+		emitter0.position.y = 100;
+		particleSystem.emitRate = 25;
+	}
+
 	particleSystem.emitter = emitter0;
-	particleSystem.emitRate = 25;
+
 	// particleSystem.blendMode = BABYLON.ParticleSystem.BLENDMODE_ONEONE;
-	particleSystem.direction1 = new BABYLON.Vector3(0, 0, 0);
-	particleSystem.direction2 = new BABYLON.Vector3(0, 0, 0);
+	particleSystem.direction1 = new BABYLON.Vector3(0, 1, 0);
+	particleSystem.direction2 = new BABYLON.Vector3(0, 1, 0);
 	particleSystem.color1 = new BABYLON.Color4(0, 0.7, 1, 1);
 	particleSystem.color2 = new BABYLON.Color4(0, 0.5, 0.7, 1);
 	// particleSystem.gravity = new BABYLON.Vector3(0, -10.0, 0);
@@ -58,7 +81,7 @@ MOD1.scene = function( scene )
 	var defaultRadius = 2.5;
 	var defaultMass = 10;
 	var defaultWallMass = 100000;
-	var gravity = new BABYLON.Vector3( 0, -50, 0 );
+	var gravity = new BABYLON.Vector3( 0, -100, 0 );
 	var wall = 50 - defaultRadius - defaultRadius;
 
 	var test = function( x, z )
@@ -95,47 +118,6 @@ MOD1.scene = function( scene )
 		if ( sep1 )
 			return ;
 
-		// aa = BABYLON.Vector3.Dot( A, A );
-		// ab = BABYLON.Vector3.Dot( A, B );
-		// ac = BABYLON.Vector3.Dot( A, C );
-		// bb = BABYLON.Vector3.Dot( B, B );
-		// bc = BABYLON.Vector3.Dot( B, C );
-		// cc = BABYLON.Vector3.Dot( C, C );
-		// sep2 = ( aa > rr ) && ( ab > aa ) && ( ac > aa );
-		// if ( sep2 )
-		// 	return ;
-		// sep3 = ( bb > rr ) && ( ab > bb ) && ( bc > bb );
-		// if ( sep3 )
-		// 	return ;
-		// sep4 = ( cc > rr ) && ( ac > cc ) && ( bc > cc );
-		// if ( sep4 )
-		// 	return ;
-		// AB = B.subtract( A );
-		// BC = C.subtract( B );
-		// CA = A.subtract( C );
-		// d1 = ab - aa;
-		// d2 = bc - bb;
-		// d3 = ac - cc;
-		// e1 = BABYLON.Vector3.Dot( AB, AB );
-		// e2 = BABYLON.Vector3.Dot( BC, BC );
-		// e3 = BABYLON.Vector3.Dot( CA, CA );
-		// Q1 = A.multiplyByFloats( e1, e1, e1 ).subtract( AB.multiplyByFloats( d1, d1, d1 ) );
-		// Q2 = B.multiplyByFloats( e2, e2, e2 ).subtract( BC.multiplyByFloats( d2, d2, d2 ) );
-		// Q3 = C.multiplyByFloats( e3, e3, e3 ).subtract( CA.multiplyByFloats( d3, d3, d3 ) );
-		// QC = C.multiplyByFloats( e1, e1, e1 ).subtract( Q1 );
-		// QA = A.multiplyByFloats( e2, e2, e2 ).subtract( Q2 );
-		// QB = B.multiplyByFloats( e3, e3, e3 ).subtract( Q3 );
-		// sep5 = ( BABYLON.Vector3.Dot( Q1, Q1 ) > rr * e1 * e1 ) && ( BABYLON.Vector3.Dot( Q1, QC ) > 0 );
-		// if ( sep5 )
-		// 	return ;
-		// sep6 = ( BABYLON.Vector3.Dot( Q2, Q2 ) > rr * e2 * e2 ) && ( BABYLON.Vector3.Dot( Q2, QA ) > 0 );
-		// if ( sep6 )
-		// 	return ;
-		// sep7 = ( BABYLON.Vector3.Dot( Q3, Q3 ) > rr * e3 * e3 ) && ( BABYLON.Vector3.Dot( Q3, QB ) > 0 );
-		// if ( sep7 )
-		// 	return ;
-		// separated = sep1 || sep2 || sep3 || sep4 || sep5 || sep6 || sep7;
-
 		if ( true || ! separated )
 		{
 			N = V.normalize();
@@ -155,6 +137,7 @@ MOD1.scene = function( scene )
 		}
 	}
 
+	var frame = 0;
 	particleSystem.updateFunction = function ( particles )
 	{
 		fps = scene.getEngine().getFps();
@@ -217,7 +200,7 @@ MOD1.scene = function( scene )
 						normal: normal,
 					} );
 			}
-			if ( A.position.x - defaultRadius >= wall )
+			if ( A.position.x - defaultRadius >= wall)
 			{
 				B = {
 					direction: new BABYLON.Vector3( -A.direction.x, 0, 0 ),
@@ -324,20 +307,15 @@ MOD1.scene = function( scene )
 		}
 
 		// Integrate forces
-		// for ( i = 0; i < particles.length; i++ )
-		// 	particles[i].direction.addInPlace( gravity.multiplyByFloats( dt / 2.0, dt / 2.0, dt / 2.0 ) );
+		for ( i = 0; i < particles.length; i++ )
+			particles[i].direction.addInPlace( gravity.multiplyByFloats( dt / 2.0, dt / 2.0, dt / 2.0 ) );
 
 		// Correct positions
 		for ( i = 0; i < contacts.length; i++ )
 		{
-			positionalCorrection( contacts[i] );
 			applyImpulse( contacts[i] );
+			positionalCorrection( contacts[i] );
 		}
-
-		// Solve collisions
-		// for ( j = 0; j < iterations; j++ )
-		// 	for ( i = 0; i < contacts.length; i++ )
-		// 		applyImpulse( contacts[i] );
 
 		// Integrate direction
 		for ( i = 0; i < particles.length; i++ )
@@ -346,22 +324,7 @@ MOD1.scene = function( scene )
 			particles[i].direction.addInPlace( gravity.multiplyByFloats( dt / 2.0, dt / 2.0, dt / 2.0 ) );
 			particles[i].direction = particles[i].direction.multiplyByFloats( 0.975, 0.975, 0.975 );
 		}
-
-		// for ( i = 0; i < particles.length; i++ )
-		// {
-		// 	if ( particles[i].direction.length() <= 0.1 )
-		// 	{
-		// 		particles[i].sleep = true;
-		// 		particles[i].direction = new BABYLON.Vector3.Zero();
-		// 		particles[i].color = new BABYLON.Color4( 0.5, 0, 0, 1 );
-		// 	}
-		// 	else
-		// 	{
-		// 		particles[i].sleep = false;
-		// 		particles[i].color = new BABYLON.Color4( 0, 0.5, 0.5, 1 );
-		// 	}
-		// }
-	}/**/
+	}
 
 	var positionalCorrection = function( contact )
 	{
