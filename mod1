@@ -1,4 +1,8 @@
 #!/bin/bash
+if [[ `test -f $1` -eq 0 ]]; then
+	echo 'Error:' $1 'is not a file';
+	exit 0;
+fi
 if [ "$1" == "" ] ; then
 	echo 'Usage: mod1 <map.mod1> [water, wave, rain]';
 	exit 0;
@@ -10,9 +14,9 @@ else
 	echo -n "var param_mod = \"$2\";" > .params.js;
 fi
 
-echo -n "var param_map = \"" >> .params.js;
-cat $1 | tr -d "\n" >> .params.js
+echo -n "var param_map = [" >> .params.js;
+cat $1 | sed -e "s/(/[/g" |  sed -e "s/)/]/g" | tr -d "\n">> .params.js
 if [ $? == 0 ]; then
-	echo -n "\";" >> .params.js
+	echo -n "];" >> .params.js
 	open "index.html";
 fi

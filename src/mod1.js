@@ -2,7 +2,7 @@ MOD1.scene = function( scene )
 {
 	console.log(param_mod);
 	console.log(param_map);
-	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(50, 30, -70), scene);
+	var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(10, 65, -80), scene);
 	camera.setTarget(BABYLON.Vector3.Zero());
 	camera.attachControl(canvas, true);
 

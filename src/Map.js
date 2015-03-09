@@ -15,9 +15,13 @@ var MOD1;
 		this.basicGround( width, height, width , height , scene );
 
 		// var test = [[10, 15, 10], [30, 42, 10], [70, -15, 10], [40, 21, 10], [70, -12, 10], [50, -5, 50], [90, 8, 90], [70, 35, 70]];
-		var test = [[20, 15, 10], [25, 10, 25], [30, 10, 40], [40, 10, 50],[50, 10, 60], [60, 10, 70], [73, 10, 70],[87, 15, 65], [70, 25, 20]];
+		if ( !Array.isArray( param_map ) )
+		{
+			// console.log(param_map);
+			param_map = [[20, 15, 10], [25, 8, 25], [30, 8, 40], [40, 8, 50],[50, 8, 60], [60, 8, 70], [73, 8, 70],[87, 15, 65], [70, 25, 20]];
+		}
 		// var test = [[50, 50, 50]];
-		this.drawMontains(test, width);
+		this.drawMontains(param_map, width);
 		this.CreateArrayOfAltitude();
 
 		/*
