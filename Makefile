@@ -3,14 +3,19 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: rbenjami <rbenjami@student.42.fr>          +#+  +:+       +#+         #
+#    By: dsousa <dsousa@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2015/01/27 12:57:14 by rbenjami          #+#    #+#              #
-#    Updated: 2015/03/09 12:06:21 by rbenjami         ###   ########.fr        #
+#    Updated: 2015/03/09 14:05:58 by dsousa           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-all:
+NAME=.params.js
+
+all: $(NAME)
+
+$(NAME):
+	@touch $(NAME)
 
 clean:
 	@rm -Rf ./.params.js
