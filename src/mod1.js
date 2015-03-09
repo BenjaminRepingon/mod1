@@ -6,25 +6,26 @@ MOD1.scene = function( scene )
 	camera.setTarget(BABYLON.Vector3.Zero());
 	camera.attachControl(canvas, true);
 
-	var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 0.5, 0.9), scene);
-	light.intensity = 0.7;
-	light.diffuse = new BABYLON.Color3(0.9, 0.9, 0.9);
-	light.specular = new BABYLON.Color3(0.7, 0.6, 0.5);
+	// var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 0.5, 0.9), scene);
+	// light.intensity = 0.7;
+	// light.diffuse = new BABYLON.Color3(0.9, 0.9, 0.9);
+	// light.specular = new BABYLON.Color3(0.7, 0.6, 0.5);
 
+	var light = new BABYLON.DirectionalLight("dir01", new BABYLON.Vector3(-1, -2, -1), scene);
+	light.position = new BABYLON.Vector3(20, 40, 20);
+	light.intensity = 0.5;
+	var light2 = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(1, 10, 1), scene);
+	light2.intensity = 0.5;
+	light.diffuse = new BABYLON.Color3(0.4, 0.6, 0.4);
+	light.specular = new BABYLON.Color3(0.4, 0.6, 0.4);
 
 	var shadowGenerator = new BABYLON.ShadowGenerator(1024, light);
-	// var light0 = new BABYLON.PointLight("Omni0", new BABYLON.Vector3(0, 50, 0), scene);
-	// light0.diffuse = new BABYLON.Color3(0.1, 0, 0);
-	// light0.specular = new BABYLON.Color3(0.1, 0.1, 0.1);
 
 	var map = new MOD1.Map(100, 100, scene, 2);
 	map.ground.receiveShadows = true;
 
 	var mat = new BABYLON.StandardMaterial("mat", scene);
 	mat.diffuseColor = new BABYLON.Color3( 0.8, 0.8, 0.8 );
-	// mat.ambientColor = new BABYLON.Color3(1, 0.2, 0.7);
-	// mat.specularColor = new BABYLON.Color3(1.0, 0.2, 0.7);
-	// mat.wireframe = true;
 
 	map.ground.material = mat;
 

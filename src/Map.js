@@ -15,7 +15,7 @@ var MOD1;
 		this.basicGround( width, height, width , height , scene );
 
 		// var test = [[10, 15, 10], [30, 42, 10], [70, -15, 10], [40, 21, 10], [70, -12, 10], [50, -5, 50], [90, 8, 90], [70, 35, 70]];
-		var test = [[25, 15, 25], [60, -15, 60], [50, 15, 50]];
+		var test = [[20, 15, 10], [25, 10, 25], [30, 10, 40], [40, 10, 50],[50, 10, 60], [60, 10, 70], [73, 10, 70],[87, 15, 65], [70, 25, 20]];
 		// var test = [[50, 50, 50]];
 		this.drawMontains(test, width);
 		this.CreateArrayOfAltitude();
@@ -82,29 +82,25 @@ var MOD1;
 	MOD1.Map.prototype.defineAltitude = function( x, y, smooth, points )
 	{
 		newAltitude = 0;
-		nb_vertex = 0;
 
 		for (var i = points.length - 1; i >= 0; i--)
 		{
 			tmpExp = Math.exp( - ( (points[i][0] - x) * (points[i][0] - x) ) / Math.abs( points[i][1] * smooth ) - ( (points[i][2] - y) * (points[i][2] - y) ) / Math.abs( points[i][1] * smooth ) );
-			tmp = points[i][1] * tmpExp * tmpExp;
-			if ( Math.abs( tmp ) > 0.000000001 )
-			{
+			tmp = (points[i][1] * tmpExp * tmpExp );
+			if ( Math.abs( tmp ) > 0.0001 )
 				newAltitude += tmp;
-				nb_vertex += 0.5;
-			}
 		};
 
 		// console.log( newAltitude );
-		return (newAltitude / nb_vertex);
+		return (newAltitude);
 	}
 
 	MOD1.Map.prototype.interpolVertex = function( x, y, altitude, width, smooth, points )
 	{
 		altitude = altitude < 0 ? altitude + 1 : altitude;
-		firstCollision = -1;
-
-		for ( var i = 1; i <= Math.abs( altitude * smooth / 5 ); i++ )
+		tmp_altitude = altitude;
+		i = 0;
+		while ( tmp_altitude < -0.1 || tmp_altitude > 0.1 )
 		{
 			for ( var j = 0; j <= 360; j+= 0.2 )
 			{
@@ -113,27 +109,18 @@ var MOD1;
 				b = Math.ceil( y + i * Math.sin(rad) );
 				if ( a < width && a >= 0 && b < width && b >= 0)
 				{
-					// max_size = 0;
-					index = this.getCustomIndex( a, b, width );
+					if ( a && b )
+					{
+						index = this.getCustomIndex( a, b, width );
 
-					// for ( check = 1; check < smooth; check++ )
-					// {
-					//  tmp_a = Math.ceil( x + i + check * Math.cos(rad) );
-					//  tmp_b = Math.ceil( y + i + check * Math.sin(rad) );
-					//  tmp_index = this.getCustomIndex( a, b, width );
-					//  if ( Math.abs( this.positions[ tmp_index ] ) > Math.abs( max_size ) )
-					//      max_size = this.positions[ tmp_index ];
-					// }
-
-					newAltitude = this.defineAltitude( a, b, smooth, points );
-					// newAltitude = (altitude - max_size) * Math.exp( - ( (a - x) * (a - x) ) / Math.abs( altitude * smooth ) - ( (b - y) * (b - y) ) / Math.abs( altitude * smooth ) );
-					// this.positions[ index ] = newAltitude + max_size;
-					this.positions[ index ] = newAltitude;
+						newAltitude = this.defineAltitude( a, b, smooth, points );
+						tmp_altitude = newAltitude;
+						this.positions[ index ] = newAltitude > this.positions[ index ] || this.positions[ index ] == 0 ? newAltitude : this.positions[ index ];
+					}
 				}
-
 			};
-			firstCollision = firstCollision == 0 ? 1 : firstCollision;
-		};
+			i++;
+		}
 	};
 
 	MOD1.Map.prototype.basicGround = function( width, height, w_subdivisions, h_subdivisions, scene)
